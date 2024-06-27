@@ -1,3 +1,1 @@
-export enum HTMLBlockTypes {
-  Html = 'html',
-}
+export enum HTMLBlockTypes {}

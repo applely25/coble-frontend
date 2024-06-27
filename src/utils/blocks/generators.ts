@@ -4,27 +4,20 @@ import { HTMLBlockTypes } from './types';
 /*
 블록 함수 기본 특
 javascriptGenerator.forBlock[type] = function(block, generator) {
-  return '코드';
+  - 블록의 변수를 가져옴
+  - 블록의 변수를 이용하여 코드 생성
+  - return '코드';
 }
 
-블록 안에 text 
-- type : field_input
-- block.getFieldValue(name)
-
-블록 안에 블록
-- type : input_statement
-- generator.statementToCode(block, name)
+- field_input -> block.getFieldValue(name)
+- input_statement -> generator.statementToCode(block, name)
+- field_dropdown -> block.getFieldValue(name)
+- field_checkbox -> block.getFieldValue(name)
+- field_image -> block.getFieldValue(name)
+- field_number -> block.getFieldValue(name)
 
 */
-const registerGenerators = () => {
-  javascriptGenerator.forBlock[HTMLBlockTypes.Html] = function (
-    block,
-    generator,
-  ) {
-    const content = block.getFieldValue('TEXT') || '';
-    const content2 = block.getFieldValue('TEXT2') || '';
-    return `<html>${content} - ${content2}</html>`;
-  };
-};
+
+const registerGenerators = () => {};
 
 export default registerGenerators;
