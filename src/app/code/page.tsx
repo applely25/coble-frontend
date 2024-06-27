@@ -1,12 +1,16 @@
 'use client';
-import * as S from './style';
-import * as Blockly from 'blockly/core';
-import { javascriptGenerator } from 'blockly/javascript';
+
 import { useEffect, useState } from 'react';
+import { styled } from '@linaria/react';
+
+import * as Blockly from 'blockly/core';
 import { Xml } from 'blockly';
+import { javascriptGenerator } from 'blockly/javascript';
+
+import { BlocklyWorkspace } from '@/components/common/blocklyWorkspace';
+
 import BlocksInitializer from '@/utils/blocks/initializer';
 import registerGenerators from '@/utils/blocks/generators';
-import { BlocklyWorkspace } from '@/components/common/blocklyWorkspace';
 
 BlocksInitializer();
 
@@ -42,20 +46,37 @@ const Code = () => {
   };
 
   return (
-    <S.Wrapper>
+    <Wrapper>
       <div>header</div>
-      <S.Container>
+      <Container>
         <BlocklyWorkspace setWorkspace={setWorkspace} />
         <div>
-          <S.CodeIframe srcDoc={code} />
+          <CodeIframe srcDoc={code} />
           <div>
             <p>code</p>
             <code typeof="html">{code}</code>
           </div>
         </div>
-      </S.Container>
-    </S.Wrapper>
+      </Container>
+    </Wrapper>
   );
 };
 
 export default Code;
+
+export const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+export const Container = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  @media screen and (max-width: 767px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+export const CodeIframe = styled.iframe`
+  width: 100%;
+  aspect-ratio: 16 / 9;
+`;
