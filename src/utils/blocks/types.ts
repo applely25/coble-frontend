@@ -4,7 +4,6 @@ export enum HTMLBlockTypes {
   Meta = 'meta',
   Title = 'title',
   Link = 'link',
-  Script = 'script',
   Body = 'body',
   Div = 'div',
   Section = 'section',
@@ -13,9 +12,7 @@ export enum HTMLBlockTypes {
   Footer = 'footer',
   Nav = 'nav',
   P = 'p',
-  Blockquote = 'blockquote',
   Pre = 'pre',
-  Address = 'address',
   Hr = 'hr',
   Ul = 'ul',
   Ol = 'ol',
@@ -33,13 +30,9 @@ export enum HTMLBlockTypes {
   Textarea = 'textarea',
   Select = 'select',
   Option = 'option',
-  Figure = 'figure',
-  Figcaption = 'figcaption',
   Video = 'video',
   Audio = 'audio',
   Embed = 'embed',
-  Object = 'object',
-  Iframe = 'iframe',
 }
 
 export enum CSSBlockTypes {

@@ -103,21 +103,6 @@ export default [
     category: 'html 기본 구조',
   },
   {
-    type: HTMLBlockTypes.Script,
-    message0: 'script %1',
-    args0: [
-      {
-        type: 'field_input',
-        name: 'ATTRIBUTES',
-        text: 'src="script.js"',
-      },
-    ],
-    colour: 230,
-    previousStatement: ['head', 'body'],
-    nextStatement: ['head', 'body'],
-    category: 'html 기본 구조',
-  },
-  {
     type: HTMLBlockTypes.Body,
     message0: 'body %1',
     args0: [
@@ -246,68 +231,8 @@ export default [
     category: '텍스트 콘텐츠 태그',
   },
   {
-    type: HTMLBlockTypes.Blockquote,
-    message0: 'blockquote %1',
-    args0: [
-      {
-        type: 'input_statement',
-        name: 'CONTENT',
-      },
-    ],
-    colour: 160,
-    previousStatement: [
-      'div',
-      'section',
-      'article',
-      'header',
-      'footer',
-      'nav',
-      'body',
-    ],
-    nextStatement: [
-      'div',
-      'section',
-      'article',
-      'header',
-      'footer',
-      'nav',
-      'body',
-    ],
-    category: '텍스트 콘텐츠 태그',
-  },
-  {
     type: HTMLBlockTypes.Pre,
     message0: 'pre %1',
-    args0: [
-      {
-        type: 'input_statement',
-        name: 'CONTENT',
-      },
-    ],
-    colour: 160,
-    previousStatement: [
-      'div',
-      'section',
-      'article',
-      'header',
-      'footer',
-      'nav',
-      'body',
-    ],
-    nextStatement: [
-      'div',
-      'section',
-      'article',
-      'header',
-      'footer',
-      'nav',
-      'body',
-    ],
-    category: '텍스트 콘텐츠 태그',
-  },
-  {
-    type: HTMLBlockTypes.Address,
-    message0: 'address %1',
     args0: [
       {
         type: 'input_statement',
@@ -494,7 +419,7 @@ export default [
   },
   {
     type: HTMLBlockTypes.A,
-    message0: 'a %1',
+    message0: 'a %1 %2',
     args0: [
       {
         type: 'field_input',
@@ -621,7 +546,7 @@ export default [
   },
   {
     type: HTMLBlockTypes.Label,
-    message0: 'label %1',
+    message0: 'label %1 %2',
     args0: [
       {
         type: 'field_input',
@@ -730,7 +655,7 @@ export default [
   },
   {
     type: HTMLBlockTypes.Select,
-    message0: 'select %1',
+    message0: 'select %1 %2',
     args0: [
       {
         type: 'field_input',
@@ -782,50 +707,7 @@ export default [
     nextStatement: 'select',
     category: '상호작용 및 네비게이션 요소',
   },
-  {
-    type: HTMLBlockTypes.Figure,
-    message0: 'figure %1',
-    args0: [
-      {
-        type: 'input_statement',
-        name: 'CONTENT',
-      },
-    ],
-    colour: 200,
-    previousStatement: [
-      'div',
-      'section',
-      'article',
-      'header',
-      'footer',
-      'nav',
-      'body',
-    ],
-    nextStatement: [
-      'div',
-      'section',
-      'article',
-      'header',
-      'footer',
-      'nav',
-      'body',
-    ],
-    category: '미디어와 임베디드 콘텐츠 태그',
-  },
-  {
-    type: HTMLBlockTypes.Figcaption,
-    message0: 'figcaption %1',
-    args0: [
-      {
-        type: 'input_statement',
-        name: 'CONTENT',
-      },
-    ],
-    colour: 200,
-    previousStatement: 'figure',
-    nextStatement: 'figure',
-    category: '미디어와 임베디드 콘텐츠 태그',
-  },
+
   {
     type: HTMLBlockTypes.Video,
     message0: 'video %1',
@@ -896,68 +778,6 @@ export default [
         type: 'field_input',
         name: 'ATTRIBUTES',
         text: 'src="file.swf" width="600" height="400"',
-      },
-    ],
-    colour: 200,
-    previousStatement: [
-      'div',
-      'section',
-      'article',
-      'header',
-      'footer',
-      'nav',
-      'body',
-    ],
-    nextStatement: [
-      'div',
-      'section',
-      'article',
-      'header',
-      'footer',
-      'nav',
-      'body',
-    ],
-    category: '미디어와 임베디드 콘텐츠 태그',
-  },
-  {
-    type: HTMLBlockTypes.Object,
-    message0: 'object %1',
-    args0: [
-      {
-        type: 'field_input',
-        name: 'ATTRIBUTES',
-        text: 'data="file.pdf" type="application/pdf" width="600" height="400"',
-      },
-    ],
-    colour: 200,
-    previousStatement: [
-      'div',
-      'section',
-      'article',
-      'header',
-      'footer',
-      'nav',
-      'body',
-    ],
-    nextStatement: [
-      'div',
-      'section',
-      'article',
-      'header',
-      'footer',
-      'nav',
-      'body',
-    ],
-    category: '미디어와 임베디드 콘텐츠 태그',
-  },
-  {
-    type: HTMLBlockTypes.Iframe,
-    message0: 'iframe %1',
-    args0: [
-      {
-        type: 'field_input',
-        name: 'ATTRIBUTES',
-        text: 'src="https://example.com" width="600" height="400"',
       },
     ],
     colour: 200,

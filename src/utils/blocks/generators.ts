@@ -44,12 +44,6 @@ const registerGenerators = () => {
     return `<link ${attributes}>`;
   };
 
-  javascriptGenerator.forBlock[HTMLBlockTypes.Script] = (block, generator) => {
-    const attributes = block.getFieldValue('ATTRIBUTES');
-    const code = generator.statementToCode(block, 'CODE');
-    return `<script ${attributes}>${code}</script>`;
-  };
-
   javascriptGenerator.forBlock[HTMLBlockTypes.Body] = (block, generator) => {
     const content = generator.statementToCode(block, 'CONTENT');
     return `<body>${content}</body>`;
@@ -96,27 +90,13 @@ const registerGenerators = () => {
     return `<p>${text}</p>`;
   };
 
-  javascriptGenerator.forBlock[HTMLBlockTypes.Blockquote] = (
-    block,
-    generator,
-  ) => {
-    const text = block.getFieldValue('TEXT');
-    return `<blockquote>${text}</blockquote>`;
-  };
-
   javascriptGenerator.forBlock[HTMLBlockTypes.Pre] = (block, generator) => {
     const text = block.getFieldValue('TEXT');
     return `<pre>${text}</pre>`;
   };
 
-  javascriptGenerator.forBlock[HTMLBlockTypes.Address] = (block, generator) => {
-    const text = block.getFieldValue('TEXT');
-    return `<address>${text}</address>`;
-  };
-
-  javascriptGenerator.forBlock[HTMLBlockTypes.Hr] = (block, generator) => {
-    return `<hr>`;
-  };
+  javascriptGenerator.forBlock[HTMLBlockTypes.Hr] = (block, generator) =>
+    `<hr>`;
 
   javascriptGenerator.forBlock[HTMLBlockTypes.Ul] = (block, generator) => {
     const items = generator.statementToCode(block, 'ITEMS');
@@ -206,19 +186,6 @@ const registerGenerators = () => {
   javascriptGenerator.forBlock[HTMLBlockTypes.Option] = (block, generator) => {
     const text = block.getFieldValue('TEXT');
     return `<option>${text}</option>`;
-  };
-
-  javascriptGenerator.forBlock[HTMLBlockTypes.Figure] = (block, generator) => {
-    const content = generator.statementToCode(block, 'CONTENT');
-    return `<figure>${content}</figure>`;
-  };
-
-  javascriptGenerator.forBlock[HTMLBlockTypes.Figcaption] = (
-    block,
-    generator,
-  ) => {
-    const content = generator.statementToCode(block, 'CONTENT');
-    return `<figcaption>${content}</figcaption>`;
   };
 
   javascriptGenerator.forBlock[HTMLBlockTypes.Video] = (block, generator) => {
