@@ -15,7 +15,7 @@ javascriptGenerator.forBlock[type] = function(block, generator) {
 - field_checkbox -> block.getFieldValue(name)
 - field_image -> block.getFieldValue(name)
 - field_number -> block.getFieldValue(name)
-
+- input_valye -> generator.valueToCode(block, name)
 */
 
 const registerGenerators = () => {
