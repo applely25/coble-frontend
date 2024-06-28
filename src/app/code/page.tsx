@@ -1,14 +1,15 @@
 'use client';
-import * as S from './style';
-import * as Blockly from 'blockly/core';
-import { javascriptGenerator } from 'blockly/javascript';
+
 import { useEffect, useState } from 'react';
-import { Xml } from 'blockly';
+import { styled } from '@linaria/react';
+
+import * as Blockly from 'blockly/core';
+// import { Xml } from 'blockly';
+import { javascriptGenerator } from 'blockly/javascript';
+
 import BlocksInitializer from '@/utils/blocks/initializer';
 import registerGenerators from '@/utils/blocks/generators';
-import { BlocklyWorkspace } from '@/components/common/blocklyWorkspace';
-
-BlocksInitializer();
+import BlocklySpace from '@/components/common/BlocklySpace';
 
 const Code = () => {
   const [workspace, setWorkspace] = useState<Blockly.WorkspaceSvg | null>(null);
@@ -30,32 +31,56 @@ const Code = () => {
         workspace.removeChangeListener(updateCode);
       };
     }
+    return undefined;
   }, [workspace]);
 
-  const printWorkspaceAsXml = () => {
-    // 서버 연동시 사용
-    if (workspace === null) return;
+  useEffect(() => {
+    // 블록리 초기화 함수 호출
+    BlocksInitializer();
+  }, []);
 
-    const workspaceDomXml = Xml.workspaceToDom(workspace);
-    const workspaceRawXml = Blockly.Xml.domToPrettyText(workspaceDomXml);
-    console.log(workspaceRawXml);
-  };
+  // 추후 XML로 변환하여 저장할 때 사용할 함수
+  // const printWorkspaceAsXml = useCallback(() => {
+  //   if (workspace) {
+  //     const workspaceDomXml = Xml.workspaceToDom(workspace);
+  //     const workspaceRawXml = Blockly.Xml.domToPrettyText(workspaceDomXml);
+  //     console.log(workspaceRawXml); // 디버깅용 콘솔 출력
+  //   }
+  // }, [workspace]);
 
   return (
-    <S.Wrapper>
+    <Wrapper>
       <div>header</div>
-      <S.Container>
-        <BlocklyWorkspace setWorkspace={setWorkspace} />
+      <Container>
+        <BlocklySpace setWorkspace={setWorkspace} />
         <div>
-          <S.CodeIframe srcDoc={code} />
+          <CodeIframe srcDoc={code} />
           <div>
             <p>code</p>
-            <code typeof="html">{code}</code>
+            <code>{code}</code>
           </div>
         </div>
-      </S.Container>
-    </S.Wrapper>
+      </Container>
+    </Wrapper>
   );
 };
 
 export default Code;
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Container = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  @media screen and (max-width: 767px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const CodeIframe = styled.iframe`
+  width: 100%;
+  aspect-ratio: 16 / 9;
+`;
