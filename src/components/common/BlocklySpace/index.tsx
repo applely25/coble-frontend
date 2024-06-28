@@ -42,8 +42,6 @@ const BlocklySpace = ({ setWorkspace }: BlocklyProps) => (
   </BlocklyContainer>
 );
 
-export default BlocklySpace;
-
 const BlocklyContainer = styled.div`
   height: 90vh;
   width: 100%;
@@ -52,3 +50,5 @@ const BlocklyWorkspaceContainer = styled(BlocklyWorkspace)`
   height: 100%;
   width: 100%;
 `;
+
+export default BlocklySpace;
