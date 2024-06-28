@@ -7,7 +7,7 @@ args0 : 블록의 인자들 [{ type : 타입, name : 변수 이름 }]
 colour : 블록 색상
 previousStatement : 이전 블록의 종류 (null : 없음) -> 블록을 연결할 수 있는지 여부 (단순히 아무거나 연경 가능하면 null)
 nextStatement : 다음 블록의 종류 (null : 없음) -> 블록을 연결할 수 있는지 여부 (단순히 아무거나 연경 가능하면 null)
-
+category:'html' -> 블록 카테고리
 ---
 블록 인자 타입
 - field_input : 텍스트 입력
@@ -25,4 +25,17 @@ nextStatement : 다음 블록의 종류 (null : 없음) -> 블록을 연결할 �
 참고 자료 : https://developers.google.com/blockly/guides/create-custom-blocks/fields/built-in-fields/overview?hl=ko&_gl=1*tce58i*_up*MQ..*_ga*MTYxNTg4NzI5Mi4xNzE5NDQ5NTY1*_ga_R5G2Y6GLVC*MTcxOTQ0OTU2NS4xLjEuMTcxOTQ0OTU2NS4wLjAuMA..
 */
 
-export default [];
+export default [
+  {
+    type: HTMLBlockTypes.Html,
+    message0: 'html %1',
+    args0: [
+      {
+        type: 'input_statement',
+        name: 'CONTENT',
+      },
+    ],
+    colour: 230,
+    category: 'html 기본 구조',
+  },
+];

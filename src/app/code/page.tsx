@@ -4,15 +4,12 @@ import { useEffect, useState } from 'react';
 import { styled } from '@linaria/react';
 
 import * as Blockly from 'blockly/core';
-import { Xml } from 'blockly';
+// import { Xml } from 'blockly';
 import { javascriptGenerator } from 'blockly/javascript';
-
-import { BlocklyWorkspace } from '@/components/common/blocklyWorkspace';
 
 import BlocksInitializer from '@/utils/blocks/initializer';
 import registerGenerators from '@/utils/blocks/generators';
-
-BlocksInitializer();
+import BlocklySpace from '@/components/common/BlocklySpace';
 
 const Code = () => {
   const [workspace, setWorkspace] = useState<Blockly.WorkspaceSvg | null>(null);
@@ -34,27 +31,33 @@ const Code = () => {
         workspace.removeChangeListener(updateCode);
       };
     }
+    return undefined;
   }, [workspace]);
 
-  const printWorkspaceAsXml = () => {
-    // 서버 연동시 사용
-    if (workspace === null) return;
+  useEffect(() => {
+    // 블록리 초기화 함수 호출
+    BlocksInitializer();
+  }, []);
 
-    const workspaceDomXml = Xml.workspaceToDom(workspace);
-    const workspaceRawXml = Blockly.Xml.domToPrettyText(workspaceDomXml);
-    console.log(workspaceRawXml);
-  };
+  // 추후 XML로 변환하여 저장할 때 사용할 함수
+  // const printWorkspaceAsXml = useCallback(() => {
+  //   if (workspace) {
+  //     const workspaceDomXml = Xml.workspaceToDom(workspace);
+  //     const workspaceRawXml = Blockly.Xml.domToPrettyText(workspaceDomXml);
+  //     console.log(workspaceRawXml); // 디버깅용 콘솔 출력
+  //   }
+  // }, [workspace]);
 
   return (
     <Wrapper>
       <div>header</div>
       <Container>
-        <BlocklyWorkspace setWorkspace={setWorkspace} />
+        <BlocklySpace setWorkspace={setWorkspace} />
         <div>
           <CodeIframe srcDoc={code} />
           <div>
             <p>code</p>
-            <code typeof="html">{code}</code>
+            <code>{code}</code>
           </div>
         </div>
       </Container>
@@ -64,11 +67,12 @@ const Code = () => {
 
 export default Code;
 
-export const Wrapper = styled.div`
+const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
 `;
-export const Container = styled.div`
+
+const Container = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   @media screen and (max-width: 767px) {
@@ -76,7 +80,7 @@ export const Container = styled.div`
   }
 `;
 
-export const CodeIframe = styled.iframe`
+const CodeIframe = styled.iframe`
   width: 100%;
   aspect-ratio: 16 / 9;
 `;

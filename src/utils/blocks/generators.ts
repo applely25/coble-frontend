@@ -18,6 +18,11 @@ javascriptGenerator.forBlock[type] = function(block, generator) {
 
 */
 
-const registerGenerators = () => {};
+const registerGenerators = () => {
+  javascriptGenerator.forBlock[HTMLBlockTypes.Html] = (block, generator) => {
+    const content = generator.statementToCode(block, 'CONTENT');
+    return `<html>${content}</html>`;
+  };
+};
 
 export default registerGenerators;
