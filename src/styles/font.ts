@@ -1,10 +1,10 @@
 const fontGenerator = (
-  weight: number,
+  weight: number | string,
   size: number,
   lineHeight: number,
   letterSpacing: number,
 ) => ({
-  fontWeigth: weight,
+  fontWeight: `${weight} `,
   fontSize: `${size}rem`,
   lineHeight: `${lineHeight}%`,
   letterSpacing: `${letterSpacing}px`,
