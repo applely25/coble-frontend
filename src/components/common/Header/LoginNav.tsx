@@ -1,16 +1,16 @@
 'use client';
 
+import useUser from '@/hooks/useUser';
 import { design, font, theme } from '@/styles';
 import { styled } from '@linaria/react';
 import Link from 'next/link';
-import { useState } from 'react';
 
 const LoginNav = () => {
-  const [isLogin, setIsLogin] = useState(false);
+  const { isLoggedIn } = useUser();
 
   return (
     <>
-      {isLogin ? (
+      {isLoggedIn ? (
         <UserName href="/mypage">jyk1029 님</UserName>
       ) : (
         <LoginButton href="/login">로그인</LoginButton>
