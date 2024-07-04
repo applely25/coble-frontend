@@ -1,9 +1,9 @@
-import { CobleLogo } from '@/assets';
-import {  flex, font } from '@/styles';
+import { flex, font } from '@/styles';
 import { styled } from '@linaria/react';
 import Link from 'next/link';
 import Navigation from './Navigation';
 import LoginNav from './LoginNav';
+import { CobleLogo } from '@/assets/icon';
 
 const Header = () => (
   <Conatiner>
@@ -13,7 +13,6 @@ const Header = () => (
     </LogoContainer>
 
     <Navigation />
-
     <LoginNav />
   </Conatiner>
 );
@@ -21,6 +20,10 @@ const Header = () => (
 const Conatiner = styled.header`
   ${flex.BETWEEN}
   padding: 5px 5vw;
+  background-color: white;
+  position: fixed;
+  width: 100%;
+  z-index: 100;
 `;
 
 const LogoContainer = styled(Link)`
