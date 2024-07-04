@@ -20,7 +20,13 @@ const LoginNav = () => {
 };
 
 const LoginButton = styled(Link)`
-  ${design.BUTTON}
+  ${design.BUTTON_WHITE}
+
+  transition: background-color 0.2s, color 0.2s;
+  &:hover {
+    background-color: ${theme.blue[500]};
+    color: ${theme.blue[50]};
+  }
 `;
 
 const UserName = styled(Link)`

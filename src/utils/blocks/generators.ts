@@ -1,5 +1,5 @@
 import { javascriptGenerator } from 'blockly/javascript';
-import { HTMLBlockTypes } from './types';
+import { CSSBlockTypes, HTMLBlockTypes } from './types';
 
 /*
 블록 함수 기본 특
@@ -15,7 +15,7 @@ javascriptGenerator.forBlock[type] = function(block, generator) {
 - field_checkbox -> block.getFieldValue(name)
 - field_image -> block.getFieldValue(name)
 - field_number -> block.getFieldValue(name)
-
+- input_valye -> generator.valueToCode(block, name)
 */
 
 const registerGenerators = () => {

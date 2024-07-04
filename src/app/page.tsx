@@ -1,9 +1,16 @@
-import Header from '@/components/common/Header';
+'use client';
+import { MainContainer, PopularProject } from '@/components/page/home';
+import { styled } from '@linaria/react';
 
 export default function Home() {
   return (
-    <div>
-      <Header />
-    </div>
+    <Layout>
+      <MainContainer />
+      <PopularProject />
+    </Layout>
   );
 }
+const Layout = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
