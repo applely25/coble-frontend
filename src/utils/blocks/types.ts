@@ -5,3 +5,8 @@ export enum HTMLBlockTypes {
 export enum CSSBlockTypes {
   Display = 'display',
 }
+
+export default {
+  HTMLBlockTypes,
+  CSSBlockTypes,
+};

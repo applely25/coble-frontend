@@ -1,7 +1,7 @@
 import * as Blockly from 'blockly/core';
-import blocks from '@/utils/blocks/blocks';
 import { styled } from '@linaria/react';
 import { BlocklyWorkspace } from 'react-blockly';
+import { blocks } from '@/utils/blocks';
 
 const categorizedBlocks = blocks.reduce((acc: any, block: any) => {
   if (!acc[block.category]) {
