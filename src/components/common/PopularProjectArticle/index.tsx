@@ -19,7 +19,7 @@ export default function PopularProjectArticle() {
           <p>XQUARE</p>
           <p>DSM 프로젝트 통합 서비스</p>
         </TitleContainer>
-        <Heart isLiked={true} />
+        <Heart isLiked={false} />
       </Description>
     </Container>
   );
@@ -31,6 +31,11 @@ const Container = styled.div`
   align-items: center;
   gap: 12px;
   padding: 8px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  &:hover {
+    transform: scale(1.05);
+  }
 `;
 
 const TitleImage = styled.div`

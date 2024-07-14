@@ -26,7 +26,8 @@ export default function PopularProject() {
 }
 
 const Container = styled.div`
-  height: calc(100dvh - 60px);
+  min-height: calc(100dvh - 60px);
+  padding: 100px 5vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -50,6 +51,13 @@ const PopularProjectContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 30px;
+
+  @media screen and (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media screen and (max-width: 768px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `;
 
 const MoreProjectButton = styled(Link)`
