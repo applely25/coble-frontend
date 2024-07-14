@@ -29,8 +29,9 @@ const Navigation = () => {
 
 const NavList = styled.ul`
   ${flex.BETWEEN}
+
   list-style: none;
-  width: 30%;
+  width: 100%;
 
   ${font.H5};
   color: ${theme.gray[400]};
