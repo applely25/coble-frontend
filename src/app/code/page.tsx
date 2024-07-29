@@ -5,9 +5,8 @@ import { styled } from '@linaria/react';
 import * as Blockly from 'blockly/core';
 import { javascriptGenerator } from 'blockly/javascript';
 
-import BlocksInitializer from '@/utils/blocks/initializer';
-import registerGenerators from '@/utils/blocks/generators';
-import BlocklySpace from '@/components/common/BlocklySpace';
+import { BlocklySpace } from '@/components/common';
+import { BlocksInitializer, registerGenerators } from '@/utils/blocks';
 
 const Code = () => {
   const [workspace, setWorkspace] = useState<Blockly.WorkspaceSvg | null>(null);

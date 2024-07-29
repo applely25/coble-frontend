@@ -2,6 +2,9 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import ReactQueryProviders from '@/providers/ReactQueryProviders';
+import JotaiProviders from '@/providers/JotaiProviders';
+import { Header } from '@/components/common';
+import { styled } from '@linaria/react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,8 +21,20 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={inter.className}>
-        <ReactQueryProviders>{children}</ReactQueryProviders>
+        <ReactQueryProviders>
+          <JotaiProviders>
+            <MainLayout>
+              <Header />
+              {children}
+            </MainLayout>
+          </JotaiProviders>
+        </ReactQueryProviders>
       </body>
     </html>
   );
 }
+
+const MainLayout = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
