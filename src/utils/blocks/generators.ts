@@ -1,6 +1,5 @@
 import { javascriptGenerator } from 'blockly/javascript';
 import { CSSBlockTypes, HTMLBlockTypes } from './types';
-import { blob } from 'stream/consumers';
 
 /*
 블록 함수 기본 특
