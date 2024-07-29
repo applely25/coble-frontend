@@ -5,6 +5,7 @@ import ReactQueryProviders from '@/providers/ReactQueryProviders';
 import JotaiProviders from '@/providers/JotaiProviders';
 import { Header } from '@/components/common';
 import { styled } from '@linaria/react';
+import { flex } from '@/styles';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -35,6 +36,5 @@ export default function RootLayout({
 }
 
 const MainLayout = styled.div`
-  display: flex;
-  flex-direction: column;
+  ${flex.COLUMN_FLEX}
 `;

@@ -1,7 +1,7 @@
 'use client';
 import { Heart } from '@/assets/icon';
 import { DefaultProfileImage } from '@/assets/image';
-import { font, theme } from '@/styles';
+import { flex, font, theme } from '@/styles';
 import { styled } from '@linaria/react';
 
 export default function PopularProjectArticle() {
@@ -26,9 +26,7 @@ export default function PopularProjectArticle() {
 }
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  ${flex.COLUMN_VERTICAL}
   gap: 12px;
   padding: 8px;
   cursor: pointer;
@@ -49,9 +47,7 @@ const TitleImage = styled.div`
 `;
 
 const Description = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  ${flex.BETWEEN}
   width: 255px;
   gap: 8px;
 `;
@@ -64,8 +60,7 @@ const ProfileImage = styled.img`
 
 const TitleContainer = styled.div`
   flex: 1;
-  display: flex;
-  flex-direction: column;
+  ${flex.COLUMN_FLEX}
   ${font.C1}
   > p:first-child {
     ${font.B4}

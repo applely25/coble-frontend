@@ -28,9 +28,9 @@ const CloseIcon = ({
     <path
       d={path[direction]}
       stroke="#8D8D8D"
-      stroke-width="1.33333"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.33333"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );
