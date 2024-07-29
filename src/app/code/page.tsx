@@ -10,10 +10,12 @@ import { javascriptGenerator } from 'blockly/javascript';
 import BlocksInitializer from '@/utils/blocks/initializer';
 import registerGenerators from '@/utils/blocks/generators';
 import BlocklySpace from '@/components/common/BlocklySpace';
+import useBeautifyHtml from '@/hooks/useBeautifulHtml';
 
 const Code = () => {
   const [workspace, setWorkspace] = useState<Blockly.WorkspaceSvg | null>(null);
-  const [code, setCode] = useState<string>('');
+  const [code, setCode] = useState<string>('<body></body>');
+  const { beautifiedHtml } = useBeautifyHtml(code, setCode);
 
   useEffect(() => {
     registerGenerators();
@@ -56,8 +58,7 @@ const Code = () => {
         <div>
           <CodeIframe srcDoc={code} />
           <div>
-            <p>code</p>
-            <code>{code}</code>
+            <pre>{beautifiedHtml}</pre>
           </div>
         </div>
       </Container>
