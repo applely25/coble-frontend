@@ -202,6 +202,359 @@ const registerGenerators = () => {
     const attributes = block.getFieldValue('ATTRIBUTES');
     return `<embed ${attributes}>`;
   };
+
+  // css
+  javascriptGenerator.forBlock[CSSBlockTypes.Display] = (block, generator) => {
+    const value = block.getFieldValue('VALUE');
+    return `display: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.Position] = (block, generator) => {
+    const value = block.getFieldValue('VALUE');
+    return `position: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.Top] = (block, generator) => {
+    const value = block.getFieldValue('VALUE');
+    return `top: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.Right] = (block, generator) => {
+    const value = block.getFieldValue('VALUE');
+    return `right: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.Bottom] = (block, generator) => {
+    const value = block.getFieldValue('VALUE');
+    return `bottom: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.Left] = (block, generator) => {
+    const value = block.getFieldValue('VALUE');
+    return `left: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.ZIndex] = (block, generator) => {
+    const value = block.getFieldValue('VALUE');
+    return `z-index: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.Flex] = (block, generator) => {
+    const value = block.getFieldValue('VALUE');
+    return `flex: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.FlexDirection] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `flex-direction: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.JustifyContent] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `justify-content: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.AlignItems] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `align-items: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.GridTemplateColumns] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `grid-template-columns: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.GridTemplateRows] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `grid-template-rows: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.GridGap] = (block, generator) => {
+    const value = block.getFieldValue('VALUE');
+    return `grid-gap: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.Width] = (block, generator) => {
+    const value = block.getFieldValue('VALUE');
+    return `width: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.Height] = (block, generator) => {
+    const value = block.getFieldValue('VALUE');
+    return `height: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.Margin] = (block, generator) => {
+    const value = block.getFieldValue('VALUE');
+    return `margin: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.Padding] = (block, generator) => {
+    const value = block.getFieldValue('VALUE');
+    return `padding: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.Border] = (block, generator) => {
+    const value = block.getFieldValue('VALUE');
+    return `border: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.BoxSizing] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `box-sizing: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.BorderWidth] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `border-width: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.BorderStyle] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `border-style: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.BorderColor] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `border-color: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.BorderRadius] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `border-radius: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.BackgroundColor] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `background-color: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.BackgroundImage] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `background-image: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.BackgroundSize] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `background-size: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.BackgroundRepeat] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `background-repeat: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.BackgroundPosition] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `background-position: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.BackgroundAttachment] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `background-attachment: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.FontFamily] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `font-family: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.FontSize] = (block, generator) => {
+    const value = block.getFieldValue('VALUE');
+    return `font-size: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.FontWeight] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `font-weight: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.FontStyle] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `font-style: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.FontVariant] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `font-variant: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.TextAlign] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `text-align: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.TextDecoration] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `text-decoration: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.TextTransform] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `text-transform: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.LineHeight] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `line-height: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.LetterSpacing] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `letter-spacing: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.WordSpacing] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `word-spacing: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.Color] = (block, generator) => {
+    const value = block.getFieldValue('VALUE');
+    return `color: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.Transition] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `transition: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.TransitionProperty] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `transition-property: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.TransitionDuration] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `transition-duration: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.TransitionTimingFunction] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `transition-timing-function: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.Animation] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `animation: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.AnimationName] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `animation-name: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.AnimationDuration] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `animation-duration: ${value};`;
+  };
+
+  javascriptGenerator.forBlock[CSSBlockTypes.AnimationTimingFunction] = (
+    block,
+    generator,
+  ) => {
+    const value = block.getFieldValue('VALUE');
+    return `animation-timing-function: ${value};`;
+  };
 };
 
 export default registerGenerators;
