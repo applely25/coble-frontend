@@ -7,6 +7,7 @@ import { javascriptGenerator } from 'blockly/javascript';
 
 import { BlocklySpace } from '@/components/common';
 import { BlocksInitializer, registerGenerators } from '@/utils/blocks';
+import { flex } from '@/styles';
 
 const Code = () => {
   const [workspace, setWorkspace] = useState<Blockly.WorkspaceSvg | null>(null);
@@ -77,8 +78,7 @@ const Code = () => {
 export default Code;
 
 const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
+  ${flex.COLUMN_FLEX}
 `;
 
 const Container = styled.div`

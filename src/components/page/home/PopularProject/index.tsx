@@ -1,5 +1,5 @@
 import { PopularProjectArticle } from '@/components/common';
-import { design, font, theme } from '@/styles';
+import { design, flex, font, theme } from '@/styles';
 import { styled } from '@linaria/react';
 import Link from 'next/link';
 
@@ -28,10 +28,7 @@ export default function PopularProject() {
 const Container = styled.div`
   min-height: calc(100dvh - 60px);
   padding: 100px 5vw;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  ${flex.COLUMN_CENTER}
   gap: 30px;
 `;
 

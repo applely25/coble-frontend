@@ -1,5 +1,6 @@
 'use client';
 import { MainContainer, PopularProject } from '@/components/page/home';
+import { flex } from '@/styles';
 import { styled } from '@linaria/react';
 
 export default function Home() {
@@ -11,6 +12,5 @@ export default function Home() {
   );
 }
 const Layout = styled.div`
-  display: flex;
-  flex-direction: column;
+  ${flex.COLUMN_FLEX}
 `;

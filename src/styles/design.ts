@@ -6,6 +6,7 @@ const design = {
     borderRadius: '16px',
     border: `1px solid ${theme.blue[500]}`,
     color: theme.blue[500],
+    transition: 'background-color 0.2s, color 0.2s',
     ...font.B1,
   },
   BUTTON_PRIMARY: {
@@ -13,6 +14,7 @@ const design = {
     borderRadius: '16px',
     backgroundColor: theme.blue[500],
     color: theme.blue[50],
+    transition: 'background-color 0.2s, color 0.2s',
     ...font.B1,
   },
 };

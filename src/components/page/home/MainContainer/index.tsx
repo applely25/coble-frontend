@@ -1,6 +1,6 @@
 import { CobleLogo } from '@/assets/icon';
 import useTypeingAnimation from '@/hooks/useTypeingAnimation';
-import { design, font, theme } from '@/styles';
+import { design, flex, font, theme } from '@/styles';
 import { styled } from '@linaria/react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -36,10 +36,7 @@ const Container = styled.div`
   height: 100dvh;
   width: 100vw;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  ${flex.COLUMN_CENTER}
 
   gap: 40px;
 
@@ -75,9 +72,7 @@ const Container = styled.div`
 `;
 
 const LogoTitle = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  ${flex.COLUMN_CENTER}
   gap: 20px;
   > div {
     color: ${theme.extra.white};

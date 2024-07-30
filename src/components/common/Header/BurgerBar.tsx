@@ -1,7 +1,7 @@
 'use client';
 
 import { ArrowIcon, BurgerIcon, CloseIcon, CobleLogo } from '@/assets/icon';
-import { font, theme } from '@/styles';
+import { flex, font, theme } from '@/styles';
 import { styled } from '@linaria/react';
 import { useEffect, useRef, useState } from 'react';
 import navigationListData from './assets/data/navigationListData';
@@ -37,7 +37,7 @@ const BurgerBar = () => {
           <nav>
             <ul>
               {navigationListData.map((linkData) => (
-                <li>
+                <li key={linkData.name}>
                   <NavListTitle pathname={pathname} articlehref={linkData.href}>
                     {linkData.name}
                   </NavListTitle>
@@ -84,8 +84,7 @@ const SideBarContainer = styled.div`
     transition: right 0.5s;
   }
 
-  display: flex;
-  flex-direction: column;
+  ${flex.COLUMN_FLEX}
   padding-bottom: 16px;
   gap: 16px;
 
@@ -94,25 +93,20 @@ const SideBarContainer = styled.div`
 `;
 
 const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
+  ${flex.COLUMN_BETWEEN}
   width: 100%;
 `;
 
 const ContentContainer = styled.div`
   width: 100%;
-  display: flex;
-  flex-direction: column;
   height: 100%;
-  justify-content: space-between;
+  ${flex.COLUMN_BETWEEN}
   ul {
-    display: flex;
-    flex-direction: column;
+    ${flex.COLUMN_FLEX}
     gap: 20px;
   }
   li {
-    display: flex;
-    justify-content: space-between;
+    ${flex.COLUMN_BETWEEN}
     ${font.B2}
     color: ${theme.gray[400]};
   }
