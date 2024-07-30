@@ -29,7 +29,7 @@ const Code = () => {
   // 추후 XML로 변환하여 저장할 때 사용할 함수
   const printWorkspaceAsXml = useCallback(() => {
     if (workspace) {
-      const workspaceDomXml = Xml.workspaceToDom(workspace);
+      const workspaceDomXml = Blockly.Xml.workspaceToDom(workspace);
       const workspaceRawXml = Blockly.Xml.domToPrettyText(workspaceDomXml);
       console.log(workspaceRawXml);
     }
