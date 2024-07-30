@@ -1,29 +1,42 @@
 'use client';
 
 import { EyeIcon } from '@/assets/icon';
+import { PlaceholderKeys } from '@/hooks/useInputForm';
 import { flex, font, theme } from '@/styles';
 import { styled } from '@linaria/react';
 import { useState } from 'react';
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  type?: PlaceholderKeys;
+}
 
-const Input: React.FC<InputProps> = ({
+const Input = ({
   value,
   placeholder,
   type,
   onChange,
   ...props
-}) => {
+}: InputProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const isPassword: boolean = type === 'password';
+  const isPassword: boolean = type === 'password' || type === 'password_check';
 
   return (
     <Container>
       <input
-        type={!isPassword ? 'text' : isOpen ? 'text' : 'password'}
+        type={
+          !isPassword
+            ? type === 'verify_code'
+              ? 'number'
+              : 'text'
+            : isOpen
+              ? 'text'
+              : 'password'
+        }
         placeholder={placeholder}
         onChange={onChange}
         value={value}
+        min={1000}
+        max={9999}
         {...props}
       />
       {isPassword && (
@@ -40,7 +53,7 @@ const Container = styled.div`
   border: 1px solid ${theme.gray[300]};
   border-radius: 16px;
   padding: 16px;
-  width: 448px;
+  width: 100%;
   > input {
     flex: 1;
     ${font.B1}

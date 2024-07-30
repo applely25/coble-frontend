@@ -2,17 +2,29 @@
 
 import { useState } from 'react';
 
-const arrayToJsonObject = (array: string[]): Record<string, string> => {
+const placeholder = {
+  email: '이메일을 입력해주세요.',
+  password: '비밀번호를 입력해주세요.',
+  password_check: '비밀번호를 한 번 더 입력해주세요.',
+  nickname: '닉네임을 입력해주세요.',
+  verify_code: '인증번호 4자리를 입력해주세요.',
+};
+
+export type PlaceholderKeys = keyof typeof placeholder;
+
+const arrayToJsonObject = (
+  array: PlaceholderKeys[],
+): Record<PlaceholderKeys, string> => {
   return array.reduce(
     (acc, key) => {
       acc[key] = '';
       return acc;
     },
-    {} as Record<string, string>,
+    {} as Record<PlaceholderKeys, string>,
   );
 };
 
-const useInputForm = (initialData: string[]) => {
+const useInputForm = (initialData: PlaceholderKeys[]) => {
   const [inputValue, setInputValue] = useState(arrayToJsonObject(initialData));
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,7 +32,7 @@ const useInputForm = (initialData: string[]) => {
     setInputValue({ ...inputValue, [name]: value });
   };
 
-  return { inputValue, onChange };
+  return { inputValue, onChange, placeholder };
 };
 
 export default useInputForm;

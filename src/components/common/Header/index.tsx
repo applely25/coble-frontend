@@ -10,14 +10,16 @@ import BurgerBar from './BurgerBar';
 
 const Header = () => (
   <Conatiner>
-    <LogoContainer href="/">
-      <CobleLogo width={30} />
-      <p>COBLO</p>
-    </LogoContainer>
+    <LeftContainer>
+      <LogoContainer href="/">
+        <CobleLogo width={30} />
+        <p>COBLO</p>
+      </LogoContainer>
 
-    <DesktopContainer width={30}>
-      <Navigation />
-    </DesktopContainer>
+      <DesktopContainer width={20}>
+        <Navigation />
+      </DesktopContainer>
+    </LeftContainer>
 
     <DesktopContainer>
       <LoginNav />
@@ -34,6 +36,11 @@ const Conatiner = styled.header`
   position: fixed;
   width: 100%;
   z-index: 100;
+`;
+
+const LeftContainer = styled.div`
+  ${flex.VERTICAL}
+  gap: 5vw;
 `;
 
 const LogoContainer = styled(Link)`
