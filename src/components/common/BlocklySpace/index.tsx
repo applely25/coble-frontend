@@ -2,6 +2,7 @@ import * as Blockly from 'blockly/core';
 import { styled } from '@linaria/react';
 import { BlocklyWorkspace } from 'react-blockly';
 import { blocks } from '@/utils/blocks';
+import '@/styles/blocklyWorkSpace.css';
 
 const categorizedBlocks = blocks.reduce((acc: any, block: any) => {
   if (!acc[block.category]) {
@@ -43,7 +44,7 @@ const BlocklySpace = ({ setWorkspace }: BlocklyProps) => (
 );
 
 const BlocklyContainer = styled.div`
-  height: 90vh;
+  height: calc(100vh - 60px - 94px);
   width: 100%;
 `;
 const BlocklyWorkspaceContainer = styled(BlocklyWorkspace)`
