@@ -13,7 +13,7 @@ import { toast } from 'react-toastify';
 const inputInitialData: PlaceholderKeys[] = ['email', 'password'];
 export default function Login() {
   const { inputValue, onChange, placeholder } = useInputForm(inputInitialData);
-  const nav = useRouter()
+  const nav = useRouter();
 
   const { mutate: loginMutate } = useMutation({
     mutationFn: (data: { email: string; password: string }) =>
@@ -21,11 +21,11 @@ export default function Login() {
     mutationKey: ['login'],
     onSuccess: (data) => {
       alert(data.message);
-      localStorage.setItem("access_token", data.token);
-      nav.push("/")
+      localStorage.setItem('access_token', data.token);
+      nav.push('/');
     },
     onError: (error) => {
-      console.log(error)
+      console.log(error);
     },
   });
 
@@ -33,14 +33,14 @@ export default function Login() {
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
 
     if (!inputValue.email || !inputValue.password) {
-      toast("아이디와 비밀번호를 입력해주세요.");
+      toast('아이디와 비밀번호를 입력해주세요.');
       return;
     }
     if (!emailRegex.test(inputValue.email)) {
-      toast("이메일이 형식에 맞지 않습니다.");
+      toast('이메일이 형식에 맞지 않습니다.');
       return;
     }
-    loginMutate({email: inputValue.email, password: inputValue.password})
+    loginMutate({ email: inputValue.email, password: inputValue.password });
   };
 
   return (
