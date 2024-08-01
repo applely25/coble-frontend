@@ -96,12 +96,12 @@ export default function Coding() {
             </button>
           </div>
         </CodingHeader>
-        <BlocklySpace setWorkspace={setWorkspace} />
+        <BlocklySpace setWorkspace={setWorkspace} type={type} />
       </CodingPlace>
       <SideBar>
         <CodeIframeContainer>
           <Label>미리보기</Label>
-          <CodeIframe src="https://google.com"></CodeIframe>
+          <CodeIframe srcDoc={code}></CodeIframe>
           <ButtonLabel>
             <SizeUpIcon />
           </ButtonLabel>
