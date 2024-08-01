@@ -70,3 +70,7 @@ button {
   padding: 0;
   cursor: pointer;
 }
+
+.Toastify__toast {
+  font-size: 16px;
+}

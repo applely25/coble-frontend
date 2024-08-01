@@ -6,6 +6,8 @@ import JotaiProviders from '@/providers/JotaiProviders';
 import { Header } from '@/components/common';
 import { styled } from '@linaria/react';
 import { flex } from '@/styles';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -25,6 +27,7 @@ export default function RootLayout({
         <ReactQueryProviders>
           <JotaiProviders>
             <MainLayout>
+              <ToastContainer autoClose={1500} limit={3} />
               <Header />
               {children}
             </MainLayout>
