@@ -44,7 +44,7 @@ export default function Login() {
       toast('비밀번호가 형식에 맞지 않습니다.');
       return;
     }
-    loginMutate({ email: inputValue.email, password: inputValue.password });
+    loginMutate(inputValue);
   };
 
   return (
