@@ -11,6 +11,8 @@ import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
 const inputInitialData: PlaceholderKeys[] = ['email', 'password'];
+const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
+const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$/;
 export default function Login() {
   const { inputValue, onChange, placeholder } = useInputForm(inputInitialData);
   const nav = useRouter();
@@ -30,14 +32,16 @@ export default function Login() {
   });
 
   const onClickLogin = () => {
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
-
     if (!inputValue.email || !inputValue.password) {
       toast('아이디와 비밀번호를 입력해주세요.');
       return;
     }
     if (!emailRegex.test(inputValue.email)) {
       toast('이메일이 형식에 맞지 않습니다.');
+      return;
+    }
+    if (!passwordRegex.test(inputValue.password)) {
+      toast('비밀번호가 형식에 맞지 않습니다.');
       return;
     }
     loginMutate({ email: inputValue.email, password: inputValue.password });
