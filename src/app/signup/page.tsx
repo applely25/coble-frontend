@@ -1,11 +1,16 @@
 'use client';
+import { sendEmailApi, checkVerifyCodeApi, signUpApi } from '@/api/users';
 import AuthLayout from '@/components/common/AuthLayout';
 import Input from '@/components/common/Input';
 import useInputForm, { PlaceholderKeys } from '@/hooks/useInputForm';
 import { design, flex, font, theme } from '@/styles';
 import { styled } from '@linaria/react';
+import { useMutation } from '@tanstack/react-query';
+import { error } from 'console';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 const inputInitialData: PlaceholderKeys[] = [
   'email',
@@ -14,14 +19,92 @@ const inputInitialData: PlaceholderKeys[] = [
   'password_check',
   'nickname',
 ];
+const verifyCodeRegex = /^(\d{4})$/;
+const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
+const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$/;
 export default function Signup() {
   const { inputValue, onChange, placeholder } = useInputForm(inputInitialData);
   const [isVerifyCheck, setIsVerifyCheck] = useState<boolean>(false);
+  const [isPrivacyCheck, setIsPrivacyCheck] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
+  const nav = useRouter();
+
+  const { mutate: sendEmailMutate } = useMutation({
+    mutationFn: (data: { email: string }) => sendEmailApi(data.email),
+    mutationKey: ['sendEmail'],
+    onSuccess: () => {
+      setIsVerifyCheck(true);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  const { mutate: checkVerifyCodeMutate } = useMutation({
+    mutationFn: (data: { email: string; verifyCode: string }) =>
+      checkVerifyCodeApi(data.email, data.verifyCode),
+    mutationKey: ['checkVerifyCode'],
+    onSuccess: () => {
+      setPage(2);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  const { mutate: signUpMutate } = useMutation({
+    mutationFn: (data: { password: string; nickname: string; email: string }) =>
+      signUpApi(data.password, data.nickname, data.email),
+    mutationKey: ['signUp'],
+    onSuccess: () => {
+      nav.push('/login');
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
 
   const onClickVerifyCheck = () => {
-    // 서버 요청
-    // 성공시, setIsVerifyCheck(true)
+    if (!emailRegex.test(inputValue.email)) {
+      toast('이메일이 형식에 맞지 않습니다.');
+      return;
+    }
+    sendEmailMutate({ email: inputValue.email });
+  };
+
+  const onClickNext = () => {
+    if (!emailRegex.test(inputValue.email)) {
+      toast('이메일이 형식에 맞지 않습니다.');
+      return;
+    }
+    if (!verifyCodeRegex.test(inputValue.verify_code)) {
+      toast('인증번호가 형식에 맞지 않습니다.');
+      return;
+    }
+    checkVerifyCodeMutate({
+      email: inputValue.email,
+      verifyCode: inputValue.verify_code,
+    });
+  };
+
+  const onClickSignUp = () => {
+    if (inputValue.password != inputValue.password_check) {
+      toast('비밀번호가 일치하지 않습니다.');
+      return;
+    }
+    if (!passwordRegex.test(inputValue.password)) {
+      toast('비밀번호가 형식에 맞지 않습니다.');
+      return;
+    }
+    if (!isPrivacyCheck) {
+      toast('개인정보 처리 방침에 동의해 주세요.');
+      return;
+    }
+    signUpMutate({
+      password: inputValue.password,
+      nickname: inputValue.nickname,
+      email: inputValue.email,
+    });
   };
 
   return (
@@ -39,7 +122,9 @@ export default function Signup() {
                   onChange={onChange}
                   readOnly={isVerifyCheck}
                 />
-                {!isVerifyCheck && <button>인증하기</button>}
+                {!isVerifyCheck && (
+                  <button onClick={onClickVerifyCheck}>인증하기</button>
+                )}
               </EmailInput>
               {isVerifyCheck && (
                 <Input
@@ -57,7 +142,7 @@ export default function Signup() {
                   isVerifyCheck &&
                   !(inputValue[inputInitialData[1]].length === 4)
                 }
-                onClick={() => setPage(2)}
+                onClick={onClickNext}
               >
                 다음
               </LoginButton>
@@ -94,13 +179,19 @@ export default function Signup() {
             </AuthChildrenContainer>
             <ButtonContainer>
               <ConsentContainer>
-                <input type="checkbox" name="" id="" />
+                <input
+                  type="checkbox"
+                  name=""
+                  id=""
+                  checked={isPrivacyCheck}
+                  onChange={() => setIsPrivacyCheck(!isPrivacyCheck)}
+                />
                 <p>
                   <Link href="/">개인정보처리방침</Link> 및{' '}
                   <Link href="/">이용약관</Link> 동의
                 </p>
               </ConsentContainer>
-              <LoginButton>회원가입</LoginButton>
+              <LoginButton onClick={onClickSignUp}>회원가입</LoginButton>
             </ButtonContainer>
           </>
         )}

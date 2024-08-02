@@ -16,4 +16,28 @@ const loginApi = async (
   return response.data;
 };
 
-export { loginApi };
+const sendEmailApi = async (email: string) => {
+  const response = await AuthInstance.post('users/mail/send', {
+    email,
+  });
+  return response.data;
+};
+
+const checkVerifyCodeApi = async (email: string, verifyCode: string) => {
+  const response = await AuthInstance.post('users/email/check', {
+    email,
+    verifyCode,
+  });
+  return response.data;
+};
+
+const signUpApi = async (password: string, nickname: string, email: string) => {
+  const response = await AuthInstance.post('users/signup', {
+    password,
+    email,
+    nickname,
+  });
+  return response.data;
+};
+
+export { loginApi, sendEmailApi, checkVerifyCodeApi, signUpApi };
