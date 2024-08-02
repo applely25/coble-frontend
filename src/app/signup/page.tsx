@@ -96,10 +96,6 @@ export default function Signup() {
       toast('비밀번호가 형식에 맞지 않습니다.');
       return;
     }
-    if (!emailRegex.test(inputValue.email)) {
-      toast('이메일이 형식에 맞지 않습니다.');
-      return;
-    }
     if (!isPrivacyCheck) {
       toast('개인정보 처리 방침에 동의해 주세요.');
       return;
