@@ -15,12 +15,15 @@ import { DownloadIcon, SaveIcon, ShareIcon, SizeUpIcon } from '@/assets/icon';
 
 import { a11yLight, CodeBlock } from 'react-code-blocks';
 import useBeautifyHtml from '@/hooks/useBeautifulHtml';
+import { detect } from 'detect-browser';
+import { toast } from 'react-toastify';
+import { channel } from '@/context/broadCastChannel';
+
+const browser = detect();
 
 export default function Coding() {
   const params = useSearchParams();
   const type = params.get('type') || 'html';
-
-  console.log(type);
 
   const [workspace, setWorkspace] = useState<Blockly.WorkspaceSvg | null>(null);
   const [code, setCode] = useState<string>('');
@@ -75,6 +78,19 @@ export default function Coding() {
     BlocksInitializer();
   }, []);
 
+  useEffect(() => {
+    if (browser?.name !== 'safari') {
+      channel.postMessage(code);
+      console.log('send', code);
+    }
+  }, [code]);
+
+  const ShowPreview = () => {
+    if (browser?.name === 'safari') {
+      toast.error(`${browser.name} 브라우저는 해당 기능을 지원하지 않습니다.`);
+    }
+  };
+
   return (
     <Container>
       <CodingPlace>
@@ -102,7 +118,7 @@ export default function Coding() {
         <CodeIframeContainer>
           <Label>미리보기</Label>
           <CodeIframe srcDoc={code}></CodeIframe>
-          <ButtonLabel>
+          <ButtonLabel onClick={ShowPreview}>
             <SizeUpIcon />
           </ButtonLabel>
         </CodeIframeContainer>

@@ -11,6 +11,10 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
+interface PageProps {
+  pathname?: string;
+}
+
 export const metadata: Metadata = {
   title: 'Coble',
   description: '블록 코딩으로 교육을! Coble',
