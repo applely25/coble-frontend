@@ -78,18 +78,26 @@ export default function Coding() {
     BlocksInitializer();
   }, []);
 
-  useEffect(() => {
-    if (browser?.name !== 'safari') {
-      channel.postMessage(code);
-      console.log('send', code);
-    }
-  }, [code]);
+  const sendCode = () => {
+    if (code) channel.postMessage(code);
+  };
 
   const ShowPreview = () => {
     if (browser?.name === 'safari') {
       toast.error(`${browser.name} 브라우저는 해당 기능을 지원하지 않습니다.`);
+    } else {
+      window.open('http://localhost:3000/preview');
+      setTimeout(() => {
+        sendCode();
+      }, 1000);
     }
   };
+
+  useEffect(() => {
+    if (browser?.name !== 'safari') {
+      sendCode();
+    }
+  }, [code]);
 
   return (
     <Container>
