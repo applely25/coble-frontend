@@ -32,7 +32,6 @@ export default function RootLayout({
           <JotaiProviders>
             <MainLayout>
               <ToastContainer autoClose={1500} limit={3} />
-              <Header />
               {children}
             </MainLayout>
           </JotaiProviders>
