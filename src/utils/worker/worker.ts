@@ -1,6 +1,6 @@
 const clients: MessagePort[] = [];
 
- = function (e: MessageEvent) {
+onmessage = function (e: MessageEvent) {
   const port = e.ports[0];
   clients.push(port);
 
