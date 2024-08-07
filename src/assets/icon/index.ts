@@ -9,3 +9,5 @@ export { default as SizeUpIcon } from './SizeUpIcon';
 export { default as DownloadIcon } from './DownloadIcon';
 export { default as ShareIcon } from './ShareIcon';
 export { default as SaveIcon } from './SaveIcon';
+export { default as MoreIcon } from './More';
+export { default as AddPhotoIcon } from './AddPhoto';

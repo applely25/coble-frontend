@@ -17,6 +17,14 @@ const design = {
     transition: 'background-color 0.2s, color 0.2s',
     ...font.B1,
   },
+  BUTTON_GRAY: {
+    padding: '4px 16px',
+    borderRadius: '16px',
+    backgroundColor: theme.gray[50],
+    color: theme.extra.black,
+    transition: 'background-color 0.2s, color 0.2s',
+    ...font.B1,
+  },
 };
 
 export default design;
