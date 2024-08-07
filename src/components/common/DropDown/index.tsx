@@ -1,5 +1,5 @@
 import { DownArrow } from '@/assets/icon/DownArrow';
-import { theme, font } from '@/styles';
+import { flex, theme, font } from '@/styles';
 import { styled } from '@linaria/react';
 import { useState } from 'react';
 
@@ -20,7 +20,7 @@ const Dropdown = ({
   setVal,
   describe,
   items,
-  width = '220px',
+  width = '150px',
 }: PropTypes) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -59,26 +59,25 @@ export default Dropdown;
 
 export const DropdownContainer = styled.div<{ width: string }>`
   position: relative;
-
-  display: flex;
-  flex-direction: column;
+  ${flex.COLUMN_CENTER}
   gap: 8px;
 
   width: ${(props) => props.width};
+  border: 1px solid ${theme.blue[300]};
+  border-radius: 24px;
+  color: ${theme.blue[300]};
 `;
 
 export const DropdownBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  ${flex.BETWEEN}
 
   width: 100%;
-  min-width: max-content;
-  height: 48px;
-  padding: 14px;
+  height: 44px;
+  padding: 24px;
 
   background: ${theme.extra.white};
-  border-radius: 8px;
+  border-radius: 24px;
+  border-width: 1;
   border-color: ${theme.blue[300]};
 
   cursor: pointer;
@@ -92,26 +91,32 @@ export const Describe = styled.p`
 export const DropdownListBox = styled.div<{ isOpen: boolean }>`
   display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
   z-index: 10;
-  border-radius: 8px;
-  border-color: ${theme.blue[300]};
+  border-radius: 24px;
   overflow: hidden;
   cursor: pointer;
   position: absolute;
   width: 100%;
   top: 56px;
+  box-shadow: 0px 0px 4px rgb(0, 0, 0, 0.25);
 `;
 
 export const DropdownList = styled.div`
   width: inherit;
+  color: ${theme.extra.black};
   background: ${theme.extra.white};
 `;
 
 export const DropdownItem = styled.p`
   ${font.B1}
-  display: flex;
-  align-items: center;
+  ${flex.VERTICAL};
 
   width: inherit;
   height: 40px;
-  padding: 14px;
+  padding-left: 16px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid ${theme.gray[200]};
+  &:last-child {
+    border-bottom: none;
+  }
 `;
