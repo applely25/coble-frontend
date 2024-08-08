@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { Suspense, useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { flex, font, theme } from '@/styles';
 import { styled } from '@linaria/react';
@@ -10,14 +10,22 @@ import * as Blockly from 'blockly/core';
 import { javascriptGenerator } from 'blockly/javascript';
 
 import { ShareIcon, SaveIcon, MoreIcon } from '@/assets/icon';
-import { BlocklySpace } from '@/components/common';
+import { BlocklySpace, LoadingSpinner } from '@/components/common';
 import { BlocksInitializer, registerGenerators } from '@/utils/blocks';
 
 interface MainCodingProps {
   setCode: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function MainCoding({ setCode }: MainCodingProps) {
+export default function MainCodingSuspense({ setCode }: MainCodingProps) {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <MainCoding setCode={setCode} />
+    </Suspense>
+  );
+}
+
+function MainCoding({ setCode }: MainCodingProps) {
   const params = useSearchParams();
   const type = params.get('type') || 'html';
 
