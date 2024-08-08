@@ -1,5 +1,6 @@
 'use client';
 
+import { LoadingSpinner } from '@/components/common';
 import { channel } from '@/context/broadCastChannel';
 import { styled } from '@linaria/react';
 import { useEffect, useState } from 'react';
@@ -13,7 +14,7 @@ export default function Preview() {
     toast.info(
       '새로고침 시, 미리보기가 작동하지 않을 수 있습니다. 블록을 수정하면 정상 작동할 것입니다.',
       {
-        autoClose: 3000,
+        autoClose: 1500,
       },
     );
   }, []);
@@ -28,11 +29,11 @@ export default function Preview() {
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
-    }, 1000);
+    }, 1500);
   }, []);
 
   if (isLoading) {
-    return <>loading</>;
+    return <LoadingSpinner />;
   } else {
     return <IframeContainer srcDoc={codeContext}></IframeContainer>;
   }

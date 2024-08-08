@@ -26,7 +26,9 @@ function CodePreview({ code }: CodePreviewProps) {
   }, [code]);
   const ShowPreview = () => {
     if (browser?.name === 'safari') {
-      toast.error(`${browser.name} 브라우저는 해당 기능을 지원하지 않습니다.`);
+      toast.error(
+        `${window.location.protocol}//${window.location.host}/preview`,
+      );
     } else {
       window.open('http://localhost:3000/preview');
       setTimeout(() => {
