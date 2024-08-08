@@ -6,8 +6,14 @@ import JotaiProviders from '@/providers/JotaiProviders';
 import { Header } from '@/components/common';
 import { styled } from '@linaria/react';
 import { flex } from '@/styles';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const inter = Inter({ subsets: ['latin'] });
+
+interface PageProps {
+  pathname?: string;
+}
 
 export const metadata: Metadata = {
   title: 'Coble',
@@ -25,7 +31,7 @@ export default function RootLayout({
         <ReactQueryProviders>
           <JotaiProviders>
             <MainLayout>
-              <Header />
+              <ToastContainer autoClose={1500} limit={3} />
               {children}
             </MainLayout>
           </JotaiProviders>

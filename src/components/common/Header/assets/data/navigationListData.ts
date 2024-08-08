@@ -7,7 +7,7 @@ const navigationListData: INavigationListData[] = [
   {
     id: 1,
     name: '코딩',
-    href: '/code',
+    href: '/coding',
   },
   {
     id: 2,
