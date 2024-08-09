@@ -13,7 +13,7 @@ const Header = () => (
     <LeftContainer>
       <LogoContainer href="/">
         <CobleLogo width={30} />
-        <p>COBLO</p>
+        <p>COBLE</p>
       </LogoContainer>
 
       <DesktopContainer width={20}>
