@@ -2,7 +2,13 @@ import { ArrowIcon } from '@/assets/icon';
 import { design, flex, font, theme } from '@/styles';
 import color from '@/styles/theme';
 import { styled } from '@linaria/react';
+import { title } from 'process';
 
+const Nav = [
+  { title: '정보 수정', value: '' },
+  { title: '비밀번호 변경', value: '' },
+  { title: '회원탈퇴', value: '' },
+];
 export default function Sidebar() {
   return (
     <Container>
@@ -15,18 +21,12 @@ export default function Sidebar() {
           </div>
         </ProfileContainer>
         <SidebarNavContainer>
-          <div>
-            <p>정보 수정</p>
-            <ArrowIcon color={color.gray[500]} size={26} />
-          </div>
-          <div>
-            <p>비밀번호 변경</p>
-            <ArrowIcon color={color.gray[500]} size={26} />
-          </div>
-          <div>
-            <p>회원탈퇴</p>
-            <ArrowIcon color={color.gray[500]} size={26} />
-          </div>
+          {Nav.map((d) => (
+            <div>
+              <p>{d.title}</p>
+              <ArrowIcon color={color.gray[500]} size={26} />
+            </div>
+          ))}
         </SidebarNavContainer>
       </div>
       <Logout>로그아웃</Logout>
