@@ -9,7 +9,7 @@ const placeholder = {
   nickname: '닉네임을 입력해주세요.',
   verify_code: '인증번호 4자리를 입력해주세요.',
   title: 'COBLE',
-  describe: '웹 블록코딩 서비스',
+  description: '웹 블록코딩 서비스',
 };
 
 export type PlaceholderKeys = keyof typeof placeholder;

@@ -1,6 +1,6 @@
-import { atom } from 'jotai';
+import { atomWithStorage } from 'jotai/utils';
 
-export const userContext = atom({
-  id: 0,
-  isLogin: false,
-});
+export const userContext = atomWithStorage(
+  "user",
+  { id: '', isLogin: false },
+);

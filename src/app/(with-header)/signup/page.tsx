@@ -37,6 +37,7 @@ export default function Signup() {
     },
     onError: (error) => {
       console.log(error);
+      toast.error('오류가 발생했습니다. 관리자에게 문의해주세요.');
     },
   });
 
@@ -57,54 +58,51 @@ export default function Signup() {
       signUpApi(data.password, data.nickname, data.email),
     mutationKey: ['signUp'],
     onSuccess: () => {
+      toast('회원가입에 성공하였습니다.');
       nav.push('/login');
     },
     onError: (error) => {
       console.log(error);
+      toast.error('오류가 발생했습니다. 관리자에게 문의해주세요.');
     },
   });
 
   const onClickVerifyCheck = () => {
     if (!emailRegex.test(inputValue.email)) {
       toast('이메일이 형식에 맞지 않습니다.');
-      return;
+    }else{
+      toast('인증번호가 발송되었습니다.');
+      sendEmailMutate({ email: inputValue.email });
     }
-    sendEmailMutate({ email: inputValue.email });
   };
 
   const onClickNext = () => {
     if (!emailRegex.test(inputValue.email)) {
       toast('이메일이 형식에 맞지 않습니다.');
-      return;
-    }
-    if (!verifyCodeRegex.test(inputValue.verify_code)) {
+    } else if (!verifyCodeRegex.test(inputValue.verify_code)) {
       toast('인증번호가 형식에 맞지 않습니다.');
-      return;
+    } else {
+      checkVerifyCodeMutate({
+        email: inputValue.email,
+        verifyCode: inputValue.verify_code,
+      });
     }
-    checkVerifyCodeMutate({
-      email: inputValue.email,
-      verifyCode: inputValue.verify_code,
-    });
   };
 
   const onClickSignUp = () => {
     if (inputValue.password != inputValue.password_check) {
       toast('비밀번호가 일치하지 않습니다.');
-      return;
-    }
-    if (!passwordRegex.test(inputValue.password)) {
+    } else if (!passwordRegex.test(inputValue.password)) {
       toast('비밀번호가 형식에 맞지 않습니다.');
-      return;
-    }
-    if (!isPrivacyCheck) {
+    } else if (!isPrivacyCheck) {
       toast('개인정보 처리 방침에 동의해 주세요.');
-      return;
+    } else {
+      signUpMutate({
+        password: inputValue.password,
+        nickname: inputValue.nickname,
+        email: inputValue.email,
+      });
     }
-    signUpMutate({
-      password: inputValue.password,
-      nickname: inputValue.nickname,
-      email: inputValue.email,
-    });
   };
 
   return (
@@ -139,8 +137,7 @@ export default function Signup() {
             <AuthChildrenContainer>
               <LoginButton
                 disabled={
-                  isVerifyCheck &&
-                  !(inputValue[inputInitialData[1]].length === 4)
+                  !isVerifyCheck || !(inputValue['verify_code'].length === 4)
                 }
                 onClick={onClickNext}
               >
@@ -191,7 +188,17 @@ export default function Signup() {
                   <Link href="/">이용약관</Link> 동의
                 </p>
               </ConsentContainer>
-              <LoginButton onClick={onClickSignUp}>회원가입</LoginButton>
+              <LoginButton
+                onClick={onClickSignUp}
+                disabled={
+                  !inputValue[inputInitialData[2]] ||
+                  !inputValue[inputInitialData[3]] ||
+                  !inputValue[inputInitialData[4]] ||
+                  !isPrivacyCheck
+                }
+              >
+                회원가입
+              </LoginButton>
             </ButtonContainer>
           </>
         )}

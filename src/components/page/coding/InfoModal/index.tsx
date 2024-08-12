@@ -7,17 +7,21 @@ import useInputForm, { PlaceholderKeys } from '@/hooks/useInputForm';
 import CheckModal from '@/components/common/CheckModal';
 import Input from '@/components/common/Input';
 import { AddPhotoIcon } from '@/assets/icon';
+import { useRouter } from 'next/navigation';
 
-const inputInitialData: PlaceholderKeys[] = ['title', 'describe'];
+const inputInitialData: PlaceholderKeys[] = ['title', 'description'];
 
 export default function InfoModal() {
   const { placeholder, inputValue, onChange } = useInputForm(inputInitialData);
+  const nav = useRouter();
 
   const [isOpen, setIsOpen] = useState<boolean>(true);
 
   const cancelButton = {
     title: '취소하기',
-    onClick: () => {},
+    onClick: () => {
+      nav.push('/');
+    },
   };
 
   const approveButton = {
