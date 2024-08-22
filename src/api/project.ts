@@ -1,8 +1,22 @@
 import { AuthInstance } from '.';
 
 const base = 'projects';
-const projectSaveApi = async (file: File, title: string, description) => {
+
+interface IProjectSaveApi {
+  image: File;
+  title: string;
+  description: string;
+}
+const projectSaveApi = async ({
+  image,
+  title,
+  description,
+}: IProjectSaveApi) => {
   const form = new FormData();
-  form.append('image');
-  const response = await AuthInstance.post(`${base}`);
+  form.append('image', image);
+  form.append('title', title);
+  form.append('description', description);
+  return await AuthInstance.post(`${base}`, form);
 };
+
+export { projectSaveApi };

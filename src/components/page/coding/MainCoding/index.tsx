@@ -7,42 +7,28 @@ import { styled } from '@linaria/react';
 import Link from 'next/link';
 
 import * as Blockly from 'blockly/core';
-import { javascriptGenerator } from 'blockly/javascript';
 
 import { ShareIcon, SaveIcon, MoreIcon } from '@/assets/icon';
 import { BlocklySpace, LoadingSpinner } from '@/components/common';
-import { BlocksInitializer, registerGenerators } from '@/utils/blocks';
 
 interface MainCodingProps {
   setCode: React.Dispatch<React.SetStateAction<string>>;
+  code: string;
 }
 
-export default function MainCodingSuspense({ setCode }: MainCodingProps) {
+export default function MainCodingSuspense({ setCode, code }: MainCodingProps) {
   return (
     <Suspense fallback={<LoadingSpinner />}>
-      <MainCoding setCode={setCode} />
+      <MainCoding setCode={setCode} code={code} />
     </Suspense>
   );
 }
 
-function MainCoding({ setCode }: MainCodingProps) {
+function MainCoding({ setCode, code }: MainCodingProps) {
   const params = useSearchParams();
   const type = params.get('type') || 'html';
 
   const [workspace, setWorkspace] = useState<Blockly.WorkspaceSvg | null>(null);
-
-  // XML 데이터 (서버에서 받아온 데이터를 대신하여 직접 사용할 수 있습니다)
-  const exampleXml = ``;
-
-  // XML 데이터를 Blockly 작업 공간으로 변환
-  const loadWorkspaceFromXml = (xmlText: string) => {
-    if (workspace) {
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
-      const workspaceDom = xmlDoc.documentElement;
-      Blockly.Xml.domToWorkspace(workspaceDom, workspace);
-    }
-  };
 
   // 추후 XML로 변환하여 저장할 때 사용할 함수
   const printWorkspaceAsXml = useCallback(() => {
@@ -53,40 +39,14 @@ function MainCoding({ setCode }: MainCodingProps) {
     }
   }, [workspace]);
 
-  useEffect(() => {
-    BlocksInitializer();
-  }, []);
-
-  // 컴포넌트가 처음 렌더링될 때만 XML 데이터를 로드
-  useEffect(() => {
-    BlocksInitializer();
-    registerGenerators();
-
-    if (workspace) {
-      loadWorkspaceFromXml(exampleXml);
-
-      const updateCode = () => {
-        javascriptGenerator.addReservedWords('code');
-        const generatedCode = javascriptGenerator.workspaceToCode(workspace);
-        setCode(generatedCode);
-      };
-
-      workspace.addChangeListener(updateCode);
-
-      return () => {
-        workspace.removeChangeListener(updateCode);
-      };
-    }
-  }, [workspace]);
-
   return (
     <CodingPlace>
       <CodingHeader>
         <div>
-          <Link href="/coding?type=html">
+          <Link href="?type=html">
             <FileButton isSelected={type === 'html'}>HTML</FileButton>
           </Link>
-          <Link href="/coding?type=css">
+          <Link href="?type=css">
             <FileButton isSelected={type === 'css'}>CSS</FileButton>
           </Link>
         </div>
@@ -102,7 +62,13 @@ function MainCoding({ setCode }: MainCodingProps) {
           </button>
         </div>
       </CodingHeader>
-      <BlocklySpace setWorkspace={setWorkspace} type={type} />
+      <BlocklySpace
+        workspace={workspace}
+        setWorkspace={setWorkspace}
+        type={type}
+        setCode={setCode}
+        code={code}
+      />
     </CodingPlace>
   );
 }

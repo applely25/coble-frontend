@@ -24,7 +24,7 @@ const Input = ({
 
   if (design === 'LABEL') {
     const labelTitle =
-      type === 'title' ? '제목' : type === 'describe' ? '한 줄 소개' : '';
+      type === 'title' ? '제목' : type === 'description' ? '한 줄 소개' : '';
 
     return (
       <LabelContainer>
