@@ -3,7 +3,7 @@
 import * as Blockly from 'blockly/core';
 import { styled } from '@linaria/react';
 import { BlocklyWorkspace } from 'react-blockly';
-import { htmlBlocks, cssBlocks } from '@/utils/blocks';
+import { htmlBlocks, cssBlocks, ectBlocks } from '@/utils/blocks';
 import '@/styles/blocklyWorkSpace.css';
 import { useParams } from 'next/navigation';
 import { useEffect } from 'react';
@@ -34,7 +34,13 @@ const BlocklySpace = ({
   const exampleXml = ``;
 
   const categorizedBlocks = (
-    type === 'html' ? htmlBlocks : type === 'css' ? cssBlocks : []
+    type === 'html'
+      ? htmlBlocks
+      : type === 'css'
+        ? cssBlocks
+        : type === 'ect'
+          ? ectBlocks
+          : []
   ).reduce((acc: any, block: any) => {
     if (!acc[block.category]) {
       acc[block.category] = [];
@@ -88,6 +94,7 @@ const BlocklySpace = ({
     }
   }, [workspace]);
 
+  /*
   // supabase 연결
 
   useEffect(() => {
@@ -98,7 +105,7 @@ const BlocklySpace = ({
           .from('room_content')
           .select('content')
           .eq('room_id', roomId)
-          .single();
+          .maybeSingle();
 
         if (error && error.code === 'PGRST116') {
           // 해당 번호로 만든 방이 없는 경우
@@ -161,6 +168,7 @@ const BlocklySpace = ({
       updateRoomContent();
     }
   }, [code, roomId]); // code가 변경될 때마다 콘텐츠를 업데이트
+  */
 
   return (
     <BlocklyContainer>

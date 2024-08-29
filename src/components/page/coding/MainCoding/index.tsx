@@ -49,6 +49,9 @@ function MainCoding({ setCode, code }: MainCodingProps) {
           <Link href="?type=css">
             <FileButton isSelected={type === 'css'}>CSS</FileButton>
           </Link>
+          <Link href="?type=ect">
+            <FileButton isSelected={type === 'ect'}>ECT</FileButton>
+          </Link>
         </div>
         <div>
           <button onClick={printWorkspaceAsXml}>
