@@ -10,6 +10,7 @@ const placeholder = {
   verify_code: '인증번호 4자리를 입력해주세요.',
   title: 'COBLE',
   description: '웹 블록코딩 서비스',
+  image: '',
 };
 
 export type PlaceholderKeys = keyof typeof placeholder;
@@ -34,7 +35,10 @@ const useInputForm = (initialData: PlaceholderKeys[]) => {
     setInputValue({ ...inputValue, [name]: value });
   };
 
-  return { inputValue, onChange, placeholder };
+  const onChangeOne = (name: string, value: string) => {
+    setInputValue((prev) => ({ ...prev, [name]: value }));
+  };
+  return { inputValue, onChange, placeholder, onChangeOne };
 };
 
 export default useInputForm;

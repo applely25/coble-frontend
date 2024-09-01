@@ -8,11 +8,18 @@ import CheckModal from '@/components/common/CheckModal';
 import Input from '@/components/common/Input';
 import { AddPhotoIcon } from '@/assets/icon';
 import { useRouter } from 'next/navigation';
+import { useMutation } from '@tanstack/react-query';
+import { projectSaveApi } from '@/api/project';
+import Image from 'next/image';
 
 const inputInitialData: PlaceholderKeys[] = ['title', 'description'];
 
 export default function InfoModal() {
   const { placeholder, inputValue, onChange } = useInputForm(inputInitialData);
+  const [imageFile, setImageFile] = useState<File>();
+  const [imageSrc, setImageSrc] = useState('');
+  const router = useRouter();
+
   const nav = useRouter();
 
   const [isOpen, setIsOpen] = useState<boolean>(true);
@@ -27,9 +34,28 @@ export default function InfoModal() {
   const approveButton = {
     title: '저장하기',
     onClick: () => {
-      setIsOpen(false);
+      if (!inputValue.title || !inputValue.description || !imageFile)
+        alert('내용을 입력해주세요');
+      else {
+        projectSaveMutate({ ...inputValue, image: imageFile });
+      }
     },
   };
+
+  const onChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setImageFile(e.target.files[0]);
+    }
+  };
+
+  const { mutate: projectSaveMutate } = useMutation({
+    mutationFn: projectSaveApi,
+    mutationKey: ['projectSaveApi'],
+    onSuccess: ({ data }) => {
+      router.push(`/coding/${data}`);
+      setIsOpen(false);
+    },
+  });
 
   return (
     <>
@@ -37,7 +63,13 @@ export default function InfoModal() {
         <CheckModal cancelButton={cancelButton} approveButton={approveButton}>
           <ImageContainer>
             <AddPhotoIcon />
-            <input type="file" />
+            <input type="file" onChange={onChangeFile} />
+            {/* <ImageView
+              src="/landingBackground.png"
+              alt="landing"
+              width={355}
+              height={200}
+            /> */}
           </ImageContainer>
           <InputContainer>
             {inputInitialData.map((key) => (
@@ -70,9 +102,10 @@ const ImageContainer = styled.label`
   }
 `;
 
-const Image = styled.image`
-  height: 200px;
-  aspect-ratio: 16/9;
+const ImageView = styled(Image)`
+  /* height: 200px;
+  width: 355px;
+  aspect-ratio: 16/9; */
 `;
 
 const InputContainer = styled.div`

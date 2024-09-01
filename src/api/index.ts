@@ -8,6 +8,10 @@ export const AuthInstance: AxiosInstance = axios.create({
   baseURL: baseUrl,
   timeout: 10000,
 });
+export const BaseInstance: AxiosInstance = axios.create({
+  baseURL: baseUrl,
+  timeout: 10000,
+});
 
 AuthInstance.interceptors.request.use(
   (config) => {

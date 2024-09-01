@@ -1,48 +1,44 @@
 'use client';
 
 import { Suspense, useCallback, useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import { flex, font, theme } from '@/styles';
 import { styled } from '@linaria/react';
 import Link from 'next/link';
 
 import * as Blockly from 'blockly/core';
-import { javascriptGenerator } from 'blockly/javascript';
 
 import { ShareIcon, SaveIcon, MoreIcon } from '@/assets/icon';
 import { BlocklySpace, LoadingSpinner } from '@/components/common';
-import { BlocksInitializer, registerGenerators } from '@/utils/blocks';
+import { handleCopyClipBoard } from '@/utils/clipboard';
+import UpdateInfoModal from '../UpdataModal';
+import { useMutation } from '@tanstack/react-query';
+import { projectCodeSaveApi, projectSaveApi } from '@/api/project';
+import { toast } from 'react-toastify';
 
 interface MainCodingProps {
   setCode: React.Dispatch<React.SetStateAction<string>>;
+  code: string;
 }
 
-export default function MainCodingSuspense({ setCode }: MainCodingProps) {
+export default function MainCodingSuspense({ setCode, code }: MainCodingProps) {
   return (
     <Suspense fallback={<LoadingSpinner />}>
-      <MainCoding setCode={setCode} />
+      <MainCoding setCode={setCode} code={code} />
     </Suspense>
   );
 }
 
-function MainCoding({ setCode }: MainCodingProps) {
+function MainCoding({ setCode, code }: MainCodingProps) {
   const params = useSearchParams();
+  const { projectId } = useParams();
+
   const type = params.get('type') || 'html';
 
   const [workspace, setWorkspace] = useState<Blockly.WorkspaceSvg | null>(null);
-
-  // XML 데이터 (서버에서 받아온 데이터를 대신하여 직접 사용할 수 있습니다)
-  const exampleXml = ``;
-
-  // XML 데이터를 Blockly 작업 공간으로 변환
-  const loadWorkspaceFromXml = (xmlText: string) => {
-    if (workspace) {
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
-      const workspaceDom = xmlDoc.documentElement;
-      Blockly.Xml.domToWorkspace(workspaceDom, workspace);
-    }
-  };
+  const [showMoreTab, setShowMoreTab] = useState<boolean>(false);
+  const [showProjectUpdateModal, setShowProjectUpdateModal] =
+    useState<boolean>(false);
 
   // 추후 XML로 변환하여 저장할 때 사용할 함수
   const printWorkspaceAsXml = useCallback(() => {
@@ -53,56 +49,86 @@ function MainCoding({ setCode }: MainCodingProps) {
     }
   }, [workspace]);
 
-  useEffect(() => {
-    BlocksInitializer();
-  }, []);
+  const { mutate: saveCodeMutate } = useMutation({
+    mutationFn: projectCodeSaveApi,
+    mutationKey: ['projectCodeSaveApi'],
+    onSuccess: () => toast.success('코드 저장 성공'),
+    onError: () => toast.error('코드 저장 실패'),
+  });
 
-  // 컴포넌트가 처음 렌더링될 때만 XML 데이터를 로드
-  useEffect(() => {
-    BlocksInitializer();
-    registerGenerators();
+  const shareUrl = () => {
+    if (projectId)
+      handleCopyClipBoard(
+        `${window.location.protocol}//${window.location.host}/project/${projectId}`,
+      );
+  };
 
-    if (workspace) {
-      loadWorkspaceFromXml(exampleXml);
+  const saveCode = () => {
+    const blob = new Blob([code], { type: 'text/xml' });
+    saveCodeMutate({ projectId: Number(projectId), code: blob });
+  };
 
-      const updateCode = () => {
-        javascriptGenerator.addReservedWords('code');
-        const generatedCode = javascriptGenerator.workspaceToCode(workspace);
-        setCode(generatedCode);
-      };
+  const showMoreTabClick = () => {
+    setShowMoreTab(!showMoreTab);
+  };
+  const stopPropagation = (event: React.MouseEvent) => {
+    event.stopPropagation();
+  };
 
-      workspace.addChangeListener(updateCode);
+  const UpdateProjectInfo = () => {
+    setShowProjectUpdateModal(true);
+  };
 
-      return () => {
-        workspace.removeChangeListener(updateCode);
-      };
+  const deleteProject = () => {
+    if (window.confirm('삭제하시겠습니까?')) {
+      // 삭제 서버 요청보내기
     }
-  }, [workspace]);
+  };
 
   return (
     <CodingPlace>
+      {showProjectUpdateModal && <UpdateInfoModal
+        isOpen={showProjectUpdateModal}
+        setIsOpen={setShowProjectUpdateModal}
+      />}
       <CodingHeader>
         <div>
-          <Link href="/coding?type=html">
+          <Link href="?type=html">
             <FileButton isSelected={type === 'html'}>HTML</FileButton>
           </Link>
-          <Link href="/coding?type=css">
+          <Link href="?type=css">
             <FileButton isSelected={type === 'css'}>CSS</FileButton>
+          </Link>
+          <Link href="?type=ect">
+            <FileButton isSelected={type === 'ect'}>ECT</FileButton>
           </Link>
         </div>
         <div>
-          <button onClick={printWorkspaceAsXml}>
+          <button onClick={shareUrl}>
             <ShareIcon />
           </button>
-          <button>
+          <button onClick={saveCode}>
             <SaveIcon />
           </button>
-          <button>
+          <MoreButton onClick={showMoreTabClick}>
             <MoreIcon />
-          </button>
+            {showMoreTab && (
+              <ShowMore onClick={stopPropagation}>
+                <button onClick={UpdateProjectInfo}>수정하기</button>
+                <hr />
+                <button onClick={deleteProject}>삭제하기</button>
+              </ShowMore>
+            )}
+          </MoreButton>
         </div>
       </CodingHeader>
-      <BlocklySpace setWorkspace={setWorkspace} type={type} />
+      <BlocklySpace
+        workspace={workspace}
+        setWorkspace={setWorkspace}
+        type={type}
+        setCode={setCode}
+        code={code}
+      />
     </CodingPlace>
   );
 }
@@ -136,4 +162,29 @@ const FileButton = styled.button<{ isSelected: boolean }>`
     isSelected ? theme.blue[500] : theme.extra.white};
   background-color: ${({ isSelected }) =>
     isSelected ? theme.extra.white : theme.blue[500]};
+`;
+
+const MoreButton = styled.button`
+  position: relative;
+`;
+
+const ShowMore = styled.div`
+  ${flex.COLUMN_FLEX}
+  position: absolute;
+  top: 20px;
+  left: 10px;
+  background-color: ${theme.extra.white};
+  border-radius: 16px;
+  z-index: 30;
+  > button {
+    padding: 8px 18px;
+    width: max-content;
+    &:last-child {
+      color: ${theme.extra.red};
+    }
+  }
+  > hr {
+    color: ${theme.gray[500]};
+    width: 100%;
+  }
 `;

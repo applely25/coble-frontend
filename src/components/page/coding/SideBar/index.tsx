@@ -58,6 +58,18 @@ interface PrettyCodeProps {
 function PrettyCode({ code, setCode }: PrettyCodeProps) {
   const { beautifiedHtml } = useBeautifyHtml(code, setCode);
 
+  const downloadHTML = () => {
+    const blob = new Blob([code], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'coble-codingblock.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <TabContainer>
       <Label>코드</Label>
@@ -70,7 +82,7 @@ function PrettyCode({ code, setCode }: PrettyCodeProps) {
             theme={a11yLight}
           />
         </PrettyCodeContainer>
-        <ButtonLabel>
+        <ButtonLabel onClick={downloadHTML}>
           <DownloadIcon />
         </ButtonLabel>
       </CodeContainer>
@@ -91,7 +103,9 @@ const CodeIframeContainer = styled.div`
 const TabContainer = styled.div`
   ${flex.COLUMN_FLEX}
   gap:8px;
-  height: 100%;
+  &:last-child {
+    height: 100%;
+  }
 `;
 
 const CodeIframe = styled.iframe`

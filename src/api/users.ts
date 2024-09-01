@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { AuthInstance } from '.';
+import { BaseInstance } from '.';
 import { Storage } from '@/storage';
 
 interface ILoginResponse {
@@ -16,7 +16,7 @@ const loginApi = async (
   email: string,
   password: string,
 ): Promise<ILoginResponse> => {
-  const response = await AuthInstance.post(`${base}/signin`, {
+  const response = await BaseInstance.post(`${base}/signin`, {
     email,
     password,
   });
@@ -24,14 +24,14 @@ const loginApi = async (
 };
 
 const sendEmailApi = async (email: string) => {
-  const response = await AuthInstance.post(`${base}/mail/send`, {
+  const response = await BaseInstance.post(`${base}/mail/send`, {
     email,
   });
   return response.data;
 };
 
 const checkVerifyCodeApi = async (email: string, verifyCode: string) => {
-  const response = await AuthInstance.post(`${base}/mail/check`, {
+  const response = await BaseInstance.post(`${base}/mail/check`, {
     email,
     verify_code: verifyCode,
   });
@@ -39,7 +39,7 @@ const checkVerifyCodeApi = async (email: string, verifyCode: string) => {
 };
 
 const signUpApi = async (password: string, nickname: string, email: string) => {
-  const response = await AuthInstance.post(`${base}/signup`, {
+  const response = await BaseInstance.post(`${base}/signup`, {
     password,
     email,
     nickname,
