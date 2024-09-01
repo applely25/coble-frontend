@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import { BlocksInitializer, registerGenerators } from '@/utils/blocks';
 import { javascriptGenerator } from 'blockly/javascript';
 import { supabase } from '@/utils/supabase/supabase';
+import { DEFAULTXML } from '@/constants';
 
 interface BlocklyProps {
   workspace: Blockly.WorkspaceSvg | null;
@@ -31,7 +32,7 @@ const BlocklySpace = ({
   const roomId = Array.isArray(projectId) ? projectId[0] : projectId;
 
   // XML 데이터 (서버에서 받아온 데이터를 대신하여 직접 사용할 수 있습니다)
-  const exampleXml = ``;
+  const exampleXml = DEFAULTXML;
 
   const categorizedBlocks = (
     type === 'html'
@@ -78,7 +79,7 @@ const BlocklySpace = ({
     registerGenerators();
 
     if (workspace) {
-      // loadWorkspaceFromXml(exampleXml);
+      if (!code) loadWorkspaceFromXml(exampleXml);
 
       const updateCode = () => {
         javascriptGenerator.addReservedWords('code');

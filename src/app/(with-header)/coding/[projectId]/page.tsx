@@ -2,6 +2,7 @@
 
 import { styled } from '@linaria/react';
 import { flex } from '@/styles';
+import Image from 'next/image';
 
 import {
   CodePreview,
@@ -17,10 +18,6 @@ export default function Coding() {
   const { projectId } = useParams();
   const router = useRouter();
 
-  useEffect(() => {
-    console.log('code', code);
-  }, [code]);
-
   if (Number(projectId)) {
     return (
       <Container>
@@ -33,14 +30,10 @@ export default function Coding() {
     );
   } else if (projectId === 'new') {
     return (
-      <Container>
+      <CodingImage>
         <InfoModal />
-        <MainCoding setCode={setCode} code={code} />
-        <SideBar>
-          <CodePreview code={code} />
-          <PrettyCode code={code} setCode={setCode} />
-        </SideBar>
-      </Container>
+        <Image src="/codingBackground.png" alt="landing" layout="fill" />
+      </CodingImage>
     );
   } else {
     router.push('/coding/new');
@@ -59,4 +52,12 @@ const SideBar = styled.div`
   margin: 16px;
   ${flex.COLUMN_FLEX}
   gap: 15px;
+`;
+
+const CodingImage = styled.div`
+  width: 100vw;
+  height: calc(100dvh - 60px);
+  margin-top: 60px;
+  background-color: red;
+  position: relative;
 `;

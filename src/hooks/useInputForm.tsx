@@ -35,7 +35,10 @@ const useInputForm = (initialData: PlaceholderKeys[]) => {
     setInputValue({ ...inputValue, [name]: value });
   };
 
-  return { inputValue, onChange, placeholder };
+  const onChangeOne = (name: string, value: string) => {
+    setInputValue((prev) => ({ ...prev, [name]: value }));
+  };
+  return { inputValue, onChange, placeholder, onChangeOne };
 };
 
 export default useInputForm;
