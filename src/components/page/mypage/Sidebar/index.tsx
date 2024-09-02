@@ -2,14 +2,35 @@ import { ArrowIcon } from '@/assets/icon';
 import { design, flex, font, theme } from '@/styles';
 import color from '@/styles/theme';
 import { styled } from '@linaria/react';
-import { title } from 'process';
+import { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const Nav = [
-  { title: '정보 수정', value: '' },
-  { title: '비밀번호 변경', value: '' },
-  { title: '회원탈퇴', value: '' },
+  { title: '관련 프로젝트 확인', value: '/project' },
+  { title: '정보 수정', value: '/edit-info' },
+  { title: '비밀번호 변경', value: '/change-password' },
+  { title: '회원탈퇴', value: '/delete-account' },
 ];
+
 export default function Sidebar() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const nav = useRouter();
+
+  useEffect(() => {
+    const currentPath = window.location.pathname;
+    const activeNavIndex = Nav.findIndex((nav) => nav.value === currentPath);
+    if (activeNavIndex !== -1) {
+      setActiveIndex(activeNavIndex);
+    }
+  }, []);
+
+  const handleCardClick = (index: number) => {
+    if (activeIndex !== index) {
+      setActiveIndex(index);
+      nav.push(Nav[index].value);
+    }
+  };
+
   return (
     <Container>
       <div>
@@ -21,11 +42,15 @@ export default function Sidebar() {
           </div>
         </ProfileContainer>
         <SidebarNavContainer>
-          {Nav.map((d) => (
-            <div>
-              <p>{d.title}</p>
+          {Nav.map((v, index) => (
+            <SidebarNav
+              key={index}
+              isActive={activeIndex === index}
+              onClick={() => handleCardClick(index)}
+            >
+              <p>{v.title}</p>
               <ArrowIcon color={color.gray[500]} size={26} />
-            </div>
+            </SidebarNav>
           ))}
         </SidebarNavContainer>
       </div>
@@ -75,12 +100,17 @@ const ProfileImage = styled.div`
 const SidebarNavContainer = styled.div`
   ${flex.COLUMN_FLEX}
   gap: 8px;
-  > div {
-    width: 100%;
-    padding: 8px 16px;
-    ${font.B3}
-    ${flex.BETWEEN}
-  }
+  cursor: pointer;
+`;
+
+const SidebarNav = styled.div<{ isActive: boolean }>`
+  width: 100%;
+  padding: 8px 16px;
+  ${font.B3}
+  ${flex.BETWEEN}
+  background-color: ${(props) =>
+    props.isActive ? color.blue[150] : color.extra.white};
+  border-radius: 16.09px;
 `;
 
 const Logout = styled.button`
