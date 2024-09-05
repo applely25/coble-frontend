@@ -12,27 +12,24 @@ interface CheckModalProps {
   children?: React.ReactNode;
 }
 
-const DefaultCancelButton = {
-  title: '취소하기',
-  onClick: () => {},
-};
-const DefaultApproveButton = {
-  title: '저장하기',
-  onClick: () => {},
-};
-
 export default function CheckModal({
-  cancelButton = DefaultCancelButton,
-  approveButton = DefaultApproveButton,
+  cancelButton,
+  approveButton,
   children,
 }: CheckModalProps) {
   return (
     <Backdrop>
       <Container>
-        <FormContainer>{children}</FormContainer>
+        <div>{children}</div>
         <ButtonContainer>
-          <button onClick={cancelButton.onClick}>{cancelButton.title}</button>
-          <button onClick={approveButton.onClick}>{approveButton.title}</button>
+          {cancelButton && (
+            <button onClick={cancelButton.onClick}>{cancelButton.title}</button>
+          )}
+          {approveButton && (
+            <button onClick={approveButton.onClick}>
+              {approveButton.title}
+            </button>
+          )}
         </ButtonContainer>
       </Container>
     </Backdrop>
@@ -64,17 +61,11 @@ const Container = styled.div`
   box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
 `;
 
-const FormContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  align-items: center;
-  gap: 16px;
-`;
-
 const ButtonContainer = styled.div`
   ${flex.FLEX}
   gap: 16px;
   > button {
+    min-width: max-content;
     &:first-child {
       ${design.BUTTON_GRAY}
       padding: 16px;

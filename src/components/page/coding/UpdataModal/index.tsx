@@ -92,23 +92,25 @@ export default function UpdateInfoModal({
 
   return (
     <CheckModal cancelButton={cancelButton} approveButton={approveButton}>
-      <ImageContainer>
-        <AddPhotoIcon />
-        <input type="file" onChange={onChangeFile} />
-      </ImageContainer>
-      <InputContainer>
-        {inputInitialData.map((key) => (
-          <Input
-            design="LABEL"
-            name={key}
-            value={inputValue[key]}
-            placeholder={placeholder[key]}
-            key={key}
-            type={key}
-            onChange={onChange}
-          />
-        ))}
-      </InputContainer>
+      <FormContainer>
+        <ImageContainer>
+          <AddPhotoIcon />
+          <input type="file" onChange={onChangeFile} />
+        </ImageContainer>
+        <InputContainer>
+          {inputInitialData.map((key) => (
+            <Input
+              design="LABEL"
+              name={key}
+              value={inputValue[key]}
+              placeholder={placeholder[key]}
+              key={key}
+              type={key}
+              onChange={onChange}
+            />
+          ))}
+        </InputContainer>
+      </FormContainer>
     </CheckModal>
   );
 }
@@ -134,4 +136,11 @@ const ImageView = styled(Image)`
 const InputContainer = styled.div`
   ${flex.COLUMN_FLEX}
   gap: 20px;
+`;
+
+const FormContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  gap: 16px;
 `;
