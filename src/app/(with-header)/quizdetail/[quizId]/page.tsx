@@ -2,75 +2,67 @@
 import { styled } from '@linaria/react';
 import { design, flex, font } from '@/styles';
 import color from '@/styles/theme';
-import { useState } from 'react';
-
-// interface IQuizdetailProps {
-//   type: 'OX' | 'MULTIPLE_CHOICE';
-//   status: 'CORRECT' | 'WRONG';
-// }
-
-const OXdummyList = [
-  {
-    type: 'OX',
-    quiz_list: [
-      {
-        content: 'CSS는 뭐다',
-        answer: true,
-      },
-      {
-        content: 'HTML은 언어다',
-        answer: true,
-      },
-      {
-        content: 'HTML은 언어다',
-        answer: true,
-      },
-    ],
-  },
-];
-
-const MultipledummyList = {
-  type: 'MULTIPLE_CHOICE',
-  quiz_list: [
-    {
-      content: '올바른 것은?',
-      answer: 1,
-      choice_list: [
-        {
-          number: 1,
-          text: '이건 맞다',
-        },
-        {
-          number: 2,
-          text: '이건 아니다',
-        },
-        {
-          number: 3,
-          text: '이건 아니다',
-        },
-        {
-          number: 4,
-          text: '이건 아니다',
-        },
-      ],
-    },
-  ],
-};
+import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useParams } from 'next/navigation';
+import { quizDetailApi, QuizTypeEnum } from '@/api/quiz';
+import QuizModal from '@/components/page/quiz/QuizModal';
 
 const Quizdetail = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-
+  const [quizNumber, setQuizNumber] = useState<number>(0);
+  const [openQuizModal, setOpenQuizModal] = useState<boolean>(false);
+  const [isCorrectAnswer, setIsCorrectAnswer] = useState<boolean>(false);
+  const { quizId } = useParams();
   const handleCardClick = (index: number) => {
     setActiveIndex(index);
   };
 
-  return OXdummyList[0].type === 'OX' ? (
+  const {
+    data: quizDetail,
+    refetch,
+    isFetching,
+  } = useQuery({
+    queryKey: ['quizDetailApi'],
+    queryFn: () => quizDetailApi(Number(quizId)),
+  });
+
+  const submitOXQuiz = () => {
+    if (quizDetail && activeIndex !== null) {
+      setOpenQuizModal(true);
+      if (quizDetail.quiz_list[quizNumber].ox_answer === (activeIndex === 0))
+        setIsCorrectAnswer(true);
+      else setIsCorrectAnswer(false);
+    }
+  };
+  const submitChoiceQuiz = () => {
+    if (quizDetail && activeIndex !== null) {
+      setOpenQuizModal(true);
+      if (quizDetail.quiz_list[quizNumber].multiple_answer === activeIndex)
+        setIsCorrectAnswer(true);
+      else setIsCorrectAnswer(false);
+    }
+  };
+  useEffect(() => {
+    refetch();
+  }, [quizId]);
+
+  if (isFetching) <p>loading</p>;
+  return quizDetail?.quiz_type === 'OX' ? (
     <Wrapper>
-      <Header>header</Header>
       <Container>
+        <QuizModal
+          isOpen={openQuizModal}
+          setIsOpen={setOpenQuizModal}
+          setQuizNumber={setQuizNumber}
+          isSuccess={isCorrectAnswer}
+          setActiveIndex={setActiveIndex}
+          isLastQuiz={quizNumber >= quizDetail.quiz_list.length - 1}
+          quizId={Number(quizId)}
+        />
         <QuizDetailContainer>
-          <QuizSubject>CSS 관련 퀴즈</QuizSubject>
-          <QuizTitle>CSS의 풀네임으로 올바른 것은?</QuizTitle>
+          <QuizSubject>{quizDetail.title}</QuizSubject>
+          <QuizTitle>{quizDetail.quiz_list[quizNumber].content}</QuizTitle>
         </QuizDetailContainer>
         <OXContainer>
           <OXCardContainer
@@ -92,32 +84,42 @@ const Quizdetail = () => {
             X
           </OXCardContainer>
         </OXContainer>
-        <button>답변 제출하기</button>
+        <button onClick={submitOXQuiz}>답변 제출하기</button>
       </Container>
     </Wrapper>
   ) : (
-    <Wrapper>
-      <Header>header</Header>
-      <Container>
-        <QuizDetailContainer>
-          <QuizSubject>CSS 관련 퀴즈</QuizSubject>
-          <QuizTitle>다른 질문 제목을 여기에 입력하세요</QuizTitle>
-        </QuizDetailContainer>
-        <MultipleChoiceContainer>
-          {MultipledummyList.quiz_list[0].choice_list.map((v, index) => (
-            <MultipleChoiceCardContainer
-              key={v.number}
-              isActive={activeIndex === index}
-              onClick={() => handleCardClick(index)}
-            >
-              <MultipleChoiceNumber>{v.number}</MultipleChoiceNumber>
-              <MultipleChoiceText>{v.text}</MultipleChoiceText>
-            </MultipleChoiceCardContainer>
-          ))}
-        </MultipleChoiceContainer>
-        <button>답변 제출하기</button>
-      </Container>
-    </Wrapper>
+    quizDetail && (
+      <Wrapper>
+        <Container>
+          <QuizModal
+            isOpen={openQuizModal}
+            setIsOpen={setOpenQuizModal}
+            setQuizNumber={setQuizNumber}
+            isSuccess={isCorrectAnswer}
+            setActiveIndex={setActiveIndex}
+            isLastQuiz={quizNumber >= quizDetail.quiz_list.length - 1}
+            quizId={Number(quizId)}
+          />
+          <QuizDetailContainer>
+            <QuizSubject>{quizDetail?.title}</QuizSubject>
+            <QuizTitle>{quizDetail?.quiz_list[quizNumber].content}</QuizTitle>
+          </QuizDetailContainer>
+          <MultipleChoiceContainer>
+            {quizDetail?.quiz_list[quizNumber].choice_list.map((v, index) => (
+              <MultipleChoiceCardContainer
+                key={v.number}
+                isActive={activeIndex === v.number}
+                onClick={() => handleCardClick(v.number)}
+              >
+                <MultipleChoiceNumber>{v.number}</MultipleChoiceNumber>
+                <MultipleChoiceText>{v.text}</MultipleChoiceText>
+              </MultipleChoiceCardContainer>
+            ))}
+          </MultipleChoiceContainer>
+          <button onClick={submitChoiceQuiz}>답변 제출하기</button>
+        </Container>
+      </Wrapper>
+    )
   );
 };
 
@@ -197,12 +199,6 @@ const QuizSubject = styled.p`
   ${flex.COLUMN_FLEX};
 `;
 
-const Header = styled.div`
-  ${flex.CENTER};
-  width: 100%;
-  padding: 20px;
-`;
-
 const Wrapper = styled.div`
   ${flex.COLUMN_FLEX};
   width: 100%;
@@ -216,6 +212,7 @@ const Container = styled.div`
   padding-top: 2%;
   padding-left: 10%;
   padding-right: 10%;
+  margin-top: 50px;
 
   > button {
     display: inline-block;

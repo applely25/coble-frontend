@@ -61,29 +61,31 @@ export default function InfoModal() {
     <>
       {isOpen && (
         <CheckModal cancelButton={cancelButton} approveButton={approveButton}>
-          <ImageContainer>
-            <AddPhotoIcon />
-            <input type="file" onChange={onChangeFile} />
-            {/* <ImageView
+          <FormContainer>
+            <ImageContainer>
+              <AddPhotoIcon />
+              <input type="file" onChange={onChangeFile} />
+              {/* <ImageView
               src="/landingBackground.png"
               alt="landing"
               width={355}
               height={200}
-            /> */}
-          </ImageContainer>
-          <InputContainer>
-            {inputInitialData.map((key) => (
-              <Input
-                design="LABEL"
-                name={key}
-                value={inputValue[key]}
-                placeholder={placeholder[key]}
-                key={key}
-                type={key}
-                onChange={onChange}
-              />
-            ))}
-          </InputContainer>
+              /> */}
+            </ImageContainer>
+            <InputContainer>
+              {inputInitialData.map((key) => (
+                <Input
+                  design="LABEL"
+                  name={key}
+                  value={inputValue[key]}
+                  placeholder={placeholder[key]}
+                  key={key}
+                  type={key}
+                  onChange={onChange}
+                />
+              ))}
+            </InputContainer>
+          </FormContainer>
         </CheckModal>
       )}
     </>
@@ -111,4 +113,11 @@ const ImageView = styled(Image)`
 const InputContainer = styled.div`
   ${flex.COLUMN_FLEX}
   gap: 20px;
+`;
+
+const FormContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  gap: 16px;
 `;
