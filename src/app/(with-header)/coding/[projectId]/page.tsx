@@ -10,7 +10,7 @@ import {
   MainCoding,
   PrettyCode,
 } from '@/components/page/coding';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 
 export default function Coding() {

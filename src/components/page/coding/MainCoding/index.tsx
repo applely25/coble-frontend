@@ -45,7 +45,7 @@ function MainCoding({ setCode, code }: MainCodingProps) {
     if (workspace) {
       const workspaceDomXml = Blockly.Xml.workspaceToDom(workspace);
       const workspaceRawXml = Blockly.Xml.domToPrettyText(workspaceDomXml);
-      console.log(workspaceRawXml);
+      return workspaceRawXml;
     }
   }, [workspace]);
 
@@ -64,7 +64,14 @@ function MainCoding({ setCode, code }: MainCodingProps) {
   };
 
   const saveCode = () => {
-    const blob = new Blob([code], { type: 'text/xml' });
+    const xml = printWorkspaceAsXml();
+    if (!xml) {
+      console.error('No XML generated from workspace');
+      return; // xml이 undefined인 경우 Blob을 생성하지 않고 함수를 종료
+    }
+
+    const blob = new Blob([xml], { type: 'text/xml' });
+
     saveCodeMutate({ projectId: Number(projectId), code: blob });
   };
 
@@ -87,10 +94,12 @@ function MainCoding({ setCode, code }: MainCodingProps) {
 
   return (
     <CodingPlace>
-      {showProjectUpdateModal && <UpdateInfoModal
-        isOpen={showProjectUpdateModal}
-        setIsOpen={setShowProjectUpdateModal}
-      />}
+      {showProjectUpdateModal && (
+        <UpdateInfoModal
+          isOpen={showProjectUpdateModal}
+          setIsOpen={setShowProjectUpdateModal}
+        />
+      )}
       <CodingHeader>
         <div>
           <Link href="?type=html">
