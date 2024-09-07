@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { BaseInstance } from '.';
+import { BaseInstance, AuthInstance } from '.';
 import { Storage } from '@/storage';
 
 interface ILoginResponse {
@@ -47,6 +47,11 @@ const signUpApi = async (password: string, nickname: string, email: string) => {
   return response.data;
 };
 
+const myInfoApi = async () => {
+  const { data } = await AuthInstance.get(`${base}/info`);
+  return data;
+};
+
 interface IRefreshTokenPromise {
   access_token: string;
   access_exp: string;
@@ -81,4 +86,5 @@ export {
   checkVerifyCodeApi,
   signUpApi,
   refreshAccessTokenApi,
+  myInfoApi,
 };

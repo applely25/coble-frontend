@@ -1,74 +1,37 @@
 'use client';
+import { myInfoApi } from '@/api/users';
 import { PopularProjectArticle } from '@/components/common';
 import { Sidebar } from '@/components/page/mypage';
 import { flex, font, theme } from '@/styles';
 import color from '@/styles/theme';
 import { styled } from '@linaria/react';
+import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 
-const inProgressProjectArticles = [
-  {
-    imageSrc:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeUMCgm6_KLvyfUutoOdxQ1ifOP5IDd1Iuaw&s',
-    title1: 'XQUARE',
-    description: 'DSM 프로젝트 통합 서비스',
-    isLiked: false,
-  },
-  {
-    imageSrc:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeUMCgm6_KLvyfUutoOdxQ1ifOP5IDd1Iuaw&s',
-    title1: 'XQUARE',
-    description: 'DSM 프로젝트 통합 서비스',
-    isLiked: false,
-  },
-  {
-    imageSrc:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeUMCgm6_KLvyfUutoOdxQ1ifOP5IDd1Iuaw&s',
-    title1: 'XQUARE',
-    description: 'DSM 프로젝트 통합 서비스',
-    isLiked: false,
-  },
-  {
-    imageSrc:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeUMCgm6_KLvyfUutoOdxQ1ifOP5IDd1Iuaw&s',
-    title1: 'XQUARE',
-    description: 'DSM 프로젝트 통합 서비스',
-    isLiked: false,
-  },
-];
+// 타입 정의
+interface Project {
+  id: number;
+  image: string;
+  title: string;
+  description: string;
+  like_status: boolean;
+  profile: string;
+}
 
-const heartProjectArticles = [
-  {
-    imageSrc:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeUMCgm6_KLvyfUutoOdxQ1ifOP5IDd1Iuaw&s',
-    title1: 'XQUARE',
-    description: 'DSM 프로젝트 통합 서비스',
-    isLiked: false,
-  },
-  {
-    imageSrc:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeUMCgm6_KLvyfUutoOdxQ1ifOP5IDd1Iuaw&s',
-    title1: 'XQUARE',
-    description: 'DSM 프로젝트 통합 서비스',
-    isLiked: false,
-  },
-  {
-    imageSrc:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeUMCgm6_KLvyfUutoOdxQ1ifOP5IDd1Iuaw&s',
-    title1: 'XQUARE',
-    description: 'DSM 프로젝트 통합 서비스',
-    isLiked: false,
-  },
-  {
-    imageSrc:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeUMCgm6_KLvyfUutoOdxQ1ifOP5IDd1Iuaw&s',
-    title1: 'XQUARE',
-    description: 'DSM 프로젝트 통합 서비스',
-    isLiked: false,
-  },
-];
+interface MyInfoApiResponse {
+  my_create_project_list: Project[];
+  user_like_project_list: Project[];
+}
 
 export default function Project() {
+  const { data, isLoading, error } = useQuery<MyInfoApiResponse>({
+    queryKey: ['myInfo'],
+    queryFn: myInfoApi,
+  });
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error fetching data</p>;
+
   return (
     <Container>
       <BackgroundImage>
@@ -86,13 +49,14 @@ export default function Project() {
             자신이 만들고 있는 프로젝트들을 확인해보세요!
           </Description>
           <ScrollableProjectList>
-            {inProgressProjectArticles.map((article, index) => (
+            {data?.my_create_project_list.map((project) => (
               <PopularProjectArticle
-                key={index}
-                imageSrc={article.imageSrc}
-                title1={article.title1}
-                description={article.description}
-                isLiked={article.isLiked}
+                key={project.id}
+                imageSrc={project.image}
+                title1={project.title}
+                description={project.description}
+                isLiked={project.like_status}
+                profile={project.profile}
               />
             ))}
           </ScrollableProjectList>
@@ -101,13 +65,14 @@ export default function Project() {
             자신이 좋아요 누른 프로젝트들을 확인해보세요!
           </Description>
           <ScrollableProjectList>
-            {heartProjectArticles.map((article, index) => (
+            {data?.user_like_project_list.map((project) => (
               <PopularProjectArticle
-                key={index}
-                imageSrc={article.imageSrc}
-                title1={article.title1}
-                description={article.description}
-                isLiked={article.isLiked}
+                key={project.id}
+                imageSrc={project.image}
+                title1={project.title}
+                description={project.description}
+                isLiked={project.like_status}
+                profile={project.profile}
               />
             ))}
           </ScrollableProjectList>
