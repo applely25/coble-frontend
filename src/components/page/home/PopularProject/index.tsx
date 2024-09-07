@@ -13,12 +13,42 @@ export default function PopularProject() {
         </p>
       </TitleContainer>
       <PopularProjectContainer>
-        <PopularProjectArticle />
-        <PopularProjectArticle />
-        <PopularProjectArticle />
-        <PopularProjectArticle />
-        <PopularProjectArticle />
-        <PopularProjectArticle />
+        <PopularProjectArticle
+          imageSrc="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeUMCgm6_KLvyfUutoOdxQ1ifOP5IDd1Iuaw&s"
+          title1="XQUARE"
+          description="DSM 프로젝트 통합 서비스"
+          isLiked={false}
+        />
+        <PopularProjectArticle
+          imageSrc="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeUMCgm6_KLvyfUutoOdxQ1ifOP5IDd1Iuaw&s"
+          title1="XQUARE"
+          description="DSM 프로젝트 통합 서비스"
+          isLiked={false}
+        />
+        <PopularProjectArticle
+          imageSrc="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeUMCgm6_KLvyfUutoOdxQ1ifOP5IDd1Iuaw&s"
+          title1="XQUARE"
+          description="DSM 프로젝트 통합 서비스"
+          isLiked={false}
+        />
+        <PopularProjectArticle
+          imageSrc="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeUMCgm6_KLvyfUutoOdxQ1ifOP5IDd1Iuaw&s"
+          title1="XQUARE"
+          description="DSM 프로젝트 통합 서비스"
+          isLiked={false}
+        />
+        <PopularProjectArticle
+          imageSrc="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeUMCgm6_KLvyfUutoOdxQ1ifOP5IDd1Iuaw&s"
+          title1="XQUARE"
+          description="DSM 프로젝트 통합 서비스"
+          isLiked={false}
+        />
+        <PopularProjectArticle
+          imageSrc="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeUMCgm6_KLvyfUutoOdxQ1ifOP5IDd1Iuaw&s"
+          title1="XQUARE"
+          description="DSM 프로젝트 통합 서비스"
+          isLiked={false}
+        />
       </PopularProjectContainer>
       <MoreProjectButton href="/">더 많은 프로젝트 보러가기</MoreProjectButton>
     </Container>
