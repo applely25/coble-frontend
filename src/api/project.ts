@@ -25,10 +25,10 @@ interface IProjectCodeSaveApi {
 }
 const projectCodeSaveApi = async ({ projectId, code }: IProjectCodeSaveApi) => {
   const form = new FormData();
-  form.append('code_file', code);
+  form.append('codeFile', code, 'workspace.xml');
   return await AuthInstance.patch(`${base}/codefile/${projectId}`, form, {
-    validateStatus: function (status) {
-      return status >= 200 && status < 300; // default
+    headers: {
+      'Content-Type': 'multipart/form-data', // 파일 업로드를 위한 헤더 설정
     },
   });
 };
@@ -62,9 +62,43 @@ const projectInfoGetApi = async (
   return data;
 };
 
+interface IresProjectDetail {
+  description: string;
+  nick_name: string;
+  profile: string;
+  project_url: string;
+  title: string;
+}
+const projectDetailApi = async (
+  projectId: number,
+): Promise<IresProjectDetail> => {
+  const { data } = await AuthInstance.get(`${base}/${projectId}`);
+  return data;
+};
+
+interface projectType {
+  id: number;
+  image: string;
+  profile: string;
+  title: string;
+  description: string;
+  like_status: boolean;
+  is_mine: boolean;
+}
+interface IresProjectList {
+  project_list: projectType[];
+  total_elements: number;
+  page_number: number;
+  size: number;
+  last: boolean;
+  total_pages: number;
+}
+const projectListApi = async (size: number, page: number) => {};
+
 export {
   projectSaveApi,
   projectCodeSaveApi,
   projectInfoUpdateApi,
   projectInfoGetApi,
+  projectDetailApi,
 };
