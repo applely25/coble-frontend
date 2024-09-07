@@ -20,7 +20,11 @@ const Input = ({
   ...props
 }: InputProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const isPassword: boolean = type === 'password' || type === 'password_check';
+  const isPassword: boolean =
+    type === 'password' ||
+    type === 'password_check' ||
+    type === 'exist_password' ||
+    type === 'change_password';
 
   if (design === 'LABEL') {
     const labelTitle =

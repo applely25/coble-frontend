@@ -15,12 +15,19 @@ export default function DeleteAccount() {
         />
       </BackgroundImage>
       <ContentContainer>
-        <Sidebar />
+        <SidebarWrapper>
+          <Sidebar />
+        </SidebarWrapper>
         <ContentChildren></ContentChildren>
       </ContentContainer>
     </Container>
   );
 }
+
+const SidebarWrapper = styled.div`
+  width: 250px;
+  background-color: ${theme.extra.white};
+`;
 
 const Container = styled.div`
   width: 100dvw;

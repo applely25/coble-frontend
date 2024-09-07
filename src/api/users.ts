@@ -69,8 +69,8 @@ const editInfoApi = async (profile: string, nickname: string) => {
   return response.data;
 };
 
-const deleteUser = async (password: string) => {
-  const response = await BaseInstance.delete(`${base}/`, {
+const deleteUserApi = async (password: string) => {
+  const response = await BaseInstance.post(`${base}/`, {
     password,
   });
   return response.data;
@@ -113,4 +113,5 @@ export {
   myInfoApi,
   editInfoApi,
   changePasswordApi,
+  deleteUserApi,
 };
