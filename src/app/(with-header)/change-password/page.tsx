@@ -1,12 +1,46 @@
 'use client';
 import { Sidebar } from '@/components/page/mypage';
-import { flex, font, theme } from '@/styles';
+import { design, flex, font, theme } from '@/styles';
 import color from '@/styles/theme';
 import { styled } from '@linaria/react';
 import Image from 'next/image';
 import Input from '@/components/common/Input';
+import useInputForm, { PlaceholderKeys } from '@/hooks/useInputForm';
+import { useMutation } from '@tanstack/react-query';
+import { changePasswordApi } from '@/api/users';
+import { error } from 'console';
+import { toast } from 'react-toastify';
 
+const inputInitialData: PlaceholderKeys[] = [
+  'exist_password',
+  'change_password',
+];
+const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$/;
 export default function ChangePassword() {
+  const { inputValue, onChange, placeholder } = useInputForm(inputInitialData);
+
+  const { mutate: changePasswordMutate } = useMutation({
+    mutationFn: (data: { exist_password: string; change_password: string }) =>
+      changePasswordApi(data.exist_password, data.change_password),
+    mutationKey: ['changePassword'],
+    onSuccess: (data) => {},
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  const onClickSuccess = () => {
+    if (!passwordRegex.test(inputValue.exist_password)) {
+      toast('비밀번호가 형식에 맞지 않습니다.');
+    } else if (!passwordRegex.test(inputValue.change_password)) {
+      toast('비밀번호가 형식에 맞지 않습니다.');
+    } else if (!inputValue.exist_password || !inputValue.change_password) {
+      toast('비밀번호를 입력해주세요.');
+    } else {
+      changePasswordMutate(inputValue);
+    }
+  };
+
   return (
     <Container>
       <BackgroundImage>
@@ -25,19 +59,49 @@ export default function ChangePassword() {
           <Description>
             기존 비밀번호를 입력하여 안전하게 비밀번호를 변경해보세요!
           </Description>
-          {/* <Input
-              name={key}
-              value={inputValue[key]}
-              placeholder={placeholder[key]}
-              key={key}
-              type={key}
-              onChange={onChange}
-            /> */}
+          <ChangeInputContainer>
+            {inputInitialData.map((key) => (
+              <Input
+                name={key}
+                value={inputValue[key]}
+                placeholder={placeholder[key]}
+                key={key}
+                type={key}
+                onChange={onChange}
+              />
+            ))}
+          </ChangeInputContainer>
+          <ChangeButtonContainer>
+            <ChangePasswordButton onClick={onClickSuccess}>
+              완료
+            </ChangePasswordButton>
+          </ChangeButtonContainer>
         </ContentChildren>
       </ContentContainer>
     </Container>
   );
 }
+
+const ChangePasswordButton = styled.button`
+  ${design.BUTTON_PRIMARY}
+  padding: 16px;
+  &:hover {
+    background-color: ${theme.blue[100]};
+    color: ${theme.blue[500]};
+  }
+`;
+
+const ChangeInputContainer = styled.div`
+  ${flex.COLUMN_FLEX}
+  gap: 16px;
+  width: 448px;
+`;
+
+const ChangeButtonContainer = styled.div`
+  ${flex.COLUMN_FLEX}
+  margin-top: 50px;
+  width: 448px;
+`;
 
 const Description = styled.p`
   ${font.B1};
@@ -67,14 +131,6 @@ const BackgroundImage = styled.div`
   width: 100dvw;
   filter: blur(20px);
   z-index: -1;
-`;
-
-const ContentWrapper = styled.div`
-  display: flex;
-  width: 70vw;
-  height: 70vh;
-  border-radius: 16px;
-  /* overflow: hidden; */
 `;
 
 const SidebarWrapper = styled.div`
