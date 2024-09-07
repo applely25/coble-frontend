@@ -28,7 +28,6 @@ export default function Project() {
     queryKey: ['myInfo'],
     queryFn: myInfoApi,
   });
-
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error fetching data</p>;
 
@@ -42,7 +41,9 @@ export default function Project() {
         />
       </BackgroundImage>
       <ContentContainer>
-        <Sidebar />
+        <SidebarWrapper>
+          <Sidebar />
+        </SidebarWrapper>
         <ContentChildren>
           <SectionTitle>진행 중인 프로젝트</SectionTitle>
           <Description>
@@ -81,6 +82,11 @@ export default function Project() {
     </Container>
   );
 }
+
+const SidebarWrapper = styled.div`
+  width: 250px;
+  background-color: ${theme.extra.white};
+`;
 
 const Container = styled.div`
   position: relative;

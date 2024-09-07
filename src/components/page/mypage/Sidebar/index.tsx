@@ -62,6 +62,7 @@ export default function Sidebar() {
 const Container = styled.div`
   ${flex.COLUMN_BETWEEN}
   width: 280px;
+  height: 100%;
   border-right: 1px solid ${theme.gray[200]};
   padding: 60px 32px 32px 32px;
   > div {
