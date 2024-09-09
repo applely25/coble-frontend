@@ -1,7 +1,7 @@
 'use client';
 
 import { Suspense, useCallback, useEffect, useState } from 'react';
-import { useParams, useSearchParams } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { flex, font, theme } from '@/styles';
 import { styled } from '@linaria/react';
 import Link from 'next/link';
@@ -13,7 +13,11 @@ import { BlocklySpace, LoadingSpinner } from '@/components/common';
 import { handleCopyClipBoard } from '@/utils/clipboard';
 import UpdateInfoModal from '../UpdataModal';
 import { useMutation } from '@tanstack/react-query';
-import { projectCodeSaveApi, projectSaveApi } from '@/api/project';
+import {
+  projectCodeSaveApi,
+  projectDeleteApi,
+  projectSaveApi,
+} from '@/api/project';
 import { toast } from 'react-toastify';
 
 interface MainCodingProps {
@@ -85,10 +89,21 @@ function MainCoding({ setCode, code }: MainCodingProps) {
   const UpdateProjectInfo = () => {
     setShowProjectUpdateModal(true);
   };
+  const nav = useRouter();
+
+  const { mutate: deleteMutate } = useMutation({
+    mutationKey: ['projectDeleteApi'],
+    mutationFn: projectDeleteApi,
+    onSuccess: () => {
+      nav.push('/');
+      toast('삭제되었습니다.');
+    },
+  });
 
   const deleteProject = () => {
     if (window.confirm('삭제하시겠습니까?')) {
       // 삭제 서버 요청보내기
+      deleteMutate(Number(projectId));
     }
   };
 

@@ -52,15 +52,7 @@ export default function Project() {
           </Description>
           <ScrollableProjectList>
             {data?.my_create_project_list.map((project) => (
-              <PopularProjectArticle
-                id={project.id}
-                image={project.image}
-                title={project.title}
-                description={project.description}
-                like_status={project.like_status}
-                profile={project.profile}
-                is_mine={project.is_mine}
-              />
+              <PopularProjectArticle {...project} is_mine={true} />
             ))}
           </ScrollableProjectList>
           <SectionTitle>좋아요 누른 프로젝트</SectionTitle>

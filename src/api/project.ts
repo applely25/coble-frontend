@@ -3,7 +3,7 @@ import { AuthInstance } from '.';
 const base = 'projects';
 
 interface IProjectSaveApi {
-  image: File;
+  image: any;
   title: string;
   description: string;
 }
@@ -70,6 +70,7 @@ interface IresProjectDetail {
   title: string;
   like_count: number;
   like_status: boolean;
+  share_status: boolean;
 }
 const projectDetailApi = async (
   projectId: number,
@@ -105,6 +106,11 @@ const projectListApi = async (
   return data;
 };
 
+const projectDeleteApi = async (projectId: number) => {
+  const { data } = await AuthInstance.delete(`${base}/${projectId}`);
+  return data;
+};
+
 export {
   projectSaveApi,
   projectCodeSaveApi,
@@ -112,4 +118,5 @@ export {
   projectInfoGetApi,
   projectDetailApi,
   projectListApi,
+  projectDeleteApi,
 };

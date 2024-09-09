@@ -24,12 +24,14 @@ export default function List() {
       <PopularProjectContainer>
         {data?.project_list.map((v) => <PopularProjectArticle {...v} />)}
       </PopularProjectContainer>
-      {data?.total_pages && (
+      {data?.total_pages ? (
         <Pagination
           count={data?.total_pages}
           page={currentPage + 1}
           onChange={handleChange}
         />
+      ) : (
+        '프로젝트가 없습니다. 생성하고 공유해보세요!'
       )}
     </Container>
   );

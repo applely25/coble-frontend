@@ -28,12 +28,13 @@ export default function UpdateInfoModal({
 
   const { placeholder, inputValue, onChange, onChangeOne } =
     useInputForm(inputInitialData);
-  const [imageFile, setImageFile] = useState<File>();
 
   const { data: defaultValue, refetch } = useQuery({
-    queryKey: ['projectInfoGetApi'],
+    queryKey: ['projectInfoGetApi', projectId],
     queryFn: () => projectInfoGetApi(Number(projectId)),
   });
+
+  const [imageFile, setImageFile] = useState<any>(defaultValue?.image);
 
   const { mutate: projectInfoUpdateMutate } = useMutation({
     mutationFn: projectInfoUpdateApi,
@@ -72,7 +73,6 @@ export default function UpdateInfoModal({
 
   useEffect(() => {
     if (defaultValue) {
-      console.log(defaultValue);
       if (defaultValue.image) onChangeOne('image', defaultValue.image);
       if (defaultValue.title) onChangeOne('title', defaultValue.title);
       if (defaultValue.description)
@@ -83,10 +83,21 @@ export default function UpdateInfoModal({
   useEffect(() => {
     if (isOpen) refetch();
   }, [isOpen]);
+  const [imagePreview, setImagePreview] = useState<string | null>();
 
+  useEffect(() => {
+    if (defaultValue) {
+      setImagePreview(defaultValue.image);
+    }
+  }, [defaultValue]);
   const onChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setImageFile(e.target.files[0]);
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setImageFile(file);
+
+      // 파일의 URL을 생성하여 미리보기 이미지를 설정
+      const fileURL = URL.createObjectURL(file);
+      setImagePreview(fileURL);
     }
   };
 
@@ -94,7 +105,16 @@ export default function UpdateInfoModal({
     <CheckModal cancelButton={cancelButton} approveButton={approveButton}>
       <FormContainer>
         <ImageContainer>
-          <AddPhotoIcon />
+          {imagePreview ? (
+            <ImageView
+              src={imagePreview}
+              alt="미리보기 이미지"
+              width={355}
+              height={200}
+            />
+          ) : (
+            <AddPhotoIcon />
+          )}
           <input type="file" onChange={onChangeFile} />
         </ImageContainer>
         <InputContainer>

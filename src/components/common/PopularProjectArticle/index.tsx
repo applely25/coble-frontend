@@ -17,7 +17,11 @@ export default function PopularProjectArticle({
 }: projectType) {
   const nav = useRouter();
   return (
-    <Container onClick={() => nav.push(`/project/${id}`)}>
+    <Container
+      onClick={() =>
+        is_mine ? nav.push(`/coding/${id}`) : nav.push(`/project/${id}`)
+      }
+    >
       <TitleImage>
         <img src={image} alt="landing" />
       </TitleImage>

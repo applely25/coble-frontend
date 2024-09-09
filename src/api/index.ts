@@ -29,7 +29,7 @@ AuthInstance.interceptors.response.use(
   async (error: AxiosError<AxiosError>) => {
     if (axios.isAxiosError(error) && error.response) {
       const { message } = error.response.data;
-      if (message === '로그인이 필요합니다.') {
+      if (message === 'Token Expired') {
         const newAccessToken = await refreshAccessTokenApi();
         if (newAccessToken && error.config) {
           Storage.setItem('access_token', newAccessToken.access_token);

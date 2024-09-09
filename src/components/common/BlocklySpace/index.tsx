@@ -76,12 +76,12 @@ const BlocklySpace = ({
     queryKey: ['projectDetailApi'],
     queryFn: () => projectDetailApi(Number(projectId)),
   });
+
   useEffect(() => {
     BlocksInitializer();
   }, []);
 
   useEffect(() => {
-    console.log(data);
     if (data && workspace) {
       if (!data.project_url.split('/')[3]) {
         loadWorkspaceFromXml(exampleXml);

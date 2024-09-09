@@ -93,7 +93,11 @@ export default function Project() {
         <Description>{data?.title} 코드를 확인해보세요!</Description>
         <PrettyCodeContainer>
           <CodeBlock
-            text={beautifiedHtml.lengt ? beautifiedHtml : '코드가 존재하지 않습니다.'}
+            text={
+              beautifiedHtml.length
+                ? beautifiedHtml
+                : '코드가 존재하지 않습니다.'
+            }
             language="html"
             showLineNumbers={true}
             theme={a11yLight}
