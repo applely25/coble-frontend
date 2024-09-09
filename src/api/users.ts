@@ -1,6 +1,7 @@
 import axios from 'axios';
-import { BaseInstance } from '.';
+import { BaseInstance, AuthInstance } from '.';
 import { Storage } from '@/storage';
+import { profile } from 'console';
 
 interface ILoginResponse {
   nickname: string;
@@ -47,6 +48,37 @@ const signUpApi = async (password: string, nickname: string, email: string) => {
   return response.data;
 };
 
+const myInfoApi = async () => {
+  const { data } = await AuthInstance.get(`${base}/info`);
+  return data;
+};
+
+const changePasswordApi = async (password: string, new_password: string) => {
+  const response = await BaseInstance.patch(`${base}/password`, {
+    password,
+    new_password,
+  });
+  return response.data;
+};
+
+interface IEditInfoApi {
+  profile: File;
+  nickname: string;
+}
+const editInfoApi = async ({ profile, nickname }: IEditInfoApi) => {
+  const form = new FormData();
+  form.append('profile', profile);
+  form.append('nickname', nickname);
+  return await BaseInstance.patch(`${base}/update`, form);
+};
+
+const deleteUserApi = async (password: string) => {
+  const response = await BaseInstance.post(`${base}/`, {
+    password,
+  });
+  return response.data;
+};
+
 interface IRefreshTokenPromise {
   access_token: string;
   access_exp: string;
@@ -81,4 +113,8 @@ export {
   checkVerifyCodeApi,
   signUpApi,
   refreshAccessTokenApi,
+  myInfoApi,
+  editInfoApi,
+  changePasswordApi,
+  deleteUserApi,
 };
