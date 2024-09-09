@@ -61,7 +61,7 @@ const Quizdetail = () => {
           quizId={Number(quizId)}
         />
         <QuizDetailContainer>
-          <QuizSubject>{quizDetail.title}</QuizSubject>
+          <QuizSubject>{quizDetail.quiz_title}</QuizSubject>
           <QuizTitle>{quizDetail.quiz_list[quizNumber].content}</QuizTitle>
         </QuizDetailContainer>
         <OXContainer>
@@ -101,7 +101,7 @@ const Quizdetail = () => {
             quizId={Number(quizId)}
           />
           <QuizDetailContainer>
-            <QuizSubject>{quizDetail?.title}</QuizSubject>
+            <QuizSubject>{quizDetail?.quiz_title}</QuizSubject>
             <QuizTitle>{quizDetail?.quiz_list[quizNumber].content}</QuizTitle>
           </QuizDetailContainer>
           <MultipleChoiceContainer>

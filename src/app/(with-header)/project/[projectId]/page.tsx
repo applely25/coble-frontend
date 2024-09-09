@@ -4,7 +4,12 @@ import { projectDetailApi } from '@/api/project';
 import { flex, font, theme } from '@/styles';
 import { styled } from '@linaria/react';
 
-import { useQuery } from '@tanstack/react-query';
+import {
+  useQuery,
+  useMutation,
+  QueryClient,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import useBeautifyHtml from '@/hooks/useBeautifulHtml';
 import { a11yLight, CodeBlock } from 'react-code-blocks';
@@ -13,18 +18,28 @@ import * as Blockly from 'blockly/core';
 import { BlocksInitializer, registerGenerators } from '@/utils/blocks';
 import { javascriptGenerator } from 'blockly/javascript';
 import axios from 'axios';
-import { SizeUpIcon } from '@/assets/icon';
+import { Heart, SizeUpIcon } from '@/assets/icon';
 import { css } from '@emotion/react';
+import { likesApi } from '@/api/likes';
 
 export default function Project() {
   const { projectId } = useParams();
   const [iframeContent, setIframeContent] =
     useState<Blockly.WorkspaceSvg | null>(null);
   const [code, setCode] = useState<string>('');
+  const queryClient = useQueryClient();
 
   const { data } = useQuery({
     queryKey: ['projectDetailApi'],
     queryFn: () => projectDetailApi(Number(projectId)),
+  });
+
+  const { mutate: likeMutate } = useMutation({
+    mutationKey: ['likeApi'],
+    mutationFn: likesApi,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['projectDetailApi'] });
+    },
   });
 
   useEffect(() => {
@@ -41,6 +56,7 @@ export default function Project() {
         const workspace = new Blockly.Workspace();
         Blockly.Xml.domToWorkspace(xmlDom.documentElement, workspace);
 
+        // JavaScript 코드를 생성
         javascriptGenerator.addReservedWords('code');
         const generatedCode = javascriptGenerator.workspaceToCode(workspace);
 
@@ -55,12 +71,20 @@ export default function Project() {
   return (
     <Conatienr>
       <div>
-        <Title>{data?.title}</Title>
+        <TitleContainer>
+          <Title>{data?.title}</Title>
+          <div>
+            <button onClick={() => likeMutate(Number(projectId))}>
+              <Heart isLiked={data?.like_status} />
+            </button>
+            <span>{data?.like_count}</span>
+          </div>
+        </TitleContainer>
         <TitleContainer>
           <Description>{data?.description}</Description>
-          <ButtonLabel onClick={() => {}}>
+          {/* <ButtonLabel onClick={() => {setSizeUp(true)}}>
             <SizeUpIcon size={16} />
-          </ButtonLabel>
+          </ButtonLabel> */}
         </TitleContainer>
         <CodeIframe srcDoc={code} sizeUp={sizeUp} />
       </div>
@@ -69,7 +93,7 @@ export default function Project() {
         <Description>{data?.title} 코드를 확인해보세요!</Description>
         <PrettyCodeContainer>
           <CodeBlock
-            text={beautifiedHtml}
+            text={beautifiedHtml.lengt ? beautifiedHtml : '코드가 존재하지 않습니다.'}
             language="html"
             showLineNumbers={true}
             theme={a11yLight}
@@ -87,14 +111,23 @@ const Conatienr = styled.div`
   margin: 70px auto;
   width: 60vw;
   > div {
-    display: flex;
-    flex-direction: column;
+    ${flex.COLUMN_FLEX}
   }
 `;
 
 const TitleContainer = styled.div`
   ${flex.BETWEEN}
   margin-bottom: 10px;
+  > div {
+    ${flex.CENTER}
+    gap: 4px;
+    > button {
+      ${flex.CENTER}
+    }
+    > span {
+      ${font.B2}
+    }
+  }
 `;
 const Title = styled.h1`
   ${font.H1}

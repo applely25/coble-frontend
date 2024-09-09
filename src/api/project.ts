@@ -68,6 +68,8 @@ interface IresProjectDetail {
   profile: string;
   project_url: string;
   title: string;
+  like_count: number;
+  like_status: boolean;
 }
 const projectDetailApi = async (
   projectId: number,

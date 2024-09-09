@@ -47,7 +47,7 @@ interface QuizType {
 }
 interface IresQuizDetail {
   quiz_type: QuizTypeEnum;
-  title: string;
+  quiz_title: string;
   quiz_list: QuizType[];
 }
 

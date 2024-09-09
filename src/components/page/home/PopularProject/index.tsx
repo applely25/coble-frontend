@@ -1,9 +1,16 @@
+'use client';
 import { PopularProjectArticle } from '@/components/common';
 import { design, flex, font, theme } from '@/styles';
 import { styled } from '@linaria/react';
 import Link from 'next/link';
+import { useQuery } from '@tanstack/react-query';
+import { projectListApi } from '@/api/project';
 
 export default function PopularProject() {
+  const { data } = useQuery({
+    queryKey: ['projectListApi', 0],
+    queryFn: () => projectListApi(0, 6),
+  });
   return (
     <Container>
       <TitleContainer>
@@ -13,42 +20,7 @@ export default function PopularProject() {
         </p>
       </TitleContainer>
       <PopularProjectContainer>
-        <PopularProjectArticle
-          imageSrc="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeUMCgm6_KLvyfUutoOdxQ1ifOP5IDd1Iuaw&s"
-          title1="XQUARE"
-          description="DSM 프로젝트 통합 서비스"
-          isLiked={false}
-        />
-        <PopularProjectArticle
-          imageSrc="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeUMCgm6_KLvyfUutoOdxQ1ifOP5IDd1Iuaw&s"
-          title1="XQUARE"
-          description="DSM 프로젝트 통합 서비스"
-          isLiked={false}
-        />
-        <PopularProjectArticle
-          imageSrc="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeUMCgm6_KLvyfUutoOdxQ1ifOP5IDd1Iuaw&s"
-          title1="XQUARE"
-          description="DSM 프로젝트 통합 서비스"
-          isLiked={false}
-        />
-        <PopularProjectArticle
-          imageSrc="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeUMCgm6_KLvyfUutoOdxQ1ifOP5IDd1Iuaw&s"
-          title1="XQUARE"
-          description="DSM 프로젝트 통합 서비스"
-          isLiked={false}
-        />
-        <PopularProjectArticle
-          imageSrc="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeUMCgm6_KLvyfUutoOdxQ1ifOP5IDd1Iuaw&s"
-          title1="XQUARE"
-          description="DSM 프로젝트 통합 서비스"
-          isLiked={false}
-        />
-        <PopularProjectArticle
-          imageSrc="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeUMCgm6_KLvyfUutoOdxQ1ifOP5IDd1Iuaw&s"
-          title1="XQUARE"
-          description="DSM 프로젝트 통합 서비스"
-          isLiked={false}
-        />
+        {data?.project_list.map((v) => <PopularProjectArticle {...v} />)}
       </PopularProjectContainer>
       <MoreProjectButton href="/">더 많은 프로젝트 보러가기</MoreProjectButton>
     </Container>
