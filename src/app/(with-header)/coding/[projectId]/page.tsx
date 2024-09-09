@@ -10,12 +10,16 @@ import {
   MainCoding,
   PrettyCode,
 } from '@/components/page/coding';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 export default function Coding() {
   const [code, setCode] = useState<string>('');
   const { projectId } = useParams();
+  useEffect(() => {
+    toast('코드 블록이 보이지 않으신 경우, 새로고침 해주세요');
+  }, []);
   const router = useRouter();
 
   if (Number(projectId)) {

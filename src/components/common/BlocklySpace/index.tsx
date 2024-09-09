@@ -73,7 +73,7 @@ const BlocklySpace = ({
   };
 
   const { data, isError } = useQuery({
-    queryKey: ['projectDetailApi'],
+    queryKey: ['projectDetailApi', projectId],
     queryFn: () => projectDetailApi(Number(projectId)),
   });
 
