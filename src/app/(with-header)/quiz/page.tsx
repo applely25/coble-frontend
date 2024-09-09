@@ -42,10 +42,11 @@ const Quiz = () => {
           <QuizDescription>하루에 3개씩 퀴즈를 풀어보아요!</QuizDescription>
         </QuizTitleContainer>
         <FilterWrapper>
-          <SearchWrapper>
+          {/* <SearchWrapper>
             <SearchInput type="text" placeholder="검색어를 입력해주세요" />
             <SearchIcon />
-          </SearchWrapper>
+          </SearchWrapper> */}
+          <div></div>
           <DropdownWrapper>
             <Dropdown
               describe="상태"

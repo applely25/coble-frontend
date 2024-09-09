@@ -22,7 +22,7 @@ export default function PopularProject() {
       <PopularProjectContainer>
         {data?.project_list.map((v) => <PopularProjectArticle {...v} />)}
       </PopularProjectContainer>
-      <MoreProjectButton href="/">더 많은 프로젝트 보러가기</MoreProjectButton>
+      <MoreProjectButton href="/project">더 많은 프로젝트 보러가기</MoreProjectButton>
     </Container>
   );
 }
