@@ -11,6 +11,9 @@ import { BlocksInitializer, registerGenerators } from '@/utils/blocks';
 import { javascriptGenerator } from 'blockly/javascript';
 import { supabase } from '@/utils/supabase/supabase';
 import { DEFAULTXML } from '@/constants';
+import { useQuery } from '@tanstack/react-query';
+import { projectDetailApi } from '@/api/project';
+import axios from 'axios';
 
 interface BlocklyProps {
   workspace: Blockly.WorkspaceSvg | null;
@@ -69,9 +72,41 @@ const BlocklySpace = ({
     }
   };
 
+  const { data, isError } = useQuery({
+    queryKey: ['projectDetailApi'],
+    queryFn: () => projectDetailApi(Number(projectId)),
+  });
   useEffect(() => {
     BlocksInitializer();
   }, []);
+
+  useEffect(() => {
+    console.log(data);
+    if (data && workspace) {
+      if (!data.project_url.split('/')[3]) {
+        loadWorkspaceFromXml(exampleXml);
+      } else {
+        const getData = async () => {
+          const { data: res } = await axios.get(data.project_url);
+          loadWorkspaceFromXml(res);
+          const parser = new DOMParser();
+          const xmlDom = parser.parseFromString(res, 'text/xml');
+          const workspaceDom = xmlDom.documentElement;
+          const newWorkspace = new Blockly.Workspace();
+          Blockly.Xml.domToWorkspace(workspaceDom, newWorkspace);
+
+          const updateCode = () => {
+            javascriptGenerator.addReservedWords('code');
+            const generatedCode =
+              javascriptGenerator.workspaceToCode(newWorkspace);
+            setCode(generatedCode);
+          };
+          updateCode();
+        };
+        getData();
+      }
+    }
+  }, [data]);
 
   // 컴포넌트가 처음 렌더링될 때만 XML 데이터를 로드
   useEffect(() => {
@@ -79,8 +114,6 @@ const BlocklySpace = ({
     registerGenerators();
 
     if (workspace) {
-      if (!code) loadWorkspaceFromXml(exampleXml);
-
       const updateCode = () => {
         javascriptGenerator.addReservedWords('code');
         const generatedCode = javascriptGenerator.workspaceToCode(workspace);
