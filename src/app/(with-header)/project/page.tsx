@@ -16,6 +16,7 @@ interface Project {
   description: string;
   like_status: boolean;
   profile: string;
+  is_mine: boolean;
 }
 
 interface MyInfoApiResponse {
@@ -52,12 +53,13 @@ export default function Project() {
           <ScrollableProjectList>
             {data?.my_create_project_list.map((project) => (
               <PopularProjectArticle
-                key={project.id}
-                imageSrc={project.image}
-                title1={project.title}
+                id={project.id}
+                image={project.image}
+                title={project.title}
                 description={project.description}
-                isLiked={project.like_status}
+                like_status={project.like_status}
                 profile={project.profile}
+                is_mine={project.is_mine}
               />
             ))}
           </ScrollableProjectList>
@@ -68,12 +70,13 @@ export default function Project() {
           <ScrollableProjectList>
             {data?.user_like_project_list.map((project) => (
               <PopularProjectArticle
-                key={project.id}
-                imageSrc={project.image}
-                title1={project.title}
+                id={project.id}
+                image={project.image}
+                title={project.title}
                 description={project.description}
-                isLiked={project.like_status}
+                like_status={project.like_status}
                 profile={project.profile}
+                is_mine={project.is_mine}
               />
             ))}
           </ScrollableProjectList>
