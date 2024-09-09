@@ -14,6 +14,9 @@ import { useMutation } from '@tanstack/react-query';
 import { editInfoApi } from '@/api/users';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
+import { Storage } from '@/storage';
+import { useAtom } from 'jotai';
+import { userContext } from '@/context';
 
 export default function EditInfo() {
   const inputInitialData: PlaceholderKeys[] = ['edit_nickname'];
@@ -21,6 +24,7 @@ export default function EditInfo() {
   const fileInput = useRef<HTMLInputElement | null>(null);
   const [imageFile, setImageFile] = useState<File>();
   const nav = useRouter();
+  const [, setUser] = useAtom(userContext);
 
   const handleClick = () => {
     if (fileInput.current) {
@@ -39,7 +43,7 @@ export default function EditInfo() {
     mutationKey: ['editInfoApi'],
     onSuccess: ({ data }) => {
       toast('정보가 수정되었습니다.');
-      // todo : 캐시 초기화 (닉네임 저장한 거 초기화)
+      setUser({id:inputValue.nickname, isLogin:true})
       nav.push('/');
     },
   });

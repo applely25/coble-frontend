@@ -12,6 +12,9 @@ import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import DeleteModal from '@/components/page/mypage/DeleteModal';
 import { useState } from 'react';
+import { Storage } from '@/storage';
+import { useAtom } from 'jotai';
+import { userContext } from '@/context';
 
 const inputInitialData: PlaceholderKeys[] = ['password'];
 const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$/;
@@ -19,13 +22,17 @@ export default function DeleteAccount() {
   const { inputValue, onChange, placeholder } = useInputForm(inputInitialData);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const nav = useRouter();
+  const [, setUser] = useAtom(userContext);
+
 
   const { mutate: deleteUserMutate } = useMutation({
     mutationFn: (data: { password: string }) => deleteUserApi(data.password),
     mutationKey: ['deleteUser'],
     onSuccess: () => {
       toast('회원탈퇴가 완료되었습니다.');
-      // todo : 토큰 초기화하기
+      Storage.delItem('access_token')
+      Storage.delItem('refresh_token')
+      setUser({id:'', isLogin:false})
       nav.push('/');
     },
   });

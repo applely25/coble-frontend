@@ -11,7 +11,7 @@ import { BlocksInitializer, registerGenerators } from '@/utils/blocks';
 import { javascriptGenerator } from 'blockly/javascript';
 import { supabase } from '@/utils/supabase/supabase';
 import { DEFAULTXML } from '@/constants';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery,  QueryClient, useQueryClient} from '@tanstack/react-query';
 import { projectDetailApi } from '@/api/project';
 import axios from 'axios';
 
@@ -86,11 +86,13 @@ const BlocklySpace = ({
   useEffect(() => {
     BlocksInitializer();
   }, []);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (data && workspace) {
       if (!data.project_url.split('/')[3]) {
         loadWorkspaceFromXml(exampleXml);
+        queryClient.invalidateQueries({ queryKey: ['projectCodeSaveApi'] });
       } else {
         const getData = async () => {
           const { data: res } = await axios.get(data.project_url);

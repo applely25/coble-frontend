@@ -7,6 +7,9 @@ import { useRouter } from 'next/navigation';
 import { myInfoApi } from '@/api/users';
 import { useQuery } from '@tanstack/react-query';
 import { DefaultProfileImage } from '@/assets/image';
+import { useAtom } from 'jotai';
+import { userContext } from '@/context';
+import { Storage } from '@/storage';
 
 const Nav = [
   { title: '관련 프로젝트 확인', value: '/project' },
@@ -43,9 +46,11 @@ export default function Sidebar() {
       nav.push(Nav[index].value);
     }
   };
-
+const [, setUser]= useAtom(userContext)
   const logoutClick = () => {
-    // todo : token 초기화
+    setUser({id:'0', isLogin:false})
+    Storage.delItem('access_token')
+    Storage.delItem('refresh_token')
   };
 
   return (
