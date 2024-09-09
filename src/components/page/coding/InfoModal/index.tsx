@@ -9,7 +9,7 @@ import Input from '@/components/common/Input';
 import { AddPhotoIcon } from '@/assets/icon';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
-import { projectSaveApi } from '@/api/project';
+import { projectCodeSaveApi, projectSaveApi } from '@/api/project';
 import Image from 'next/image';
 
 const inputInitialData: PlaceholderKeys[] = ['title', 'description'];

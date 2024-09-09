@@ -76,7 +76,7 @@ const projectDetailApi = async (
   return data;
 };
 
-interface projectType {
+export interface projectType {
   id: number;
   image: string;
   profile: string;
@@ -93,7 +93,15 @@ interface IresProjectList {
   last: boolean;
   total_pages: number;
 }
-const projectListApi = async (size: number, page: number) => {};
+const projectListApi = async (
+  page: number,
+  size: number,
+): Promise<IresProjectList> => {
+  const { data } = await AuthInstance.get(
+    `${base}/list?page=${page}&size=${size}`,
+  );
+  return data;
+};
 
 export {
   projectSaveApi,
@@ -101,4 +109,5 @@ export {
   projectInfoUpdateApi,
   projectInfoGetApi,
   projectDetailApi,
+  projectListApi,
 };
