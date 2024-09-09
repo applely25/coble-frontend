@@ -9,7 +9,8 @@ import Input from '@/components/common/Input';
 import { useMutation } from '@tanstack/react-query';
 import { deleteUserApi } from '@/api/users';
 import { toast } from 'react-toastify';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
+import DeleteModal from '@/components/page/mypage/DeleteModal';
 
 const inputInitialData: PlaceholderKeys[] = ['password'];
 const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$/;
@@ -37,6 +38,35 @@ export default function DeleteAccount() {
     } else {
       deleteUserMutate(inputValue);
     }
+  };
+
+  const cancelButton = {
+    title: '취소하기',
+    onClick: () => {
+      nav.push('/');
+    },
+  };
+
+  const approveButton = {
+    title: '탈퇴하기',
+    onClick: () => {
+      onClickSuccess;
+    },
+  };
+
+  const onClickModal = () => {
+    <DeleteModal
+      children={
+        <ModalContainer>
+          <SectionTitle>회원탈퇴</SectionTitle>
+          <Description>
+            계정 탈퇴 후, 복구할 수 없습니다. 탈퇴하시겠습니까?
+          </Description>
+        </ModalContainer>
+      }
+      cancelButton={cancelButton}
+      approveButton={approveButton}
+    />;
   };
 
   return (
@@ -68,13 +98,18 @@ export default function DeleteAccount() {
             ))}
           </DeleteInputContainer>
           <DeleteButtonContainer>
-            <DeleteButton onClick={onClickSuccess}>회원 탈퇴하기</DeleteButton>
+            <DeleteButton onClick={onClickModal}>회원 탈퇴하기</DeleteButton>
           </DeleteButtonContainer>
         </ContentChildren>
       </ContentContainer>
     </Container>
   );
 }
+
+const ModalContainer = styled.div`
+  ${flex.COLUMN_CENTER};
+  gap: 24px;
+`;
 
 const DeleteInputContainer = styled.div`
   ${flex.COLUMN_FLEX}
