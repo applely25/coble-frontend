@@ -7,12 +7,12 @@ const navigationListData: INavigationListData[] = [
   {
     id: 1,
     name: '코딩',
-    href: '/coding',
+    href: '/coding/new',
   },
   {
     id: 2,
-    name: '개발 문서',
-    href: '/document',
+    name: '인기 프로젝트',
+    href: '/list',
   },
   {
     id: 3,

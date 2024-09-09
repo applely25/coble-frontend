@@ -9,7 +9,11 @@ const placeholder = {
   nickname: '닉네임을 입력해주세요.',
   verify_code: '인증번호 4자리를 입력해주세요.',
   title: 'COBLE',
-  describe: '웹 블록코딩 서비스',
+  description: '웹 블록코딩 서비스',
+  image: '',
+  exist_password: '기존 비밀번호를 입력해주세요.',
+  change_password: '변경할 비밀번호를 입력해주세요.',
+  edit_nickname: '수정할 닉네임을 입력해주세요.',
 };
 
 export type PlaceholderKeys = keyof typeof placeholder;
@@ -34,7 +38,10 @@ const useInputForm = (initialData: PlaceholderKeys[]) => {
     setInputValue({ ...inputValue, [name]: value });
   };
 
-  return { inputValue, onChange, placeholder };
+  const onChangeOne = (name: string, value: string) => {
+    setInputValue((prev) => ({ ...prev, [name]: value }));
+  };
+  return { inputValue, onChange, placeholder, onChangeOne };
 };
 
 export default useInputForm;

@@ -20,11 +20,15 @@ const Input = ({
   ...props
 }: InputProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const isPassword: boolean = type === 'password' || type === 'password_check';
+  const isPassword: boolean =
+    type === 'password' ||
+    type === 'password_check' ||
+    type === 'exist_password' ||
+    type === 'change_password';
 
   if (design === 'LABEL') {
     const labelTitle =
-      type === 'title' ? '제목' : type === 'describe' ? '한 줄 소개' : '';
+      type === 'title' ? '제목' : type === 'description' ? '한 줄 소개' : '';
 
     return (
       <LabelContainer>

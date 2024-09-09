@@ -1,5 +1,5 @@
-import { javascriptGenerator } from 'blockly/javascript';
-import { CSSBlockTypes, HTMLBlockTypes } from './types';
+import { javascriptGenerator, Order } from 'blockly/javascript';
+import { CSSBlockTypes, EctBlockTypes, HTMLBlockTypes } from './types';
 
 /*
 블록 함수 기본 특
@@ -19,541 +19,536 @@ javascriptGenerator.forBlock[type] = function(block, generator) {
 */
 
 const registerGenerators = () => {
-  javascriptGenerator.forBlock[HTMLBlockTypes.Html] = (block, generator) => {
-    const content = generator.statementToCode(block, 'CONTENT');
-    return `<html>${content}</html>`;
+  javascriptGenerator.forBlock[HTMLBlockTypes.DoctypeHTML] = (
+    block,
+    generator,
+  ) => {
+    return `<!DOCTYPE html>`;
   };
-
+  javascriptGenerator.forBlock[HTMLBlockTypes.Html] = (block, generator) => {
+    const lang = block.getFieldValue('lang');
+    const content = generator.statementToCode(block, 'CONTENT');
+    return `<html lang=${lang}>${content}</html>`;
+  };
   javascriptGenerator.forBlock[HTMLBlockTypes.Head] = (block, generator) => {
     const content = generator.statementToCode(block, 'CONTENT');
     return `<head>${content}</head>`;
   };
-
-  javascriptGenerator.forBlock[HTMLBlockTypes.Meta] = (block, generator) => {
-    const attributes = block.getFieldValue('ATTRIBUTES');
-    return `<meta ${attributes}>`;
-  };
-
-  javascriptGenerator.forBlock[HTMLBlockTypes.Title] = (block, generator) => {
-    const text = block.getFieldValue('TEXT');
-    return `<title>${text}</title>`;
-  };
-
-  javascriptGenerator.forBlock[HTMLBlockTypes.Link] = (block, generator) => {
-    const attributes = block.getFieldValue('ATTRIBUTES');
-    return `<link ${attributes}>`;
-  };
-
   javascriptGenerator.forBlock[HTMLBlockTypes.Body] = (block, generator) => {
     const content = generator.statementToCode(block, 'CONTENT');
     return `<body>${content}</body>`;
   };
-
+  javascriptGenerator.forBlock[HTMLBlockTypes.Meta] = (block, generator) => {
+    const content = block.getFieldValue('ATTRIBUTES');
+    return `<meta ${content}/>`;
+  };
+  javascriptGenerator.forBlock[HTMLBlockTypes.Title] = (block, generator) => {
+    const content = block.getFieldValue('TITLE');
+    return `<title>${content}</title>`;
+  };
+  javascriptGenerator.forBlock[HTMLBlockTypes.Style] = (block, generator) => {
+    const content = generator.statementToCode(block, 'CONTENT');
+    return `<style>${content}</style>`;
+  };
   javascriptGenerator.forBlock[HTMLBlockTypes.Div] = (block, generator) => {
-    const attributes = block.getFieldValue('ATTRIBUTES');
+    const id = generator.valueToCode(block, 'id', 0);
     const content = generator.statementToCode(block, 'CONTENT');
-    return `<div ${attributes}>${content}</div>`;
+    return `<div${id}>${content}</div>`;
   };
-
   javascriptGenerator.forBlock[HTMLBlockTypes.Section] = (block, generator) => {
-    const attributes = block.getFieldValue('ATTRIBUTES');
+    const id = generator.valueToCode(block, 'id', 0);
     const content = generator.statementToCode(block, 'CONTENT');
-    return `<section ${attributes}>${content}</section>`;
+    return `<section${id}>${content}</section>`;
   };
-
   javascriptGenerator.forBlock[HTMLBlockTypes.Article] = (block, generator) => {
-    const attributes = block.getFieldValue('ATTRIBUTES');
+    const id = generator.valueToCode(block, 'id', 0);
     const content = generator.statementToCode(block, 'CONTENT');
-    return `<article ${attributes}>${content}</article>`;
+    return `<article${id}>${content}</article%id>`;
   };
-
   javascriptGenerator.forBlock[HTMLBlockTypes.Header] = (block, generator) => {
-    const attributes = block.getFieldValue('ATTRIBUTES');
+    const id = generator.valueToCode(block, 'id', 0);
     const content = generator.statementToCode(block, 'CONTENT');
-    return `<header ${attributes}>${content}</header>`;
+    return `<header${id}>${content}</header>`;
   };
-
   javascriptGenerator.forBlock[HTMLBlockTypes.Footer] = (block, generator) => {
-    const attributes = block.getFieldValue('ATTRIBUTES');
+    const id = generator.valueToCode(block, 'id', 0);
     const content = generator.statementToCode(block, 'CONTENT');
-    return `<footer ${attributes}>${content}</footer>`;
+    return `<footer${id}>${content}</footer>`;
   };
-
   javascriptGenerator.forBlock[HTMLBlockTypes.Nav] = (block, generator) => {
-    const attributes = block.getFieldValue('ATTRIBUTES');
+    const id = generator.valueToCode(block, 'id', 0);
     const content = generator.statementToCode(block, 'CONTENT');
-    return `<nav ${attributes}>${content}</nav>`;
+    return `<nav${id}>${content}</nav>`;
   };
-
   javascriptGenerator.forBlock[HTMLBlockTypes.P] = (block, generator) => {
-    const text = block.getFieldValue('TEXT');
-    return `<p>${text}</p>`;
+    const id = generator.valueToCode(block, 'id', 0);
+    const content = block.getFieldValue('CONTENT');
+    return `<p${id}>${content}</p>`;
   };
-
-  javascriptGenerator.forBlock[HTMLBlockTypes.Pre] = (block, generator) => {
-    const text = block.getFieldValue('TEXT');
-    return `<pre>${text}</pre>`;
+  javascriptGenerator.forBlock[HTMLBlockTypes.Blockquote] = (
+    block,
+    generator,
+  ) => {
+    const id = generator.valueToCode(block, 'id', 0);
+    const content = block.getFieldValue('CONTENT');
+    return `<blockquote${id}>${content}</blockquote>`;
   };
-
-  javascriptGenerator.forBlock[HTMLBlockTypes.Hr] = (block, generator) =>
-    `<hr>`;
-
+  javascriptGenerator.forBlock[HTMLBlockTypes.Hr] = (block, generator) => {
+    const id = generator.valueToCode(block, 'id', 0);
+    return `<hr${id}/>`;
+  };
   javascriptGenerator.forBlock[HTMLBlockTypes.Ul] = (block, generator) => {
-    const items = generator.statementToCode(block, 'ITEMS');
-    return `<ul>${items}</ul>`;
+    const id = generator.valueToCode(block, 'id', 0);
+    const content = generator.statementToCode(block, 'CONTENT');
+    return `<ul${id}>${content}</ul>`;
   };
-
   javascriptGenerator.forBlock[HTMLBlockTypes.Ol] = (block, generator) => {
-    const items = generator.statementToCode(block, 'ITEMS');
-    return `<ol>${items}</ol>`;
+    const content = generator.statementToCode(block, 'CONTENT');
+    const id = generator.valueToCode(block, 'id', 0);
+    return `<ol${id}>${content}</ol>`;
   };
-
   javascriptGenerator.forBlock[HTMLBlockTypes.Li] = (block, generator) => {
-    const text = block.getFieldValue('TEXT');
-    return `<li>${text}</li>`;
+    const id = generator.valueToCode(block, 'id', 0);
+    const content = generator.statementToCode(block, 'CONTENT');
+    return `<li${id}>${content}</li>`;
   };
-
   javascriptGenerator.forBlock[HTMLBlockTypes.Dl] = (block, generator) => {
-    const items = generator.statementToCode(block, 'ITEMS');
-    return `<dl>${items}</dl>`;
+    const id = generator.valueToCode(block, 'id', 0);
+    const content = generator.statementToCode(block, 'CONTENT');
+    return `<dl${id}>${content}</dl>`;
   };
-
   javascriptGenerator.forBlock[HTMLBlockTypes.Dt] = (block, generator) => {
-    const text = block.getFieldValue('TEXT');
-    return `<dt>${text}</dt>`;
+    const id = generator.valueToCode(block, 'id', 0);
+    const content = generator.statementToCode(block, 'CONTENT');
+    return `<dt${id}>${content}</dt>`;
   };
-
   javascriptGenerator.forBlock[HTMLBlockTypes.Dd] = (block, generator) => {
-    const text = block.getFieldValue('TEXT');
-    return `<dd>${text}</dd>`;
+    const id = generator.valueToCode(block, 'id', 0);
+    const content = generator.statementToCode(block, 'CONTENT');
+    return `<dd${id}>${content}</dd>`;
   };
-
   javascriptGenerator.forBlock[HTMLBlockTypes.A] = (block, generator) => {
+    const id = generator.valueToCode(block, 'id', 0);
     const href = block.getFieldValue('HREF');
     const content = generator.statementToCode(block, 'CONTENT');
-    return `<a href="${href}">${content}</a>`;
+    return `<a href="${href}"${id}>${content}</a>`;
   };
-
   javascriptGenerator.forBlock[HTMLBlockTypes.Button] = (block, generator) => {
-    const text = block.getFieldValue('TEXT');
-    return `<button>${text}</button>`;
-  };
-
-  javascriptGenerator.forBlock[HTMLBlockTypes.Form] = (block, generator) => {
-    const attributes = block.getFieldValue('ATTRIBUTES');
+    const id = generator.valueToCode(block, 'id', 0);
     const content = generator.statementToCode(block, 'CONTENT');
-    return `<form ${attributes}>${content}</form>`;
+    return `<button${id}>${content}</button>`;
   };
-
+  javascriptGenerator.forBlock[HTMLBlockTypes.Form] = (block, generator) => {
+    const id = generator.valueToCode(block, 'id', 0);
+    const content = generator.statementToCode(block, 'CONTENT');
+    return `<form${id}>${content}</form>`;
+  };
   javascriptGenerator.forBlock[HTMLBlockTypes.Fieldset] = (
     block,
     generator,
   ) => {
+    const id = generator.valueToCode(block, 'id', 0);
     const content = generator.statementToCode(block, 'CONTENT');
-    return `<fieldset>${content}</fieldset>`;
+    return `<fieldset${id}>${content}</fieldset>`;
   };
-
   javascriptGenerator.forBlock[HTMLBlockTypes.Legend] = (block, generator) => {
-    const text = block.getFieldValue('TEXT');
-    return `<legend>${text}</legend>`;
-  };
-
-  javascriptGenerator.forBlock[HTMLBlockTypes.Label] = (block, generator) => {
-    const forValue = block.getFieldValue('FOR');
+    const id = generator.valueToCode(block, 'id', 0);
     const content = generator.statementToCode(block, 'CONTENT');
-    return `<label for="${forValue}">${content}</label>`;
+    return `<legend${id}>${content}</legend>`;
   };
-
+  javascriptGenerator.forBlock[HTMLBlockTypes.Label] = (block, generator) => {
+    const id = generator.valueToCode(block, 'id', 0);
+    const content = block.getFieldValue('LABEL');
+    return `<label${id}>${content}</label>`;
+  };
   javascriptGenerator.forBlock[HTMLBlockTypes.Input] = (block, generator) => {
-    const attributes = block.getFieldValue('ATTRIBUTES');
-    return `<input ${attributes}>`;
+    const id = generator.valueToCode(block, 'id', 0);
+    return `<input${id}/>`;
   };
-
   javascriptGenerator.forBlock[HTMLBlockTypes.Textarea] = (
     block,
     generator,
   ) => {
-    const attributes = block.getFieldValue('ATTRIBUTES');
-    return `<textarea ${attributes}></textarea>`;
+    const id = generator.valueToCode(block, 'id', 0);
+    return `<textarea${id}/>`;
   };
-
   javascriptGenerator.forBlock[HTMLBlockTypes.Select] = (block, generator) => {
-    const attributes = block.getFieldValue('ATTRIBUTES');
-    const options = generator.statementToCode(block, 'OPTIONS');
-    return `<select ${attributes}>${options}</select>`;
+    const id = generator.valueToCode(block, 'id', 0);
+    const content = generator.statementToCode(block, 'CONTENT');
+    return `<select${id}>${content}</select>`;
   };
-
-  javascriptGenerator.forBlock[HTMLBlockTypes.Option] = (block, generator) => {
-    const text = block.getFieldValue('TEXT');
-    return `<option>${text}</option>`;
+  javascriptGenerator.forBlock[HTMLBlockTypes.Select] = (block, generator) => {
+    const id = generator.valueToCode(block, 'id', 0);
+    const content = generator.statementToCode(block, 'CONTENT');
+    return `<option${id}>${content}</option>`;
   };
-
   javascriptGenerator.forBlock[HTMLBlockTypes.Video] = (block, generator) => {
-    const attributes = block.getFieldValue('ATTRIBUTES');
-    return `<video ${attributes}></video>`;
+    const id = generator.valueToCode(block, 'id', 0);
+    const content = generator.statementToCode(block, 'CONTENT');
+    return `<video${id}>${content}</video>`;
   };
-
+  javascriptGenerator.forBlock[HTMLBlockTypes.Source] = (block, generator) => {
+    const id = generator.valueToCode(block, 'id', 0);
+    const src = block.getFieldValue('SRC');
+    return `<source src="${src}"${id}/>`;
+  };
   javascriptGenerator.forBlock[HTMLBlockTypes.Audio] = (block, generator) => {
-    const attributes = block.getFieldValue('ATTRIBUTES');
-    return `<audio ${attributes}></audio>`;
+    const content = generator.statementToCode(block, 'CONTENT');
+    const id = generator.valueToCode(block, 'id', 0);
+    return `<audio${id}>${content}</audio>`;
   };
-
-  javascriptGenerator.forBlock[HTMLBlockTypes.Embed] = (block, generator) => {
-    const attributes = block.getFieldValue('ATTRIBUTES');
-    return `<embed ${attributes}>`;
+  javascriptGenerator.forBlock[HTMLBlockTypes.Img] = (block, generator) => {
+    const id = generator.valueToCode(block, 'id', 0);
+    const src = block.getFieldValue('SRC');
+    return `<img src="${src}"${id}/>`;
   };
-
-  // css
-  javascriptGenerator.forBlock[CSSBlockTypes.Display] = (block, generator) => {
-    const value = block.getFieldValue('VALUE');
-    return `display: ${value};`;
+  javascriptGenerator.forBlock[EctBlockTypes.Class] = (block, generator) => {
+    const classText = block.getFieldValue('CLASS');
+    const nextBlock = generator.valueToCode(block, 'NEXT', 0);
+    return [` class="${classText}"${nextBlock}`, 0];
   };
-
-  javascriptGenerator.forBlock[CSSBlockTypes.Position] = (block, generator) => {
-    const value = block.getFieldValue('VALUE');
-    return `position: ${value};`;
+  javascriptGenerator.forBlock[EctBlockTypes.Id] = (block, generator) => {
+    const classText = block.getFieldValue('ID');
+    const nextBlock = generator.valueToCode(block, 'NEXT', 0);
+    return [` id="${classText}"${nextBlock}`, 0];
   };
-
-  javascriptGenerator.forBlock[CSSBlockTypes.Top] = (block, generator) => {
-    const value = block.getFieldValue('VALUE');
-    return `top: ${value};`;
+  javascriptGenerator.forBlock[EctBlockTypes.ClassCss] = (block, generator) => {
+    const classText = block.getFieldValue('CLASS');
+    const content = generator.statementToCode(block, 'CONTENT');
+    return `.${classText}{${content}}`;
   };
-
-  javascriptGenerator.forBlock[CSSBlockTypes.Right] = (block, generator) => {
-    const value = block.getFieldValue('VALUE');
-    return `right: ${value};`;
+  javascriptGenerator.forBlock[EctBlockTypes.Id] = (block, generator) => {
+    const classText = block.getFieldValue('CLASS');
+    const content = generator.statementToCode(block, 'CONTENT');
+    return `#${classText}{${content}}`;
   };
-
-  javascriptGenerator.forBlock[CSSBlockTypes.Bottom] = (block, generator) => {
-    const value = block.getFieldValue('VALUE');
-    return `bottom: ${value};`;
+  javascriptGenerator.forBlock[EctBlockTypes.Css] = (block, generator) => {
+    const classText = block.getFieldValue('ID');
+    const content = generator.statementToCode(block, 'CONTENT');
+    return `${classText}{${content}}`;
   };
-
-  javascriptGenerator.forBlock[CSSBlockTypes.Left] = (block, generator) => {
-    const value = block.getFieldValue('VALUE');
-    return `left: ${value};`;
-  };
-
-  javascriptGenerator.forBlock[CSSBlockTypes.ZIndex] = (block, generator) => {
-    const value = block.getFieldValue('VALUE');
-    return `z-index: ${value};`;
-  };
-
-  javascriptGenerator.forBlock[CSSBlockTypes.Flex] = (block, generator) => {
-    const value = block.getFieldValue('VALUE');
-    return `flex: ${value};`;
-  };
-
-  javascriptGenerator.forBlock[CSSBlockTypes.FlexDirection] = (
+  javascriptGenerator.forBlock[EctBlockTypes.TextBlock] = (
     block,
     generator,
   ) => {
-    const value = block.getFieldValue('VALUE');
-    return `flex-direction: ${value};`;
+    const classText = block.getFieldValue('CONTENT');
+    return `${classText}`;
   };
-
-  javascriptGenerator.forBlock[CSSBlockTypes.JustifyContent] = (
-    block,
-    generator,
-  ) => {
-    const value = block.getFieldValue('VALUE');
-    return `justify-content: ${value};`;
-  };
-
-  javascriptGenerator.forBlock[CSSBlockTypes.AlignItems] = (
-    block,
-    generator,
-  ) => {
-    const value = block.getFieldValue('VALUE');
-    return `align-items: ${value};`;
-  };
-
-  javascriptGenerator.forBlock[CSSBlockTypes.GridTemplateColumns] = (
-    block,
-    generator,
-  ) => {
-    const value = block.getFieldValue('VALUE');
-    return `grid-template-columns: ${value};`;
-  };
-
-  javascriptGenerator.forBlock[CSSBlockTypes.GridTemplateRows] = (
-    block,
-    generator,
-  ) => {
-    const value = block.getFieldValue('VALUE');
-    return `grid-template-rows: ${value};`;
-  };
-
-  javascriptGenerator.forBlock[CSSBlockTypes.GridGap] = (block, generator) => {
-    const value = block.getFieldValue('VALUE');
-    return `grid-gap: ${value};`;
-  };
-
-  javascriptGenerator.forBlock[CSSBlockTypes.Width] = (block, generator) => {
-    const value = block.getFieldValue('VALUE');
-    return `width: ${value};`;
-  };
-
-  javascriptGenerator.forBlock[CSSBlockTypes.Height] = (block, generator) => {
-    const value = block.getFieldValue('VALUE');
-    return `height: ${value};`;
-  };
-
-  javascriptGenerator.forBlock[CSSBlockTypes.Margin] = (block, generator) => {
-    const value = block.getFieldValue('VALUE');
-    return `margin: ${value};`;
-  };
-
-  javascriptGenerator.forBlock[CSSBlockTypes.Padding] = (block, generator) => {
-    const value = block.getFieldValue('VALUE');
-    return `padding: ${value};`;
-  };
-
-  javascriptGenerator.forBlock[CSSBlockTypes.Border] = (block, generator) => {
-    const value = block.getFieldValue('VALUE');
-    return `border: ${value};`;
-  };
-
-  javascriptGenerator.forBlock[CSSBlockTypes.BoxSizing] = (
-    block,
-    generator,
-  ) => {
-    const value = block.getFieldValue('VALUE');
-    return `box-sizing: ${value};`;
-  };
-
-  javascriptGenerator.forBlock[CSSBlockTypes.BorderWidth] = (
-    block,
-    generator,
-  ) => {
-    const value = block.getFieldValue('VALUE');
-    return `border-width: ${value};`;
-  };
-
-  javascriptGenerator.forBlock[CSSBlockTypes.BorderStyle] = (
-    block,
-    generator,
-  ) => {
-    const value = block.getFieldValue('VALUE');
-    return `border-style: ${value};`;
-  };
-
-  javascriptGenerator.forBlock[CSSBlockTypes.BorderColor] = (
-    block,
-    generator,
-  ) => {
-    const value = block.getFieldValue('VALUE');
-    return `border-color: ${value};`;
-  };
-
-  javascriptGenerator.forBlock[CSSBlockTypes.BorderRadius] = (
-    block,
-    generator,
-  ) => {
-    const value = block.getFieldValue('VALUE');
-    return `border-radius: ${value};`;
-  };
-
-  javascriptGenerator.forBlock[CSSBlockTypes.BackgroundColor] = (
-    block,
-    generator,
-  ) => {
-    const value = block.getFieldValue('VALUE');
-    return `background-color: ${value};`;
-  };
-
-  javascriptGenerator.forBlock[CSSBlockTypes.BackgroundImage] = (
-    block,
-    generator,
-  ) => {
-    const value = block.getFieldValue('VALUE');
-    return `background-image: ${value};`;
-  };
-
-  javascriptGenerator.forBlock[CSSBlockTypes.BackgroundSize] = (
-    block,
-    generator,
-  ) => {
-    const value = block.getFieldValue('VALUE');
-    return `background-size: ${value};`;
-  };
-
-  javascriptGenerator.forBlock[CSSBlockTypes.BackgroundRepeat] = (
-    block,
-    generator,
-  ) => {
-    const value = block.getFieldValue('VALUE');
-    return `background-repeat: ${value};`;
-  };
-
-  javascriptGenerator.forBlock[CSSBlockTypes.BackgroundPosition] = (
-    block,
-    generator,
-  ) => {
-    const value = block.getFieldValue('VALUE');
-    return `background-position: ${value};`;
-  };
-
-  javascriptGenerator.forBlock[CSSBlockTypes.BackgroundAttachment] = (
-    block,
-    generator,
-  ) => {
-    const value = block.getFieldValue('VALUE');
-    return `background-attachment: ${value};`;
-  };
-
   javascriptGenerator.forBlock[CSSBlockTypes.FontFamily] = (
     block,
     generator,
   ) => {
-    const value = block.getFieldValue('VALUE');
-    return `font-family: ${value};`;
+    const classText = block.getFieldValue('CONTENT');
+    return `font-family: ${classText};`;
   };
-
   javascriptGenerator.forBlock[CSSBlockTypes.FontSize] = (block, generator) => {
-    const value = block.getFieldValue('VALUE');
-    return `font-size: ${value};`;
+    const classText = block.getFieldValue('CONTENT');
+    return `font-size : ${classText};`;
   };
-
   javascriptGenerator.forBlock[CSSBlockTypes.FontWeight] = (
     block,
     generator,
   ) => {
-    const value = block.getFieldValue('VALUE');
-    return `font-weight: ${value};`;
+    const classText = block.getFieldValue('CONTENT');
+    return `font-weight : ${classText};`;
   };
-
   javascriptGenerator.forBlock[CSSBlockTypes.FontStyle] = (
     block,
     generator,
   ) => {
-    const value = block.getFieldValue('VALUE');
-    return `font-style: ${value};`;
+    const classText = block.getFieldValue('CONTENT');
+    return `font-style : ${classText};`;
   };
-
-  javascriptGenerator.forBlock[CSSBlockTypes.FontVariant] = (
-    block,
-    generator,
-  ) => {
-    const value = block.getFieldValue('VALUE');
-    return `font-variant: ${value};`;
-  };
-
   javascriptGenerator.forBlock[CSSBlockTypes.TextAlign] = (
     block,
     generator,
   ) => {
-    const value = block.getFieldValue('VALUE');
-    return `text-align: ${value};`;
+    const classText = block.getFieldValue('CONTENT');
+    return `text-align : ${classText};`;
   };
-
   javascriptGenerator.forBlock[CSSBlockTypes.TextDecoration] = (
     block,
     generator,
   ) => {
-    const value = block.getFieldValue('VALUE');
-    return `text-decoration: ${value};`;
+    const classText = block.getFieldValue('CONTENT');
+    return `text-decoration : ${classText};`;
   };
-
   javascriptGenerator.forBlock[CSSBlockTypes.TextTransform] = (
     block,
     generator,
   ) => {
-    const value = block.getFieldValue('VALUE');
-    return `text-transform: ${value};`;
+    const classText = block.getFieldValue('CONTENT');
+    return `text-transform : ${classText};`;
   };
-
   javascriptGenerator.forBlock[CSSBlockTypes.LineHeight] = (
     block,
     generator,
   ) => {
-    const value = block.getFieldValue('VALUE');
-    return `line-height: ${value};`;
+    const classText = block.getFieldValue('CONTENT');
+    return `line-height : ${classText};`;
   };
-
   javascriptGenerator.forBlock[CSSBlockTypes.LetterSpacing] = (
     block,
     generator,
   ) => {
-    const value = block.getFieldValue('VALUE');
-    return `letter-spacing: ${value};`;
+    const classText = block.getFieldValue('CONTENT');
+    return `letter-spacing : ${classText};`;
   };
-
   javascriptGenerator.forBlock[CSSBlockTypes.WordSpacing] = (
     block,
     generator,
   ) => {
-    const value = block.getFieldValue('VALUE');
-    return `word-spacing: ${value};`;
+    const classText = block.getFieldValue('CONTENT');
+    return `word-spacing : ${classText};`;
   };
-
   javascriptGenerator.forBlock[CSSBlockTypes.Color] = (block, generator) => {
-    const value = block.getFieldValue('VALUE');
-    return `color: ${value};`;
+    const classText = block.getFieldValue('CONTENT');
+    return `color : ${classText};`;
   };
-
+  javascriptGenerator.forBlock[CSSBlockTypes.ColorPicker] = (
+    block,
+    generator,
+  ) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `color : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.Width] = (block, generator) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `width : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.Height] = (block, generator) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `height : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.Margin] = (block, generator) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `margin : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.Padding] = (block, generator) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `padding : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.Border] = (block, generator) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `border : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.BoxSizing] = (
+    block,
+    generator,
+  ) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `box-sizing : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.BorderWidth] = (
+    block,
+    generator,
+  ) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `border-width : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.BorderStyle] = (
+    block,
+    generator,
+  ) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `border-style : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.BorderColor] = (
+    block,
+    generator,
+  ) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `border-color : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.BorderColorPicker] = (
+    block,
+    generator,
+  ) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `border-color : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.BorderRadius] = (
+    block,
+    generator,
+  ) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `border-radius : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.BackgroundColor] = (
+    block,
+    generator,
+  ) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `background-color : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.BackgroundColorPicker] = (
+    block,
+    generator,
+  ) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `background-color : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.BackgroundImage] = (
+    block,
+    generator,
+  ) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `background-image : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.BackgroundSize] = (
+    block,
+    generator,
+  ) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `background-size : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.BackgroundRepeat] = (
+    block,
+    generator,
+  ) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `background-repeat : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.BackgroundPosition] = (
+    block,
+    generator,
+  ) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `background-position : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.BackgroundAttachment] = (
+    block,
+    generator,
+  ) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `background-attachment : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.Display] = (block, generator) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `display : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.Position] = (block, generator) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `position : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.Top] = (block, generator) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `top : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.Bottom] = (block, generator) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `bottom : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.Left] = (block, generator) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `left : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.Right] = (block, generator) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `right : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.ZIndex] = (block, generator) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `z-index : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.Flex] = (block, generator) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `flex : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.FlexDirection] = (
+    block,
+    generator,
+  ) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `flex-direction : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.JustifyContent] = (
+    block,
+    generator,
+  ) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `justify-content : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.AlignItems] = (
+    block,
+    generator,
+  ) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `align-items : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.GridTemplateColumns] = (
+    block,
+    generator,
+  ) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `grid-template-columns : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.GridTemplateRows] = (
+    block,
+    generator,
+  ) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `grid-template-rows : ${classText};`;
+  };
+  javascriptGenerator.forBlock[CSSBlockTypes.GridGap] = (block, generator) => {
+    const classText = block.getFieldValue('CONTENT');
+    return `grid-gap : ${classText};`;
+  };
   javascriptGenerator.forBlock[CSSBlockTypes.Transition] = (
     block,
     generator,
   ) => {
-    const value = block.getFieldValue('VALUE');
-    return `transition: ${value};`;
+    const classText = block.getFieldValue('CONTENT');
+    return `transition : ${classText};`;
   };
-
   javascriptGenerator.forBlock[CSSBlockTypes.TransitionProperty] = (
     block,
     generator,
   ) => {
-    const value = block.getFieldValue('VALUE');
-    return `transition-property: ${value};`;
+    const classText = block.getFieldValue('CONTENT');
+    return `transition-property : ${classText};`;
   };
-
   javascriptGenerator.forBlock[CSSBlockTypes.TransitionDuration] = (
     block,
     generator,
   ) => {
-    const value = block.getFieldValue('VALUE');
-    return `transition-duration: ${value};`;
+    const classText = block.getFieldValue('CONTENT');
+    return `transition-duration : ${classText};`;
   };
-
   javascriptGenerator.forBlock[CSSBlockTypes.TransitionTimingFunction] = (
     block,
     generator,
   ) => {
-    const value = block.getFieldValue('VALUE');
-    return `transition-timing-function: ${value};`;
+    const classText = block.getFieldValue('CONTENT');
+    return `transition-timing-function : ${classText};`;
   };
-
   javascriptGenerator.forBlock[CSSBlockTypes.Animation] = (
     block,
     generator,
   ) => {
-    const value = block.getFieldValue('VALUE');
-    return `animation: ${value};`;
+    const classText = block.getFieldValue('CONTENT');
+    return `animation : ${classText};`;
   };
-
   javascriptGenerator.forBlock[CSSBlockTypes.AnimationName] = (
     block,
     generator,
   ) => {
-    const value = block.getFieldValue('VALUE');
-    return `animation-name: ${value};`;
+    const classText = block.getFieldValue('CONTENT');
+    return `animation-name : ${classText};`;
   };
-
   javascriptGenerator.forBlock[CSSBlockTypes.AnimationDuration] = (
     block,
     generator,
   ) => {
-    const value = block.getFieldValue('VALUE');
-    return `animation-duration: ${value};`;
+    const classText = block.getFieldValue('CONTENT');
+    return `animation-duration : ${classText};`;
   };
-
   javascriptGenerator.forBlock[CSSBlockTypes.AnimationTimingFunction] = (
     block,
     generator,
   ) => {
-    const value = block.getFieldValue('VALUE');
-    return `animation-timing-function: ${value};`;
+    const classText = block.getFieldValue('CONTENT');
+    return `animation-timing-function : ${classText};`;
   };
 };
 

@@ -1,19 +1,38 @@
 'use client';
+import { quizListApi } from '@/api/quiz';
 import SearchIcon from '@/assets/icon/Search';
-import Dropdown, { ItemType } from '@/components/common/DropDown';
+import Dropdown, { ItemType, QuizType } from '@/components/common/DropDown';
 import { flex, font, theme } from '@/styles';
 import { styled } from '@linaria/react';
-import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import Pagination from '@mui/material/Pagination';
+import Link from 'next/link';
 
-// TODO: 조회 기능 구현 시 삭제
-const quizData = [
-  { title: 'CSS 관련 퀴즈', state: '푼 퀴즈', type: 'O/X 퀴즈' },
-  { title: 'JavaScript 관련 퀴즈', state: '안 푼 퀴즈', type: '객관식 퀴즈' },
-  { title: 'HTML 관련 퀴즈', state: '푼 퀴즈', type: 'O/X 퀴즈' },
-];
 const Quiz = () => {
   const [state, setState] = useState<ItemType>();
-  const [type, setType] = useState<ItemType>();
+  const [type, setType] = useState<QuizType>();
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const { data: quizList } = useQuery({
+    queryKey: ['quizListApi', currentPage, state, type],
+    queryFn: () =>
+      quizListApi({
+        status: state?.value,
+        type: type?.value,
+        page: currentPage,
+        size: 12,
+      }),
+  });
+
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [type, state]);
+
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setCurrentPage(value - 1);
+  };
+
   return (
     <Wrapper>
       <Header>header</Header>
@@ -23,40 +42,60 @@ const Quiz = () => {
           <QuizDescription>하루에 3개씩 퀴즈를 풀어보아요!</QuizDescription>
         </QuizTitleContainer>
         <FilterWrapper>
-          <SearchWrapper>
+          {/* <SearchWrapper>
             <SearchInput type="text" placeholder="검색어를 입력해주세요" />
             <SearchIcon />
-          </SearchWrapper>
+          </SearchWrapper> */}
+          <div></div>
           <DropdownWrapper>
             <Dropdown
               describe="상태"
-              items={[{ text: '푼 퀴즈' }, { text: '안 푼 퀴즈' }]}
+              items={[
+                { text: '푼 퀴즈', value: true },
+                { text: '안 푼 퀴즈', value: false },
+              ]}
               val={state}
               setVal={setState}
             />
             <Dropdown
               describe="종류"
-              items={[{ text: 'OX 퀴즈' }, { text: '객관식 퀴즈' }]}
+              items={[
+                { text: 'OX 퀴즈', value: 'OX' },
+                { text: '객관식 퀴즈', value: 'MULTIPLE_CHOICE' },
+              ]}
               val={type}
               setVal={setType}
             />
           </DropdownWrapper>
         </FilterWrapper>
         <QuizGrid>
-          {quizData.map((quiz, index) => (
-            <QuizCard key={index}>
+          {quizList?.quiz_list.map((quiz, index) => (
+            <QuizCard key={quiz.id} href={`/quizdetail/${quiz.id}`}>
               <QuizContainer>
                 <QuizCardTextContainer>
                   <QuizCardTitle>{quiz.title}</QuizCardTitle>
-                  <QuizCardState>{quiz.state}</QuizCardState>
+                  <QuizCardState>{quiz.quiz_status}</QuizCardState>
                 </QuizCardTextContainer>
                 <QuizChip>
-                  <QuizTypeText>{quiz.type}</QuizTypeText>
+                  <QuizTypeText>
+                    {quiz.quiz_type === 'OX' ? 'O/X' : '객관식'} 퀴즈
+                  </QuizTypeText>
                 </QuizChip>
               </QuizContainer>
             </QuizCard>
           ))}
         </QuizGrid>
+        <PaginationContianer>
+          {quizList?.total_pages ? (
+            <Pagination
+              count={quizList?.total_pages}
+              page={currentPage + 1}
+              onChange={handleChange}
+            />
+          ) : (
+            <></>
+          )}
+        </PaginationContianer>
       </Container>
     </Wrapper>
   );
@@ -93,6 +132,11 @@ const QuizTypeText = styled.p`
   color: ${theme.extra.white};
 `;
 
+const PaginationContianer = styled.div`
+  width: 100%;
+  ${flex.CENTER}
+  margin-top: 28px;
+`;
 const QuizChip = styled.div`
   ${flex.CENTER}
   width: 78px;
@@ -118,7 +162,7 @@ const QuizCardState = styled.p`
   ${theme.gray[600]}
 `;
 
-const QuizCard = styled.div`
+const QuizCard = styled(Link)`
   width: 100%;
   min-width: 200px;
   height: 90px;
