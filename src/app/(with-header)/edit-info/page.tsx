@@ -39,6 +39,7 @@ export default function EditInfo() {
     mutationKey: ['editInfoApi'],
     onSuccess: ({ data }) => {
       toast('정보가 수정되었습니다.');
+      // todo : 캐시 초기화 (닉네임 저장한 거 초기화)
       nav.push('/');
     },
   });
