@@ -44,6 +44,10 @@ export default function Sidebar() {
     }
   };
 
+  const logoutClick = () => {
+    // todo : token 초기화
+  };
+
   return (
     <Container>
       <div>
@@ -70,7 +74,7 @@ export default function Sidebar() {
           ))}
         </SidebarNavContainer>
       </div>
-      <Logout>로그아웃</Logout>
+      <Logout onClick={logoutClick}>로그아웃</Logout>
     </Container>
   );
 }
