@@ -10,11 +10,13 @@ const path = {
 interface CloseIconProps extends React.SVGProps<SVGSVGElement> {
   size?: number;
   direction?: 'down' | 'right' | 'left' | 'up';
+  color?: string;
 }
 
 const CloseIcon = ({
   size = 24,
   direction = 'right',
+  color = '#8d8d8d',
   ...props
 }: CloseIconProps) => (
   <svg
@@ -27,7 +29,7 @@ const CloseIcon = ({
   >
     <path
       d={path[direction]}
-      stroke="#8D8D8D"
+      stroke={color}
       strokeWidth="1.33333"
       strokeLinecap="round"
       strokeLinejoin="round"

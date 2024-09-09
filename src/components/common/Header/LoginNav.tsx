@@ -20,7 +20,7 @@ const LoginNav = () => {
   return (
     <>
       {user.isLogin ? (
-        <UserName href="/mypage">{user.id} 님</UserName>
+        <UserName href="/project">{user.id} 님</UserName>
       ) : (
         <LoginButton href="/login">로그인</LoginButton>
       )}
