@@ -17,23 +17,36 @@ import {
   projectCodeSaveApi,
   projectDeleteApi,
   projectSaveApi,
+  projectShareApi,
 } from '@/api/project';
 import { toast } from 'react-toastify';
 
 interface MainCodingProps {
   setCode: React.Dispatch<React.SetStateAction<string>>;
   code: string;
+  setShare: React.Dispatch<React.SetStateAction<boolean>>;
+  share: boolean;
 }
 
-export default function MainCodingSuspense({ setCode, code }: MainCodingProps) {
+export default function MainCodingSuspense({
+  setCode,
+  code,
+  setShare,
+  share,
+}: MainCodingProps) {
   return (
     <Suspense fallback={<LoadingSpinner />}>
-      <MainCoding setCode={setCode} code={code} />
+      <MainCoding
+        setCode={setCode}
+        code={code}
+        setShare={setShare}
+        share={share}
+      />
     </Suspense>
   );
 }
 
-function MainCoding({ setCode, code }: MainCodingProps) {
+function MainCoding({ setCode, code, setShare, share }: MainCodingProps) {
   const params = useSearchParams();
   const { projectId } = useParams();
 
@@ -59,12 +72,28 @@ function MainCoding({ setCode, code }: MainCodingProps) {
     onSuccess: () => toast.success('코드 저장 성공'),
     onError: () => toast.error('코드 저장 실패'),
   });
+  const { mutate: shareMutate } = useMutation({
+    mutationFn: projectShareApi,
+    mutationKey: ['projectShareApi'],
+    onSuccess: () => {
+      setShare((prev) => !prev);
+      if (share) {
+        toast.success('프로젝트 공유를 멈추었습니다.');
+      } else {
+        toast.success('프로젝트를 공유중입니다.');
+        handleCopyClipBoard(
+          `${window.location.protocol}//${window.location.host}/project/${projectId}`,
+        );
+      }
+    },
+    onError: () => toast.error('공유 상태 변경 실패'),
+  });
 
   const shareUrl = () => {
-    if (projectId)
-      handleCopyClipBoard(
-        `${window.location.protocol}//${window.location.host}/project/${projectId}`,
-      );
+    if (projectId) {
+      shareMutate(Number(projectId));
+      
+    }
   };
 
   const saveCode = () => {
@@ -152,6 +181,7 @@ function MainCoding({ setCode, code }: MainCodingProps) {
         type={type}
         setCode={setCode}
         code={code}
+        setShare={setShare}
       />
     </CodingPlace>
   );

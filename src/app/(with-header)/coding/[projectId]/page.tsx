@@ -17,15 +17,13 @@ import { toast } from 'react-toastify';
 export default function Coding() {
   const [code, setCode] = useState<string>('');
   const { projectId } = useParams();
-  useEffect(() => {
-    toast('코드 블록이 보이지 않으신 경우, 새로고침 해주세요');
-  }, []);
+  const [share, setShare] = useState<boolean>(false);
   const router = useRouter();
 
   if (Number(projectId)) {
     return (
       <Container>
-        <MainCoding setCode={setCode} code={code} />
+        <MainCoding setCode={setCode} code={code} setShare={setShare} share={share}/>
         <SideBar>
           <CodePreview code={code} />
           <PrettyCode code={code} setCode={setCode} />

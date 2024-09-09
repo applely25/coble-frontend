@@ -30,7 +30,9 @@ function CodePreview({ code }: CodePreviewProps) {
         `${window.location.protocol}//${window.location.host}/preview`,
       );
     } else {
-      window.open('http://localhost:3000/preview');
+      window.open(
+        `${window.location.protocol}//${window.location.host}/preview`,
+      );
       setTimeout(() => {
         sendCode();
       }, 1000);

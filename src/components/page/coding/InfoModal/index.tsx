@@ -9,7 +9,7 @@ import Input from '@/components/common/Input';
 import { AddPhotoIcon } from '@/assets/icon';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
-import { projectCodeSaveApi, projectSaveApi } from '@/api/project';
+import { projectSaveApi } from '@/api/project';
 import Image from 'next/image';
 
 const inputInitialData: PlaceholderKeys[] = ['title', 'description'];
@@ -44,7 +44,9 @@ export default function InfoModal() {
 
   const onChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setImageFile(e.target.files[0]);
+      const file = e.target.files[0];
+      setImageFile(file);
+      setImageSrc(URL.createObjectURL(file)); // 미리보기용 URL 생성
     }
   };
 
@@ -63,14 +65,11 @@ export default function InfoModal() {
         <CheckModal cancelButton={cancelButton} approveButton={approveButton}>
           <FormContainer>
             <ImageContainer>
-              <AddPhotoIcon />
+              {imageSrc && (
+                <ImageView src={imageSrc} alt="미리보기 이미지" fill />
+              )}
+              {/* 파일 선택 버튼은 계속 렌더링 */}
               <input type="file" onChange={onChangeFile} />
-              {/* <ImageView
-              src="/landingBackground.png"
-              alt="landing"
-              width={355}
-              height={200}
-              /> */}
             </ImageContainer>
             <InputContainer>
               {inputInitialData.map((key) => (
@@ -99,15 +98,19 @@ const ImageContainer = styled.label`
   border-radius: 16px;
   ${flex.CENTER}
   cursor: pointer;
+  position: relative;
   > input {
-    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
   }
 `;
 
 const ImageView = styled(Image)`
-  /* height: 200px;
-  width: 355px;
-  aspect-ratio: 16/9; */
+  border-radius: 16px;
+  object-fit: cover;
 `;
 
 const InputContainer = styled.div`

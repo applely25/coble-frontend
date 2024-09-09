@@ -23,6 +23,7 @@ interface BlocklyProps {
   type: string;
   setCode: React.Dispatch<React.SetStateAction<string>>;
   code: string;
+  setShare: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const BlocklySpace = ({
   setWorkspace,
@@ -30,6 +31,7 @@ const BlocklySpace = ({
   workspace,
   setCode,
   code,
+  setShare,
 }: BlocklyProps) => {
   const { projectId } = useParams();
   const roomId = Array.isArray(projectId) ? projectId[0] : projectId;
@@ -78,6 +80,10 @@ const BlocklySpace = ({
   });
 
   useEffect(() => {
+    if (data) setShare(data.share_status);
+  }, [data]);
+
+  useEffect(() => {
     BlocksInitializer();
   }, []);
 
@@ -106,7 +112,7 @@ const BlocklySpace = ({
         getData();
       }
     }
-  }, [data]);
+  }, [data, workspace]);
 
   // 컴포넌트가 처음 렌더링될 때만 XML 데이터를 로드
   useEffect(() => {

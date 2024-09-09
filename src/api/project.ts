@@ -111,7 +111,13 @@ const projectDeleteApi = async (projectId: number) => {
   return data;
 };
 
+const projectShareApi = async (projectId: number) => {
+  const { data } = await AuthInstance.patch(`${base}/share/${projectId}`);
+  return data
+};
+
 export {
+  projectShareApi,
   projectSaveApi,
   projectCodeSaveApi,
   projectInfoUpdateApi,
