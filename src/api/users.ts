@@ -54,7 +54,7 @@ const myInfoApi = async () => {
 };
 
 const changePasswordApi = async (password: string, new_password: string) => {
-  const response = await BaseInstance.patch(`${base}/password`, {
+  const response = await AuthInstance.patch(`${base}/password`, {
     password,
     new_password,
   });
@@ -69,11 +69,11 @@ const editInfoApi = async ({ profile, nickname }: IEditInfoApi) => {
   const form = new FormData();
   form.append('profile', profile);
   form.append('nickname', nickname);
-  return await BaseInstance.patch(`${base}/update`, form);
+  return await AuthInstance.patch(`${base}/update`, form);
 };
 
 const deleteUserApi = async (password: string) => {
-  const response = await BaseInstance.post(`${base}/`, {
+  const response = await AuthInstance.post(`${base}/`, {
     password,
   });
   return response.data;
