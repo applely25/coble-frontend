@@ -10,6 +10,7 @@ import { useMutation } from '@tanstack/react-query';
 import { changePasswordApi } from '@/api/users';
 import { error } from 'console';
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/router';
 
 const inputInitialData: PlaceholderKeys[] = [
   'exist_password',
@@ -18,12 +19,17 @@ const inputInitialData: PlaceholderKeys[] = [
 const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$/;
 export default function ChangePassword() {
   const { inputValue, onChange, placeholder } = useInputForm(inputInitialData);
+  const nav = useRouter();
 
   const { mutate: changePasswordMutate } = useMutation({
     mutationFn: (data: { exist_password: string; change_password: string }) =>
       changePasswordApi(data.exist_password, data.change_password),
     mutationKey: ['changePassword'],
-    onSuccess: (data) => {},
+    onSuccess: (data) => {
+      toast('비밀번호가 변경되었습니다. 다시 로그인 해주세요.');
+      // todo : 토큰 초기화하기
+      nav.push('/login');
+    },
     onError: (error) => {
       console.log(error);
     },
