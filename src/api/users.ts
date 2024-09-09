@@ -61,12 +61,15 @@ const changePasswordApi = async (password: string, new_password: string) => {
   return response.data;
 };
 
-const editInfoApi = async (profile: string, nickname: string) => {
-  const response = await BaseInstance.patch(`${base}/update`, {
-    profile,
-    nickname,
-  });
-  return response.data;
+interface IEditInfoApi {
+  profile: File;
+  nickname: string;
+}
+const editInfoApi = async ({ profile, nickname }: IEditInfoApi) => {
+  const form = new FormData();
+  form.append('profile', profile);
+  form.append('nickname', nickname);
+  return await BaseInstance.patch(`${base}/update`, form);
 };
 
 const deleteUserApi = async (password: string) => {

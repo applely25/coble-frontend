@@ -13,6 +13,7 @@ const placeholder = {
   image: '',
   exist_password: '기존 비밀번호를 입력해주세요.',
   change_password: '변경할 비밀번호를 입력해주세요.',
+  edit_nickname: '수정할 닉네임을 입력해주세요.',
 };
 
 export type PlaceholderKeys = keyof typeof placeholder;
