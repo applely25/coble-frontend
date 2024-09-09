@@ -10,7 +10,7 @@ import { useMutation } from '@tanstack/react-query';
 import { changePasswordApi } from '@/api/users';
 import { error } from 'console';
 import { toast } from 'react-toastify';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const inputInitialData: PlaceholderKeys[] = [
   'exist_password',

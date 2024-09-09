@@ -11,62 +11,47 @@ import { deleteUserApi } from '@/api/users';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import DeleteModal from '@/components/page/mypage/DeleteModal';
+import { useState } from 'react';
 
 const inputInitialData: PlaceholderKeys[] = ['password'];
 const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$/;
 export default function DeleteAccount() {
   const { inputValue, onChange, placeholder } = useInputForm(inputInitialData);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const nav = useRouter();
 
   const { mutate: deleteUserMutate } = useMutation({
     mutationFn: (data: { password: string }) => deleteUserApi(data.password),
     mutationKey: ['deleteUser'],
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast('회원탈퇴가 완료되었습니다.');
       // todo : 토큰 초기화하기
       nav.push('/');
     },
   });
 
-  const onClickSuccess = () => {
-    if (!passwordRegex.test(inputValue.password)) {
-      toast('비밀번호가 형식에 맞지 않습니다.');
-    } else if (!passwordRegex.test(inputValue.password)) {
-      toast('비밀번호가 형식에 맞지 않습니다.');
-    } else if (!inputValue.password) {
-      toast('비밀번호를 입력해주세요.');
-    } else {
-      deleteUserMutate(inputValue);
-    }
-  };
-
   const cancelButton = {
     title: '취소하기',
     onClick: () => {
-      nav.push('/');
+      setIsModalOpen(false);
     },
+  };
+
+  const onClickModal = () => {
+    setIsModalOpen(true);
   };
 
   const approveButton = {
     title: '탈퇴하기',
     onClick: () => {
-      onClickSuccess;
-    },
-  };
-
-  const onClickModal = () => {
-    <DeleteModal
-      children={
-        <ModalContainer>
-          <SectionTitle>회원탈퇴</SectionTitle>
-          <Description>
-            계정 탈퇴 후, 복구할 수 없습니다. 탈퇴하시겠습니까?
-          </Description>
-        </ModalContainer>
+      if (!inputValue.password) {
+        toast('비밀번호를 입력해주세요.');
+      } else if (!passwordRegex.test(inputValue.password)) {
+        toast('비밀번호가 형식에 맞지 않습니다.');
+      } else {
+        deleteUserMutate(inputValue);
       }
-      cancelButton={cancelButton}
-      approveButton={approveButton}
-    />;
+    },
   };
 
   return (
@@ -102,6 +87,20 @@ export default function DeleteAccount() {
           </DeleteButtonContainer>
         </ContentChildren>
       </ContentContainer>
+      {isModalOpen && (
+        <DeleteModal
+          children={
+            <ModalContainer>
+              <SectionTitle>회원탈퇴</SectionTitle>
+              <Description>
+                계정 탈퇴 후, 복구할 수 없습니다. 탈퇴하시겠습니까?
+              </Description>
+            </ModalContainer>
+          }
+          cancelButton={cancelButton}
+          approveButton={approveButton}
+        />
+      )}
     </Container>
   );
 }
@@ -126,6 +125,7 @@ const DeleteButton = styled.button`
     background-color 0.2s,
     color 0.2s;
   padding: 16px;
+  ${font.B1}
 
   &:hover {
     background-color: ${theme.extra.red};

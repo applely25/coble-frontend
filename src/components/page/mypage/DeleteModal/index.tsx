@@ -55,6 +55,8 @@ const Container = styled.div`
   padding: 32px;
   border-radius: 32px;
   background-color: ${theme.extra.white};
+  width: 562px;
+  height: 300px;
 
   ${flex.COLUMN_FLEX}
   gap: 24px;

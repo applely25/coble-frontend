@@ -120,10 +120,10 @@ const ContentContainer = styled.div`
 
 const ContentChildren = styled.div`
   ${flex.COLUMN_FLEX}
-  padding: 32px;
+  padding: 32px 32px 32px 64px;
   width: 100%;
   height: 100%;
-  box-sizing: border-box;
+  box-sizing: content-box;
   overflow: hidden;
 `;
 

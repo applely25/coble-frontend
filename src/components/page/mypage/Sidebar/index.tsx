@@ -4,6 +4,9 @@ import color from '@/styles/theme';
 import { styled } from '@linaria/react';
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { myInfoApi } from '@/api/users';
+import { useQuery } from '@tanstack/react-query';
+import { DefaultProfileImage } from '@/assets/image';
 
 const Nav = [
   { title: '관련 프로젝트 확인', value: '/project' },
@@ -12,9 +15,19 @@ const Nav = [
   { title: '회원탈퇴', value: '/delete-account' },
 ];
 
+interface MyInfoApiResponse {
+  profile: string;
+  nickname: string;
+  email: string;
+}
+
 export default function Sidebar() {
   const [activeIndex, setActiveIndex] = useState(0);
   const nav = useRouter();
+  const { data } = useQuery<MyInfoApiResponse>({
+    queryKey: ['myInfo'],
+    queryFn: myInfoApi,
+  });
 
   useEffect(() => {
     const currentPath = window.location.pathname;
@@ -35,10 +48,13 @@ export default function Sidebar() {
     <Container>
       <div>
         <ProfileContainer>
-          <ProfileImage>profile image</ProfileImage>
+          <ProfileImage
+            src={data?.profile || DefaultProfileImage.src}
+            alt="profile"
+          />
           <div>
-            <UserName>@jxyxong</UserName>
-            <UserEmail>jyk102999@gmail.com</UserEmail>
+            <UserName>{data?.nickname}</UserName>
+            <UserEmail>{data?.email}</UserEmail>
           </div>
         </ProfileContainer>
         <SidebarNavContainer>
@@ -90,7 +106,7 @@ const UserEmail = styled.p`
   color: ${theme.gray[500]};
 `;
 
-const ProfileImage = styled.div`
+const ProfileImage = styled.img`
   width: 100px;
   height: 100px;
   border-radius: 50%;
