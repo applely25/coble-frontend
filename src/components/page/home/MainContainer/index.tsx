@@ -22,7 +22,7 @@ export default function MainContainer() {
           <p>‘코블’ 로 신세계를 경험해보세요!</p>
         </div>
       </LogoTitle>
-      <GoLinkButton href="/">코딩하러 가기</GoLinkButton>
+      <GoLinkButton href="/coding/new">코딩하러 가기</GoLinkButton>
     </Container>
   );
 }
