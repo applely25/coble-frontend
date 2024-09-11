@@ -19,6 +19,14 @@ const nextConfig = withLinaria({
       },
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*', // 와일드카드 패턴
+        destination: `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/:path*`, // 동일한 패턴으로 리라이트
+      },
+    ];
+  },
 });
 
 export default nextConfig;
