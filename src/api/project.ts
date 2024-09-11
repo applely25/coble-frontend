@@ -16,7 +16,7 @@ const projectSaveApi = async ({
   form.append('image', image);
   form.append('title', title);
   form.append('description', description);
-  return await AuthInstance.post(`${base}`, form);
+  return await AuthInstance.post(`${base}/`, form);
 };
 
 interface IProjectCodeSaveApi {
