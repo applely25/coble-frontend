@@ -60,6 +60,5 @@ const CodingImage = styled.div`
   width: 100vw;
   height: calc(100dvh - 60px);
   margin-top: 60px;
-  background-color: red;
   position: relative;
 `;
