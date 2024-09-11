@@ -3,7 +3,7 @@ import { refreshAccessTokenApi } from './users';
 import { Storage } from '@/storage';
 
 // const baseUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}`;
-const baseUrl = `api/`;
+const baseUrl = `/api/`;
 
 export const AuthInstance: AxiosInstance = axios.create({
   baseURL: baseUrl,
