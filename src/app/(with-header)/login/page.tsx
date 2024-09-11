@@ -9,6 +9,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
+import { useAtom } from 'jotai';
+import { userContext } from '@/context';
+import { Storage } from '@/storage';
 
 const inputInitialData: PlaceholderKeys[] = ['email', 'password'];
 const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
@@ -16,14 +19,16 @@ const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$/;
 export default function Login() {
   const { inputValue, onChange, placeholder } = useInputForm(inputInitialData);
   const nav = useRouter();
+  const [, setUser] = useAtom(userContext);
 
   const { mutate: loginMutate } = useMutation({
     mutationFn: (data: { email: string; password: string }) =>
       loginApi(data.email, data.password),
     mutationKey: ['login'],
     onSuccess: (data) => {
-      alert(data.message);
-      localStorage.setItem('access_token', data.token);
+      Storage.setItem('access_token', data.access_token);
+      Storage.setItem('refresh_token', data.refresh_token);
+      setUser({ id: data.nickname, isLogin: true });
       nav.push('/');
     },
     onError: (error) => {
@@ -34,17 +39,13 @@ export default function Login() {
   const onClickLogin = () => {
     if (!inputValue.email || !inputValue.password) {
       toast('아이디와 비밀번호를 입력해주세요.');
-      return;
-    }
-    if (!emailRegex.test(inputValue.email)) {
+    } else if (!emailRegex.test(inputValue.email)) {
       toast('이메일이 형식에 맞지 않습니다.');
-      return;
-    }
-    if (!passwordRegex.test(inputValue.password)) {
+    } else if (!passwordRegex.test(inputValue.password)) {
       toast('비밀번호가 형식에 맞지 않습니다.');
-      return;
+    } else {
+      loginMutate(inputValue);
     }
-    loginMutate(inputValue);
   };
 
   return (

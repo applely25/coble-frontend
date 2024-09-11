@@ -1,17 +1,26 @@
 'use client';
 
-import useUser from '@/hooks/useUser';
+import { TOKEN } from '@/constants';
+import { userContext } from '@/context';
+import { Storage } from '@/storage';
 import { design, font, theme } from '@/styles';
 import { styled } from '@linaria/react';
+import { useAtom } from 'jotai';
 import Link from 'next/link';
+import { useEffect } from 'react';
 
 const LoginNav = () => {
-  const { isLoggedIn } = useUser();
+  const [user, setUser] = useAtom(userContext);
+
+  useEffect(() => {
+    const refreshCookie = Storage.getItem('access_token');
+    if (!refreshCookie) setUser({ ...user, isLogin: false });
+  }, []);
 
   return (
     <>
-      {isLoggedIn ? (
-        <UserName href="/mypage">jyk1029 님</UserName>
+      {user.isLogin ? (
+        <UserName href="/project">{user.id} 님</UserName>
       ) : (
         <LoginButton href="/login">로그인</LoginButton>
       )}

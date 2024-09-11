@@ -11,3 +11,4 @@ export { default as ShareIcon } from './ShareIcon';
 export { default as SaveIcon } from './SaveIcon';
 export { default as MoreIcon } from './More';
 export { default as AddPhotoIcon } from './AddPhoto';
+export { default as PersonIcon } from './Person';

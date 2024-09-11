@@ -5,30 +5,35 @@ import { useState } from 'react';
 
 export type ItemType = {
   text: string;
+  value?: boolean;
+};
+export type QuizType = {
+  text: string;
+  value?: 'OX' | 'MULTIPLE_CHOICE';
 };
 
-interface PropTypes {
+interface PropTypes<T> {
   describe: string;
-  items: ItemType[];
+  items: T[];
   width?: string;
-  val: ItemType | undefined;
-  setVal: React.Dispatch<React.SetStateAction<ItemType | undefined>>;
+  val: T | undefined;
+  setVal: React.Dispatch<React.SetStateAction<T | undefined>>;
 }
 
-const Dropdown = ({
+const Dropdown = <T extends ItemType | QuizType>({
   val,
   setVal,
   describe,
   items,
   width = '150px',
-}: PropTypes) => {
+}: PropTypes<T>) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen = () => {
     setIsOpen((prev) => !prev);
   };
 
-  const clickItem = (item: ItemType) => {
+  const clickItem = (item: T) => {
     setVal(item);
     toggleOpen();
   };
@@ -41,7 +46,7 @@ const Dropdown = ({
       </DropdownBox>
       <DropdownListBox isOpen={isOpen}>
         <DropdownList>
-          {items.map((item: ItemType, idx) => (
+          {items.map((item, idx) => (
             <DropdownItem
               key={'dropdown ' + idx}
               onClick={() => clickItem(item)}

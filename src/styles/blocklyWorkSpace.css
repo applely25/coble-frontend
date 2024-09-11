@@ -7,6 +7,7 @@
   z-index: 70;
   -webkit-tap-highlight-color: transparent;
   border-right: 1px solid #e2e2e2;
+  width: 235px;
 }
 
 .blocklyTreeRow {
@@ -15,7 +16,7 @@
   font-size: 14px;
   line-height: 20px;
   padding: 16px;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .blocklyToolboxContents {

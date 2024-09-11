@@ -1,25 +1,37 @@
 'use client';
+import { projectType } from '@/api/project';
 import { Heart } from '@/assets/icon';
 import { DefaultProfileImage } from '@/assets/image';
 import { flex, font, theme } from '@/styles';
 import { styled } from '@linaria/react';
+import { useRouter } from 'next/navigation';
 
-export default function PopularProjectArticle() {
+export default function PopularProjectArticle({
+  id,
+  image,
+  profile,
+  title,
+  description,
+  like_status,
+  is_mine,
+}: projectType) {
+  const nav = useRouter();
   return (
-    <Container>
+    <Container
+      onClick={() =>
+        is_mine ? nav.push(`/coding/${id}`) : nav.push(`/project/${id}`)
+      }
+    >
       <TitleImage>
-        <img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeUMCgm6_KLvyfUutoOdxQ1ifOP5IDd1Iuaw&s"
-          alt="landing"
-        />
+        <img src={image} alt="landing" />
       </TitleImage>
       <Description>
-        <ProfileImage src={DefaultProfileImage.src} alt="" />
+        <ProfileImage src={profile || DefaultProfileImage.src} alt="" />
         <TitleContainer>
-          <p>XQUARE</p>
-          <p>DSM 프로젝트 통합 서비스</p>
+          <p>{title}</p>
+          <p>{description}</p>
         </TitleContainer>
-        <Heart isLiked={false} />
+        <Heart isLiked={like_status} />
       </Description>
     </Container>
   );
