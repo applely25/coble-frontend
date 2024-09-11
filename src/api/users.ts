@@ -63,12 +63,12 @@ const changePasswordApi = async (password: string, new_password: string) => {
 
 interface IEditInfoApi {
   profile: File;
-  nickname: string;
+  edit_nickname: string;
 }
-const editInfoApi = async ({ profile, nickname }: IEditInfoApi) => {
+const editInfoApi = async ({ profile, edit_nickname }: IEditInfoApi) => {
   const form = new FormData();
   form.append('profile', profile);
-  form.append('nickname', nickname);
+  form.append('nickname', edit_nickname);
   return await AuthInstance.patch(`${base}/update`, form);
 };
 
