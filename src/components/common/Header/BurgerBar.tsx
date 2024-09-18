@@ -9,10 +9,13 @@ import color from '../../../styles/theme';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import LoginNav from './LoginNav';
+import { useAtom } from 'jotai';
+import { userContext } from '@/context';
 
 const BurgerBar = () => {
   const [isBurgerOpen, setIsBurgerOpen] = useState<boolean>(false);
   const pathname = usePathname();
+  const [user] = useAtom(userContext);
 
   useEffect(() => {
     setIsBurgerOpen(false);
@@ -36,16 +39,22 @@ const BurgerBar = () => {
         <ContentContainer>
           <nav>
             <ul>
-              {navigationListData.map((linkData) => (
-                <li key={linkData.name}>
-                  <NavListTitle pathname={pathname} articlehref={linkData.href}>
-                    {linkData.name}
-                  </NavListTitle>
-                  <Link href={linkData.href}>
-                    <ArrowIcon />
-                  </Link>
-                </li>
-              ))}
+              {navigationListData.map(
+                (linkData) =>
+                  (!linkData.login || user.isLogin) && (
+                    <li key={linkData.name}>
+                      <NavListTitle
+                        pathname={pathname}
+                        articlehref={linkData.href}
+                      >
+                        {linkData.name}
+                      </NavListTitle>
+                      <Link href={linkData.href}>
+                        <ArrowIcon />
+                      </Link>
+                    </li>
+                  ),
+              )}
             </ul>
           </nav>
           <LoginContainer>

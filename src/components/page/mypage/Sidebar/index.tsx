@@ -51,6 +51,7 @@ const [, setUser]= useAtom(userContext)
     setUser({id:'0', isLogin:false})
     Storage.delItem('access_token')
     Storage.delItem('refresh_token')
+    nav.push('/login');
   };
 
   return (

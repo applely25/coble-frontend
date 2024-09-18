@@ -29,19 +29,26 @@ AuthInstance.interceptors.response.use(
   (response) => response,
   async (error: AxiosError<AxiosError>) => {
     if (axios.isAxiosError(error) && error.response) {
-      const { message } = error.response.data;
-      if (message === 'Token Expired') {
-        const newAccessToken = await refreshAccessTokenApi();
-        if (newAccessToken && error.config) {
-          Storage.setItem('access_token', newAccessToken.access_token);
-          Storage.setItem('refresh_token', newAccessToken.refresh_token);
-          error.config.headers['Authorization'] =
-            `Bearer ${newAccessToken.access_token}`;
-          return AuthInstance.request(error.config);
-        } else {
-          // 갱신 실패 시 로그인 페이지로 이동
+      const { status } = error.response.data;
+      if (status === 401) {
+        try{
+          const newAccessToken = await refreshAccessTokenApi();
+          if (newAccessToken && error.config) {
+            Storage.setItem('access_token', newAccessToken.access_token);
+            Storage.setItem('refresh_token', newAccessToken.refresh_token);
+            error.config.headers['Authorization'] =
+              `Bearer ${newAccessToken.access_token}`;
+            return AuthInstance.request(error.config);
+          } else {
+            // 갱신 실패 시 로그인 페이지로 이동
+            Storage.setItem('user',`{"id":"0","isLogin":false}`)
+            window.location.href = '/login';
+          }
+        }catch(error){
+          Storage.setItem('user',`{"id":"0","isLogin":false}`)
           window.location.href = '/login';
         }
+        
       }
     } else {
       throw error;
