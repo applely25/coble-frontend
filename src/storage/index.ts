@@ -1,4 +1,4 @@
-type LocalStorageKey = 'access_token' | 'refresh_token';
+type LocalStorageKey = 'access_token' | 'refresh_token'|'user';
 
 export class Storage {
   private static isWindowAvailable() {

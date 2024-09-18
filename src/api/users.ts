@@ -92,7 +92,7 @@ const refreshAccessTokenApi =
     const refreshToken = Storage.getItem('refresh_token');
     try {
       const response = await axios.post(
-        `${BASEURL}${base}/refresh`,
+        `${BASEURL}/${base}/refresh`,
         {},
         {
           headers: {

@@ -6,23 +6,29 @@ import { flex, font, theme } from '@/styles';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import color from '../../../styles/theme';
+import { userContext } from '@/context';
+import { useAtom } from 'jotai';
 
 const Navigation = () => {
   const pathname = usePathname();
+  const [user] = useAtom(userContext);
 
   return (
     <NavList>
-      {navigationListData.map((linkData) => (
-        <li key={linkData.id}>
-          <NavArticle
-            href={linkData.href}
-            pathname={pathname}
-            articlehref={linkData.href}
-          >
-            {linkData.name}
-          </NavArticle>
-        </li>
-      ))}
+      {navigationListData.map(
+        (linkData) =>
+          (!linkData.login || user.isLogin) && (
+            <li key={linkData.id}>
+              <NavArticle
+                href={linkData.href}
+                pathname={pathname}
+                articlehref={linkData.href}
+              >
+                {linkData.name}
+              </NavArticle>
+            </li>
+          ),
+      )}
     </NavList>
   );
 };
