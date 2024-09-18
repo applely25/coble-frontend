@@ -12,6 +12,8 @@ import { toast } from 'react-toastify';
 import { useAtom } from 'jotai';
 import { userContext } from '@/context';
 import { Storage } from '@/storage';
+import { AxiosError } from 'axios';
+import { ErrorResponse } from '@/api';
 
 const inputInitialData: PlaceholderKeys[] = ['email', 'password'];
 const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
@@ -32,7 +34,10 @@ export default function Login() {
       nav.push('/');
     },
     onError: (error) => {
-      console.log(error);
+      const axiosError = error as AxiosError<ErrorResponse>;
+      const message =
+        axiosError.response?.data?.message || 'An unknown error occurred';
+      toast.error(message);
     },
   });
 

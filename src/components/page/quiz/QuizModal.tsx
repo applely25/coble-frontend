@@ -1,9 +1,11 @@
+import { ErrorResponse } from '@/api';
 import { quizSolveApi } from '@/api/quiz';
 import { CorrectImage, WrongImage } from '@/assets/image';
 import CheckModal from '@/components/common/CheckModal';
 import { font, theme } from '@/styles';
 import { styled } from '@linaria/react';
 import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 
@@ -34,6 +36,12 @@ const QuizModal = ({
     onSuccess: () => {
       toast('문제를 무사히 풀었습니다!');
       nav.push('/quiz');
+    },
+    onError: (error) => {
+      const axiosError = error as AxiosError<ErrorResponse>;
+      const message =
+        axiosError.response?.data?.message || 'An unknown error occurred';
+      toast.error(message);
     },
   });
 

@@ -1,4 +1,5 @@
 'use client';
+import { ErrorResponse } from '@/api';
 import { sendEmailApi, checkVerifyCodeApi, signUpApi } from '@/api/users';
 import AuthLayout from '@/components/common/AuthLayout';
 import Input from '@/components/common/Input';
@@ -6,6 +7,7 @@ import useInputForm, { PlaceholderKeys } from '@/hooks/useInputForm';
 import { design, flex, font, theme } from '@/styles';
 import { styled } from '@linaria/react';
 import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { error } from 'console';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -36,8 +38,10 @@ export default function Signup() {
       setIsVerifyCheck(true);
     },
     onError: (error) => {
-      console.log(error);
-      toast.error('오류가 발생했습니다. 관리자에게 문의해주세요.');
+      const axiosError = error as AxiosError<ErrorResponse>;
+      const message =
+        axiosError.response?.data?.message || 'An unknown error occurred';
+      toast.error(message);
     },
   });
 
@@ -49,7 +53,10 @@ export default function Signup() {
       setPage(2);
     },
     onError: (error) => {
-      console.log(error);
+      const axiosError = error as AxiosError<ErrorResponse>;
+      const message =
+        axiosError.response?.data?.message || 'An unknown error occurred';
+      toast.error(message);
     },
   });
 
@@ -62,15 +69,17 @@ export default function Signup() {
       nav.push('/login');
     },
     onError: (error) => {
-      console.log(error);
-      toast.error('오류가 발생했습니다. 관리자에게 문의해주세요.');
+      const axiosError = error as AxiosError<ErrorResponse>;
+      const message =
+        axiosError.response?.data?.message || 'An unknown error occurred';
+      toast.error(message);
     },
   });
 
   const onClickVerifyCheck = () => {
     if (!emailRegex.test(inputValue.email)) {
       toast('이메일이 형식에 맞지 않습니다.');
-    }else{
+    } else {
       toast('인증번호가 발송되었습니다.');
       sendEmailMutate({ email: inputValue.email });
     }

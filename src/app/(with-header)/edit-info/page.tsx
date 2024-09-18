@@ -7,7 +7,7 @@ import { styled } from '@linaria/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import useInputForm, { PlaceholderKeys } from '@/hooks/useInputForm';
 import Input from '@/components/common/Input';
 import { useMutation } from '@tanstack/react-query';
@@ -17,6 +17,7 @@ import { useRouter } from 'next/navigation';
 import { Storage } from '@/storage';
 import { useAtom } from 'jotai';
 import { userContext } from '@/context';
+import { ErrorResponse } from '@/api';
 
 export default function EditInfo() {
   const inputInitialData: PlaceholderKeys[] = ['edit_nickname'];
@@ -43,8 +44,14 @@ export default function EditInfo() {
     mutationKey: ['editInfoApi'],
     onSuccess: ({ data }) => {
       toast('정보가 수정되었습니다.');
-      setUser({id:inputValue.nickname, isLogin:true})
+      setUser({ id: inputValue.nickname, isLogin: true });
       nav.push('/');
+    },
+    onError: (error) => {
+      const axiosError = error as AxiosError<ErrorResponse>;
+      const message =
+        axiosError.response?.data?.message || 'An unknown error occurred';
+      toast.error(message);
     },
   });
 
