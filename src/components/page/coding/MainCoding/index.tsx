@@ -20,6 +20,8 @@ import {
   projectShareApi,
 } from '@/api/project';
 import { toast } from 'react-toastify';
+import { AxiosError } from 'axios';
+import { ErrorResponse } from '@/api';
 
 interface MainCodingProps {
   setCode: React.Dispatch<React.SetStateAction<string>>;
@@ -70,7 +72,12 @@ function MainCoding({ setCode, code, setShare, share }: MainCodingProps) {
     mutationFn: projectCodeSaveApi,
     mutationKey: ['projectCodeSaveApi'],
     onSuccess: () => toast.success('코드 저장 성공'),
-    onError: () => toast.error('코드 저장 실패'),
+    onError: (error) => {
+      const axiosError = error as AxiosError<ErrorResponse>;
+      const message =
+        axiosError.response?.data?.message || 'An unknown error occurred';
+      toast.error(message);
+    },
   });
   const { mutate: shareMutate } = useMutation({
     mutationFn: projectShareApi,
@@ -86,13 +93,17 @@ function MainCoding({ setCode, code, setShare, share }: MainCodingProps) {
         );
       }
     },
-    onError: () => toast.error('공유 상태 변경 실패'),
+    onError: (error) => {
+      const axiosError = error as AxiosError<ErrorResponse>;
+      const message =
+        axiosError.response?.data?.message || 'An unknown error occurred';
+      toast.error(message);
+    },
   });
 
   const shareUrl = () => {
     if (projectId) {
       shareMutate(Number(projectId));
-      
     }
   };
 
@@ -126,6 +137,12 @@ function MainCoding({ setCode, code, setShare, share }: MainCodingProps) {
     onSuccess: () => {
       nav.push('/');
       toast('삭제되었습니다.');
+    },
+    onError: (error) => {
+      const axiosError = error as AxiosError<ErrorResponse>;
+      const message =
+        axiosError.response?.data?.message || 'An unknown error occurred';
+      toast.error(message);
     },
   });
 

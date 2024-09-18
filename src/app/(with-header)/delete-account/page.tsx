@@ -15,6 +15,8 @@ import { useState } from 'react';
 import { Storage } from '@/storage';
 import { useAtom } from 'jotai';
 import { userContext } from '@/context';
+import { AxiosError } from 'axios';
+import { ErrorResponse } from '@/api';
 
 const inputInitialData: PlaceholderKeys[] = ['password'];
 const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$/;
@@ -24,16 +26,21 @@ export default function DeleteAccount() {
   const nav = useRouter();
   const [, setUser] = useAtom(userContext);
 
-
   const { mutate: deleteUserMutate } = useMutation({
     mutationFn: (data: { password: string }) => deleteUserApi(data.password),
     mutationKey: ['deleteUser'],
     onSuccess: () => {
       toast('회원탈퇴가 완료되었습니다.');
-      Storage.delItem('access_token')
-      Storage.delItem('refresh_token')
-      setUser({id:'', isLogin:false})
+      Storage.delItem('access_token');
+      Storage.delItem('refresh_token');
+      setUser({ id: '', isLogin: false });
       nav.push('/');
+    },
+    onError: (error) => {
+      const axiosError = error as AxiosError<ErrorResponse>;
+      const message =
+        axiosError.response?.data?.message || 'An unknown error occurred';
+      toast.error(message);
     },
   });
 

@@ -17,10 +17,12 @@ import { useEffect, useState } from 'react';
 import * as Blockly from 'blockly/core';
 import { BlocksInitializer, registerGenerators } from '@/utils/blocks';
 import { javascriptGenerator } from 'blockly/javascript';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { Heart, SizeUpIcon } from '@/assets/icon';
 import { css } from '@emotion/react';
 import { likesApi } from '@/api/likes';
+import { ErrorResponse } from '@/api';
+import { toast } from 'react-toastify';
 
 export default function Project() {
   const { projectId } = useParams();
@@ -39,6 +41,12 @@ export default function Project() {
     mutationFn: likesApi,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['projectDetailApi'] });
+    },
+    onError: (error) => {
+      const axiosError = error as AxiosError<ErrorResponse>;
+      const message =
+        axiosError.response?.data?.message || 'An unknown error occurred';
+      toast.error(message);
     },
   });
 

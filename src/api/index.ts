@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosInstance } from 'axios';
 import { refreshAccessTokenApi } from './users';
 import { Storage } from '@/storage';
+import { toast } from 'react-toastify';
 
 // const baseUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}`;
 const baseUrl = `/api/`;
@@ -31,7 +32,7 @@ AuthInstance.interceptors.response.use(
     if (axios.isAxiosError(error) && error.response) {
       const { status } = error.response.data;
       if (status === 401) {
-        try{
+        try {
           const newAccessToken = await refreshAccessTokenApi();
           if (newAccessToken && error.config) {
             Storage.setItem('access_token', newAccessToken.access_token);
@@ -41,17 +42,20 @@ AuthInstance.interceptors.response.use(
             return AuthInstance.request(error.config);
           } else {
             // 갱신 실패 시 로그인 페이지로 이동
-            Storage.setItem('user',`{"id":"0","isLogin":false}`)
+            Storage.setItem('user', `{"id":"0","isLogin":false}`);
             window.location.href = '/login';
           }
-        }catch(error){
-          Storage.setItem('user',`{"id":"0","isLogin":false}`)
+        } catch (error) {
+          Storage.setItem('user', `{"id":"0","isLogin":false}`);
           window.location.href = '/login';
         }
-        
       }
     } else {
       throw error;
     }
   },
 );
+
+export interface ErrorResponse {
+  message: string;
+}

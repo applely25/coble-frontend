@@ -14,6 +14,8 @@ import { useRouter } from 'next/navigation';
 import { Storage } from '@/storage';
 import { useAtom } from 'jotai';
 import { userContext } from '@/context';
+import { AxiosError } from 'axios';
+import { ErrorResponse } from '@/api';
 
 const inputInitialData: PlaceholderKeys[] = [
   'exist_password',
@@ -25,20 +27,22 @@ export default function ChangePassword() {
   const nav = useRouter();
   const [, setUser] = useAtom(userContext);
 
-
   const { mutate: changePasswordMutate } = useMutation({
     mutationFn: (data: { exist_password: string; change_password: string }) =>
       changePasswordApi(data.exist_password, data.change_password),
     mutationKey: ['changePassword'],
     onSuccess: (data) => {
       toast('비밀번호가 변경되었습니다. 다시 로그인 해주세요.');
-      Storage.delItem('access_token')
-      Storage.delItem('refresh_token')
-      setUser({id:'', isLogin:false})
+      Storage.delItem('access_token');
+      Storage.delItem('refresh_token');
+      setUser({ id: '', isLogin: false });
       nav.push('/login');
     },
     onError: (error) => {
-      console.log(error);
+      const axiosError = error as AxiosError<ErrorResponse>;
+      const message =
+        axiosError.response?.data?.message || 'An unknown error occurred';
+      toast.error(message);
     },
   });
 

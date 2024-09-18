@@ -11,6 +11,9 @@ import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { projectSaveApi } from '@/api/project';
 import Image from 'next/image';
+import { AxiosError } from 'axios';
+import { ErrorResponse } from '@/api';
+import { toast } from 'react-toastify';
 
 const inputInitialData: PlaceholderKeys[] = ['title', 'description'];
 
@@ -56,6 +59,12 @@ export default function InfoModal() {
     onSuccess: ({ data }) => {
       router.push(`/coding/${data}`);
       setIsOpen(false);
+    },
+    onError: (error) => {
+      const axiosError = error as AxiosError<ErrorResponse>;
+      const message =
+        axiosError.response?.data?.message || 'An unknown error occurred';
+      toast.error(message);
     },
   });
 

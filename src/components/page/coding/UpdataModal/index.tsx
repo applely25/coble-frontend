@@ -12,6 +12,8 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { projectInfoGetApi, projectInfoUpdateApi } from '@/api/project';
 import { toast } from 'react-toastify';
 import { useParams } from 'next/navigation';
+import { AxiosError } from 'axios';
+import { ErrorResponse } from '@/api';
 
 interface UpdateInfoModalProps {
   isOpen: boolean;
@@ -43,8 +45,11 @@ export default function UpdateInfoModal({
       toast.success('프로젝트 정보 수정 성공');
       setIsOpen(false);
     },
-    onError: () => {
-      toast.error('프로젝트 정보 수정 실패');
+    onError: (error) => {
+      const axiosError = error as AxiosError<ErrorResponse>;
+      const message =
+        axiosError.response?.data?.message || 'An unknown error occurred';
+      toast.error(message);
       setIsOpen(false);
     },
   });
