@@ -1,13 +1,16 @@
 'use client';
 import { MainContainer, PopularProject } from '@/components/page/home';
+import { userContext } from '@/context';
 import { flex } from '@/styles';
 import { styled } from '@linaria/react';
+import { useAtom } from 'jotai';
 
 export default function Home() {
+  const [user] = useAtom(userContext);
   return (
     <Layout>
       <MainContainer />
-      <PopularProject />
+      {user.isLogin && <PopularProject />}
     </Layout>
   );
 }
