@@ -18,6 +18,9 @@ interface PageProps {
 export const metadata: Metadata = {
   title: 'Coble',
   description: '블록 코딩으로 교육을! Coble',
+  icons: {
+    icon: '/favicon.png',
+  },
 };
 
 export default function RootLayout({
