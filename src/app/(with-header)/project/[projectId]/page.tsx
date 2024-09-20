@@ -31,10 +31,14 @@ export default function Project() {
   const [code, setCode] = useState<string>('');
   const queryClient = useQueryClient();
 
-  const { data } = useQuery({
+  const { data, refetch, isLoading } = useQuery({
     queryKey: ['projectDetailApi'],
     queryFn: () => projectDetailApi(Number(projectId)),
   });
+
+  useEffect(() => {
+    refetch();
+  }, [projectId]);
 
   const { mutate: likeMutate } = useMutation({
     mutationKey: ['likeApi'],
@@ -76,6 +80,7 @@ export default function Project() {
 
   const { beautifiedHtml } = useBeautifyHtml(code, setCode);
   const [sizeUp, setSizeUp] = useState(false);
+
   return (
     <Conatienr>
       <div>
