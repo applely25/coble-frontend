@@ -71,7 +71,7 @@ export default [
     args0: [
       {
         type: 'field_input',
-        name: 'ID',
+        name: 'CLASS',
         text: '',
       },
       {

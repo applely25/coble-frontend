@@ -217,7 +217,7 @@ const registerGenerators = () => {
     const content = generator.statementToCode(block, 'CONTENT');
     return `.${classText}{${content}}`;
   };
-  javascriptGenerator.forBlock[EctBlockTypes.Id] = (block, generator) => {
+  javascriptGenerator.forBlock[EctBlockTypes.IdCss] = (block, generator) => {
     const classText = block.getFieldValue('CLASS');
     const content = generator.statementToCode(block, 'CONTENT');
     return `#${classText}{${content}}`;
