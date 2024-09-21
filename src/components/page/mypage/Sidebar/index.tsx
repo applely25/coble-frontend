@@ -15,7 +15,7 @@ const Nav = [
   { title: '관련 프로젝트 확인', value: '/project' },
   { title: '정보 수정', value: '/edit-info' },
   { title: '비밀번호 변경', value: '/change-password' },
-  { title: '회원탈퇴', value: '/delete-account' },
+  // { title: '회원탈퇴', value: '/delete-account' },
 ];
 
 interface MyInfoApiResponse {
@@ -46,11 +46,11 @@ export default function Sidebar() {
       nav.push(Nav[index].value);
     }
   };
-const [, setUser]= useAtom(userContext)
+  const [, setUser] = useAtom(userContext);
   const logoutClick = () => {
-    setUser({id:'0', isLogin:false})
-    Storage.delItem('access_token')
-    Storage.delItem('refresh_token')
+    setUser({ id: '0', isLogin: false });
+    Storage.delItem('access_token');
+    Storage.delItem('refresh_token');
     nav.push('/login');
   };
 

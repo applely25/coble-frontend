@@ -7,6 +7,7 @@ import color from '@/styles/theme';
 import { styled } from '@linaria/react';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
+import { useEffect } from 'react';
 
 // 타입 정의
 interface Project {
@@ -25,10 +26,13 @@ interface MyInfoApiResponse {
 }
 
 export default function Project() {
-  const { data, isLoading, error } = useQuery<MyInfoApiResponse>({
+  const { data, isLoading, error, refetch } = useQuery<MyInfoApiResponse>({
     queryKey: ['myInfo'],
     queryFn: myInfoApi,
   });
+  useEffect(() => {
+    refetch();
+  }, []);
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error fetching data</p>;
 
@@ -104,7 +108,7 @@ const BackgroundImage = styled.div`
 const ContentContainer = styled.div`
   background-color: ${theme.extra.white};
   width: 70vw;
-  height: 70vh;
+  height: 80vh;
   border-radius: 16px;
   ${flex.FLEX}
   overflow: hidden;
@@ -136,6 +140,8 @@ const ScrollableProjectList = styled.div`
   overflow-x: auto;
   padding: 0 8px;
   margin-bottom: 16px;
+  height: 320px;
+  overflow-y: hidden;
 
   &::-webkit-scrollbar-thumb {
     background-color: ${color.gray[300]};

@@ -12,7 +12,7 @@ import { ShareIcon, SaveIcon, MoreIcon } from '@/assets/icon';
 import { BlocklySpace, LoadingSpinner } from '@/components/common';
 import { handleCopyClipBoard } from '@/utils/clipboard';
 import UpdateInfoModal from '../UpdataModal';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   projectCodeSaveApi,
   projectDeleteApi,
@@ -130,12 +130,14 @@ function MainCoding({ setCode, code, setShare, share }: MainCodingProps) {
     setShowProjectUpdateModal(true);
   };
   const nav = useRouter();
+  const queryClient = useQueryClient();
 
   const { mutate: deleteMutate } = useMutation({
     mutationKey: ['projectDeleteApi'],
     mutationFn: projectDeleteApi,
     onSuccess: () => {
       nav.push('/project');
+      queryClient.invalidateQueries({ queryKey: ['myInfo'] });
       toast('삭제되었습니다.');
     },
     onError: (error) => {

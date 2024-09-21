@@ -38,7 +38,7 @@ export default function List() {
 }
 
 const Container = styled.div`
-  height: 100dvh;
+  min-height: 100dvh;
   ${flex.COLUMN_CENTER}
   gap: 50px;
 `;
@@ -46,6 +46,7 @@ const Container = styled.div`
 const PopularProjectContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
   gap: 30px;
 
   @media screen and (max-width: 1024px) {
