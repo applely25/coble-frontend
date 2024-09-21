@@ -135,7 +135,7 @@ function MainCoding({ setCode, code, setShare, share }: MainCodingProps) {
     mutationKey: ['projectDeleteApi'],
     mutationFn: projectDeleteApi,
     onSuccess: () => {
-      nav.push('/mypage');
+      nav.push('/project');
       toast('삭제되었습니다.');
     },
     onError: (error) => {
