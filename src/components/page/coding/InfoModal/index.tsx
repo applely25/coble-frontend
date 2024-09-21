@@ -78,7 +78,7 @@ export default function InfoModal() {
                 <ImageView src={imageSrc} alt="미리보기 이미지" fill />
               )}
               {/* 파일 선택 버튼은 계속 렌더링 */}
-              <input type="file" onChange={onChangeFile} />
+              <input type="file" onChange={onChangeFile} accept=".png, .jpg" />
             </ImageContainer>
             <InputContainer>
               {inputInitialData.map((key) => (
