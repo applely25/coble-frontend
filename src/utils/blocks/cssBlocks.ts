@@ -245,20 +245,6 @@ export default [
     category: category.box,
   },
   {
-    type: CSSBlockTypes.Padding,
-    message0: `padding: %1`,
-    args0: [
-      {
-        type: 'field_input',
-        name: 'CONTENT',
-      },
-    ],
-    nextStatement: null,
-    previousStatement: null,
-    colour: colour.box,
-    category: category.box,
-  },
-  {
     type: CSSBlockTypes.Border,
     message0: `border: %1`,
     args0: [
