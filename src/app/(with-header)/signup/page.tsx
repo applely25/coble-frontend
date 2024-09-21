@@ -27,7 +27,7 @@ const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$/;
 export default function Signup() {
   const { inputValue, onChange, placeholder } = useInputForm(inputInitialData);
   const [isVerifyCheck, setIsVerifyCheck] = useState<boolean>(false);
-  const [isPrivacyCheck, setIsPrivacyCheck] = useState<boolean>(false);
+  const [isPrivacyCheck, setIsPrivacyCheck] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
   const nav = useRouter();
 
@@ -185,7 +185,7 @@ export default function Signup() {
             </AuthChildrenContainer>
             <ButtonContainer>
               <ConsentContainer>
-                <input
+                {/* <input
                   type="checkbox"
                   name=""
                   id=""
@@ -195,7 +195,7 @@ export default function Signup() {
                 <p>
                   <Link href="/">개인정보처리방침</Link> 및{' '}
                   <Link href="/">이용약관</Link> 동의
-                </p>
+                </p> */}
               </ConsentContainer>
               <LoginButton
                 onClick={onClickSignUp}
