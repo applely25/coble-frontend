@@ -56,6 +56,7 @@ const Title = styled.p`
   font-weight: bold;
   margin-bottom: 8px;
   color: ${theme.blue[500]};
+  display: block;
 `;
 
 const Subtitle = styled.p`
