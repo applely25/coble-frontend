@@ -2,12 +2,21 @@
 import { styled } from '@linaria/react';
 import Sidebar from '@/components/page/docs/SideBar';
 import ReactMarkdown from 'react-markdown';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { flex, font, theme } from '@/styles';
 import remarkGfm from 'remark-gfm';
 
 export default function Docs() {
   const [selectedDocContent, setSelectedDocContent] = useState<string>('');
+  const [markdown, setMarkdown] = useState('');
+
+  useEffect(() => {
+    if (selectedDocContent) {
+      fetch(selectedDocContent)
+        .then((response) => response.text())
+        .then((text) => setMarkdown(text));
+    }
+  }, [selectedDocContent]);
 
   return (
     <Wrapper>
@@ -17,9 +26,9 @@ export default function Docs() {
         <Content>
           <Sidebar onSelect={setSelectedDocContent} />
           <DocViewer>
-            {selectedDocContent ? (
+            {markdown ? (
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                {selectedDocContent}
+                {markdown}
               </ReactMarkdown>
             ) : (
               <p>문서를 선택해주세요.</p>
