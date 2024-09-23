@@ -67,6 +67,7 @@ const Subtitle = styled.p`
 
 const Content = styled.div`
   ${flex.FLEX}
+  margin-top: 30px;
 `;
 
 const DocViewer = styled.div`

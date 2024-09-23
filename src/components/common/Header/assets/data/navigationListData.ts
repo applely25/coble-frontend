@@ -23,6 +23,12 @@ const navigationListData: INavigationListData[] = [
     href: '/quiz',
     login: true,
   },
+  {
+    id: 4,
+    name: '개발 문서',
+    href: '/docs',
+    login: true,
+  },
 ];
 
 export default navigationListData;
