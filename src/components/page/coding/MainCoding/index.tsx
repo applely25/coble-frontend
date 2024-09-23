@@ -172,7 +172,7 @@ function MainCoding({ setCode, code, setShare, share }: MainCodingProps) {
             <FileButton isSelected={type === 'css'}>CSS</FileButton>
           </Link>
           <Link href="?type=ect">
-            <FileButton isSelected={type === 'ect'}>ECT</FileButton>
+            <FileButton isSelected={type === 'ect'}>ETC</FileButton>
           </Link>
         </div>
         <div>
