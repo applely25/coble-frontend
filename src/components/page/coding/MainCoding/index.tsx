@@ -89,7 +89,7 @@ function MainCoding({ setCode, code, setShare, share }: MainCodingProps) {
       } else {
         toast.success('프로젝트를 공유중입니다.');
         handleCopyClipBoard(
-          `${window.location.protocol}//${window.location.host}/project/${projectId}`,
+          `${window.location.protocol}//${window.location.host}/service/${projectId}`,
         );
       }
     },

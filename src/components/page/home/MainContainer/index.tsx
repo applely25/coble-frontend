@@ -1,12 +1,15 @@
 import { CobleLogo } from '@/assets/icon';
+import { userContext } from '@/context';
 import useTypeingAnimation from '@/hooks/useTypeingAnimation';
 import { design, flex, font, theme } from '@/styles';
 import { styled } from '@linaria/react';
+import { useAtom } from 'jotai';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export default function MainContainer() {
   const CobleTitle = useTypeingAnimation({ text: 'CODE BLOCK' });
+  const [user] = useAtom(userContext);
   return (
     <Container>
       <BackgroundImage
@@ -22,7 +25,10 @@ export default function MainContainer() {
           <p>‘코블’ 로 신세계를 경험해보세요!</p>
         </div>
       </LogoTitle>
-      <GoLinkButton href="/coding/new">코딩하러 가기</GoLinkButton>
+      {}
+      <GoLinkButton href={user.isLogin ? '/coding/new' : '/login'}>
+        코딩하러 가기
+      </GoLinkButton>
     </Container>
   );
 }
