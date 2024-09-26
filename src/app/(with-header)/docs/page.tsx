@@ -1,20 +1,34 @@
 'use client';
 import { styled } from '@linaria/react';
 import Sidebar from '@/components/page/docs/SideBar';
-import ReactMarkdown from 'react-markdown';
 import { useState, useEffect } from 'react';
-import { flex, font, theme } from '@/styles';
-import remarkGfm from 'remark-gfm';
+import { flex, theme } from '@/styles';
+import { Viewer } from '@toast-ui/react-editor';
+import '@toast-ui/editor/dist/toastui-editor.css';
 
 export default function Docs() {
   const [selectedDocContent, setSelectedDocContent] = useState<string>('');
   const [markdown, setMarkdown] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (selectedDocContent) {
+      setLoading(true);
+      setError(null); // Reset error state
       fetch(selectedDocContent)
-        .then((response) => response.text())
-        .then((text) => setMarkdown(text));
+        .then((response) => {
+          if (!response.ok) throw new Error('Network response was not ok');
+          return response.text();
+        })
+        .then((text) => {
+          setMarkdown(text);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setError(err.message);
+          setLoading(false);
+        });
     }
   }, [selectedDocContent]);
 
@@ -25,11 +39,13 @@ export default function Docs() {
         <Subtitle>문서를 확인하여 손쉽게 프로젝트를 만들어보세요!</Subtitle>
         <Content>
           <Sidebar onSelect={setSelectedDocContent} />
-          <DocViewer>
-            {markdown ? (
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                {markdown}
-              </ReactMarkdown>
+          <DocViewer aria-live="polite">
+            {loading ? (
+              <p>Loading...</p>
+            ) : error ? (
+              <p>Error: {error}</p>
+            ) : markdown ? (
+              <Viewer initialValue={markdown} />
             ) : (
               <p>문서를 선택해주세요.</p>
             )}
