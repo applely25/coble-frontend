@@ -1,33 +1,18 @@
 const DOCS = [
   {
     id: 0,
-    title: '문서의 기본 구조',
-    docs: './text.md',
+    title: 'COBLE 사용 방법',
+    docs: './coble-guide.md',
   },
   {
     id: 2,
-    title: '문서의 기본 구조',
-    docs: './text.md',
+    title: 'HTML',
+    docs: './html.md',
   },
   {
     id: 3,
-    title: '문서의 기본 구조',
-    docs: './text.md',
-  },
-  {
-    id: 4,
-    title: '문서의 기본 구조',
-    docs: './text.md',
-  },
-  {
-    id: 5,
-    title: '문서의 기본 구조',
-    docs: './text.md',
-  },
-  {
-    id: 6,
-    title: '문서의 기본 구조',
-    docs: './text.md',
+    title: 'CSS',
+    docs: './css.md',
   },
 ];
 
