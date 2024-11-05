@@ -5,7 +5,6 @@ import { design, flex, font, theme } from '@/styles';
 import color from '@/styles/theme';
 import { styled } from '@linaria/react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRef, useState } from 'react';
 import axios, { AxiosError } from 'axios';
 import useInputForm, { PlaceholderKeys } from '@/hooks/useInputForm';

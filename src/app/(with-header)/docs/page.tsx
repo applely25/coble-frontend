@@ -3,7 +3,7 @@ import { styled } from '@linaria/react';
 import Sidebar from '@/components/page/docs/SideBar';
 import { useState, useEffect } from 'react';
 import { flex, theme } from '@/styles';
-import { Viewer } from '@toast-ui/react-editor';
+import { DynamicViewer } from '@/components/common';
 import '@toast-ui/editor/dist/toastui-editor.css';
 
 export default function Docs() {
@@ -45,7 +45,7 @@ export default function Docs() {
             ) : error ? (
               <p>Error: {error}</p>
             ) : markdown ? (
-              <Viewer initialValue={markdown} />
+              <DynamicViewer markdown={markdown} />
             ) : (
               <p>문서를 선택해주세요.</p>
             )}

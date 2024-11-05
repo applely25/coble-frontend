@@ -10,12 +10,12 @@ interface SidebarProps {
 
 function Sidebar({ onSelect }: SidebarProps) {
   const [activeId, setActiveId] = useState<number>();
-  const router = useRouter();
+  const nav = useRouter();
 
   const handleClick = (docId: number, docPath: string) => {
     setActiveId(docId);
     onSelect(`/docs/${docPath}`);
-    router.push(`/docs?page=${docId}`);
+    nav.push(`/docs?page=${docId}`);
   };
 
   return (
